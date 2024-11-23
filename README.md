@@ -5,10 +5,8 @@
 
 > **Сближение** - приложение для людей с ограниченными возможностями слуха и их ближнего окружения. Позволяет облегчить общение с помощью языка жестов.
 
-![image](/docs/src/icon.png)
-
-<div style="text-align: center;">
-  <img src="/docs/src/icon.png" />
+<div align=center>
+  <img width=500px src="/docs/src/icon.png" />
 </div>
 
 ## Возможности
