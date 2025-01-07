@@ -2,15 +2,37 @@
     <!-- Base application theme. -->
     <style name="Theme.Rapprochement" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/primary_1</item>
+        <item name="colorPrimaryVariant">@color/primary_2</item>
+        <item name="colorOnPrimary">@color/bg_d</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/primary_3</item>
+        <item name="colorSecondaryVariant">@color/secondary</item>
+        <item name="colorOnSecondary">@color/bg_l</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.Rapprochement.Bg">
+        <item name="android:background">@color/bg_d</item>
+    </style>
+
+    <style name="Theme.Rapprochement.Text">
+        <item name="android:textColor">@color/text_d</item>
+    </style>
+
+    <style name="Theme.Rapprochement.BgText">
+        <item name="android:background">@color/bg_d</item>
+        <item name="android:textColor">@color/text_d</item>
+    </style>
+
+    <style name="Theme.Rapprochement.BgHands">
+        <item name="android:background">@drawable/bg_d</item>
+    </style>
+
+    <style name="Theme.Rapprochement.BgRect">
+        <item name="android:background">@drawable/record_bg_d</item>
+    </style>
+
 </resources>

@@ -10,38 +10,25 @@
     <!-- Фон -->
 
     <ImageView
-        android:id="@+id/background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/bg_l"
-        android:scaleType="centerCrop"/>
+        style="@style/AppBg"
+        app:layout_constraintBottom_toTopOf="@+id/bottomPanel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <!-- История -->
 
-    <ScrollView
-        android:id="@+id/messageScrollView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/historyView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scrollbars="vertical"
+        android:paddingTop="8dp"
+        android:clipToPadding = "false"
         app:layout_constraintBottom_toTopOf="@+id/bottomPanel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Сообщение 1" />
-
-        </LinearLayout>
-    </ScrollView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Нижняя панель -->
 
@@ -53,22 +40,26 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.nti.rapprochement.components.ActionButton
+            android:id="@+id/settingsButton"
             style="@style/ActionButton"
             android:layout_marginStart="0dp"
             app:iconReference="@drawable/icon_settings"
             app:backgroundColor="@color/secondary" />
 
         <com.nti.rapprochement.components.ActionButton
+            android:id="@+id/textButton"
             style="@style/ActionButton"
             app:iconReference="@drawable/icon_text"
             app:backgroundColor="@color/primary_3"/>
 
         <com.nti.rapprochement.components.ActionButton
+            android:id="@+id/soundButton"
             style="@style/ActionButton"
             app:iconReference="@drawable/icon_sound"
             app:backgroundColor="@color/primary_2"/>
 
         <com.nti.rapprochement.components.ActionButton
+            android:id="@+id/gestureButton"
             style="@style/ActionButton"
             app:iconReference="@drawable/icon_ok"
             app:backgroundColor="@color/primary_1"/>

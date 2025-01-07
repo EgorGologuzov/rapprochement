@@ -5,14 +5,17 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.nti.rapprochement.R;
+import com.nti.rapprochement.utils.CompositeOnClickListener;
 
 public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton {
+    final private CompositeOnClickListener onClickListener = new CompositeOnClickListener();
 
     public ActionButton(Context context) {
         super(context);
@@ -30,8 +33,13 @@ public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
+        initCompositeOnClickListener();
         initAttrs(attrs, defStyle);
         initAnimation(context);
+    }
+
+    private void initCompositeOnClickListener() {
+        super.setOnClickListener(onClickListener);
     }
 
     private void initAttrs(AttributeSet attrs, int defStyle) {
@@ -54,9 +62,7 @@ public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton
 
     private void initAnimation(Context context) {
         final Animation scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.action_button_click);
-        this.setOnClickListener(v -> {
-            v.startAnimation(scaleAnimation);
-        });
+        this.setOnClickListener(v -> v.startAnimation(scaleAnimation));
     }
 
     public void setIcon(Drawable reference) { setImageDrawable(reference); }
@@ -66,5 +72,10 @@ public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton
         drawable.setShape(GradientDrawable.OVAL);
         drawable.setColor(color);
         setBackground(drawable);
+    }
+
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        onClickListener.registerListener(l);
     }
 }
