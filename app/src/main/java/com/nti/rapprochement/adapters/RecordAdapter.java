@@ -21,7 +21,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordVMBase>
     @Override
     public RecordBase.RecordVMBase onCreateViewHolder(@NotNull ViewGroup parent, int position) {
         RecordBase model = records.get(position);
-        return model.getView(parent);
+        return model.getVM(parent);
     }
 
     @Override

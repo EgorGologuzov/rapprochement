@@ -9,7 +9,7 @@ import com.nti.rapprochement.R;
 public class RecordGesture extends RecordBase {
 
     @Override
-    public RecordBase.RecordVMBase getView(ViewGroup parent) {
+    public RecordBase.RecordVMBase getVM(ViewGroup parent) {
         View view = getViewByResourceId(R.layout.record_gesture, parent);
         return new RecordGestureVM(view, this);
     }

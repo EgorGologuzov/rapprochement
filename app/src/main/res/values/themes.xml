@@ -35,4 +35,9 @@
         <item name="android:background">@drawable/record_bg_l</item>
     </style>
 
+    <style name="Theme.Rapprochement.TextNormal" parent="Theme.Rapprochement.Text">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

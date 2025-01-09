@@ -3,15 +3,12 @@ package com.nti.rapprochement.models;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nti.rapprochement.R;
-
 public abstract class RecordBase {
 
-    public abstract RecordVMBase getView(ViewGroup parent);
+    public abstract RecordVMBase getVM(ViewGroup parent);
 
     public View getViewByResourceId(int id, ViewGroup parent) {
         return LayoutInflater

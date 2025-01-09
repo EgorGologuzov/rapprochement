@@ -9,7 +9,7 @@ import com.nti.rapprochement.R;
 public class RecordSound extends RecordBase {
 
     @Override
-    public RecordVMBase getView(ViewGroup parent) {
+    public RecordVMBase getVM(ViewGroup parent) {
         View view = getViewByResourceId(R.layout.record_sound, parent);
         return new RecordSoundVM(view, this);
     }

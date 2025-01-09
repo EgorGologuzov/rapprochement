@@ -9,7 +9,7 @@ import com.nti.rapprochement.R;
 public class RecordText extends RecordBase {
 
     @Override
-    public RecordVMBase getView(ViewGroup parent) {
+    public RecordVMBase getVM(ViewGroup parent) {
         View view = getViewByResourceId(R.layout.record_text, parent);
         return new RecordTextVM(view, this);
     }

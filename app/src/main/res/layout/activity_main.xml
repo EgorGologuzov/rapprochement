@@ -11,59 +11,68 @@
 
     <ImageView
         style="@style/AppBg"
-        app:layout_constraintBottom_toTopOf="@+id/bottomPanel"
+        app:layout_constraintBottom_toTopOf="@+id/panelFrame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <!-- История -->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/historyView"
+    <FrameLayout
+        android:id="@+id/historyFrame"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scrollbars="vertical"
-        android:paddingTop="8dp"
-        android:clipToPadding = "false"
-        app:layout_constraintBottom_toTopOf="@+id/bottomPanel"
+        app:layout_constraintBottom_toTopOf="@+id/panelFrame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainHistoryView"
+            style="@style/History"/>
+    </FrameLayout>
 
     <!-- Нижняя панель -->
 
-    <LinearLayout
-        android:id="@+id/bottomPanel"
-        style="@style/BottomPanel"
+    <FrameLayout
+        android:id="@+id/panelFrame"
+        style="@style/Theme.Rapprochement.Bg"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+        <LinearLayout
+            android:id="@+id/mainPanelView"
+            style="@style/Panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <com.nti.rapprochement.components.ActionButton
-            android:id="@+id/settingsButton"
-            style="@style/ActionButton"
-            android:layout_marginStart="0dp"
-            app:iconReference="@drawable/icon_settings"
-            app:backgroundColor="@color/secondary" />
+            <com.nti.rapprochement.components.ActionButton
+                android:id="@+id/settingsButton"
+                style="@style/ActionButton"
+                android:layout_marginStart="0dp"
+                app:iconReference="@drawable/icon_settings"
+                app:backgroundColor="@color/secondary" />
 
-        <com.nti.rapprochement.components.ActionButton
-            android:id="@+id/textButton"
-            style="@style/ActionButton"
-            app:iconReference="@drawable/icon_text"
-            app:backgroundColor="@color/primary_3"/>
+            <com.nti.rapprochement.components.ActionButton
+                android:id="@+id/textButton"
+                style="@style/ActionButton"
+                app:iconReference="@drawable/icon_text"
+                app:backgroundColor="@color/primary_3"/>
 
-        <com.nti.rapprochement.components.ActionButton
-            android:id="@+id/soundButton"
-            style="@style/ActionButton"
-            app:iconReference="@drawable/icon_sound"
-            app:backgroundColor="@color/primary_2"/>
+            <com.nti.rapprochement.components.ActionButton
+                android:id="@+id/soundButton"
+                style="@style/ActionButton"
+                app:iconReference="@drawable/icon_sound"
+                app:backgroundColor="@color/primary_2"/>
 
-        <com.nti.rapprochement.components.ActionButton
-            android:id="@+id/gestureButton"
-            style="@style/ActionButton"
-            app:iconReference="@drawable/icon_ok"
-            app:backgroundColor="@color/primary_1"/>
+            <com.nti.rapprochement.components.ActionButton
+                android:id="@+id/gestureButton"
+                style="@style/ActionButton"
+                app:iconReference="@drawable/icon_ok"
+                app:backgroundColor="@color/primary_1"/>
 
-    </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
