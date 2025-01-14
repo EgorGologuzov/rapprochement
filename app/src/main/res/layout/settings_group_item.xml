@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parameterItem"
+    style="@style/RecordSettingsGroup_ParametersLayout">
+    <TextView
+        android:id="@+id/parameterName"
+        style="@style/RecordSettingsGroup_Name"
+        android:text="@string/text_not_set"/>
+    <TextView
+        android:id="@+id/parameterValue"
+        style="@style/RecordSettingsGroup_Value"
+        android:text="@string/text_not_set"/>
+</LinearLayout>

@@ -8,9 +8,21 @@ import android.view.ViewGroup;
 import com.nti.rapprochement.R;
 
 public class ViewsUtils {
-    public static View inflateLayout(Context context, int id) {
+    public static View inflateLayout(int layoutId, Context context) {
         return LayoutInflater
             .from(context)
-            .inflate(id, null);
+            .inflate(layoutId, null);
+    }
+
+    public static View inflateLayout(int layoutId, ViewGroup root) {
+        return LayoutInflater
+                .from(root.getContext())
+                .inflate(layoutId, root, false);
+    }
+
+    public static View inflateLayout(int layoutId, ViewGroup root, boolean attachToRoot) {
+        return LayoutInflater
+                .from(root.getContext())
+                .inflate(layoutId, root, attachToRoot);
     }
 }

@@ -24,7 +24,7 @@ public class RecordInfo extends RecordBase {
 
         @Override
         public void bind() {
-            textView.setText("[Запись Инфо: Не реализованно]");
+
         }
     }
 }

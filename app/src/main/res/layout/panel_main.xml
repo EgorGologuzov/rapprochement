@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainPanelView"
+    style="@style/Panel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.nti.rapprochement.components.ActionButton
+        android:id="@+id/settingsButton"
+        style="@style/ActionButton"
+        android:layout_marginStart="0dp"
+        app:iconReference="@drawable/icon_settings"
+        app:backgroundColor="@color/secondary" />
+
+    <com.nti.rapprochement.components.ActionButton
+        android:id="@+id/textButton"
+        style="@style/ActionButton"
+        app:iconReference="@drawable/icon_text"
+        app:backgroundColor="@color/primary_3"/>
+
+    <com.nti.rapprochement.components.ActionButton
+        android:id="@+id/soundButton"
+        style="@style/ActionButton"
+        app:iconReference="@drawable/icon_sound"
+        app:backgroundColor="@color/primary_2"/>
+
+    <com.nti.rapprochement.components.ActionButton
+        android:id="@+id/gestureButton"
+        style="@style/ActionButton"
+        app:iconReference="@drawable/icon_ok"
+        app:backgroundColor="@color/primary_1"/>
+
+</LinearLayout>

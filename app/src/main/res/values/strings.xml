@@ -1,3 +1,27 @@
 <resources>
+<!--    Глобальные-->
     <string name="app_name">Сближение</string>
+    <string name="text_not_set">[Текст не установлен]</string>
+
+<!--    RecordInfo-->
+    <string name="begin_rapprochement">Начните сближение</string>
+    <string name="recognize_gestures">распознать жесты</string>
+    <string name="recognize_voice">распознать голос</string>
+    <string name="text_to_voice_or_gestures">текст в голос или жесты</string>
+
+<!--    RecordSettingsGroup-->
+    <string name="title_settings">Настройки</string>
+    <string name="title_general">Общие</string>
+    <string name="title_history">История</string>
+    <string name="title_auto_finish">Автозавершения</string>
+    <string name="btn_cancel">Отмена</string>
+
+    <string name="theme">Тема</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Темная</string>
+
+    <string name="font">Шрифт</string>
+    <string name="font_normal">Нормальный</string>
+    <string name="font_big">Большой</string>
+    <string name="font_very_big">Очень большой</string>
 </resources>

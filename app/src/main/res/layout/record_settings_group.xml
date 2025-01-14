@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Record_FirstLayout">
-    <LinearLayout
-        style="@style/Record_SecondLayout">
-        <TextView
-            android:id="@+id/textView"
-            style="@style/Record_TextArea"/>
-    </LinearLayout>
+    android:id="@+id/parametersGroup"
+    style="@style/RecordSettingsGroup_FirstLayout">
+    <TextView
+        android:id="@+id/groupTitle"
+        style="@style/RecordSettingsGroup_GroupTitle"
+        android:text="@string/text_not_set"/>
 </LinearLayout>
