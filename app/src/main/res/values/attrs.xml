@@ -1,6 +1,0 @@
-<resources>
-    <declare-styleable name="ActionButton">
-        <attr name="iconReference" format="reference" />
-        <attr name="backgroundColor" format="color" />
-    </declare-styleable>
-</resources>

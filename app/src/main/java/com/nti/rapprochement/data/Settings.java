@@ -2,15 +2,15 @@ package com.nti.rapprochement.data;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.nti.rapprochement.App;
+import com.nti.rapprochement.MainActivity;
 import com.nti.rapprochement.R;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class Settings {
@@ -19,9 +19,8 @@ public class Settings {
     private static final String APP_PREFERENCES = "app_preferences";
     private static SharedPreferences preferences;
 
-    public static void init(Context context) {
-        preferences = context.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
-        setTheme(getTheme());
+    public static void init(MainActivity mainActivity) {
+        preferences = mainActivity.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
     }
 
 
@@ -40,6 +39,10 @@ public class Settings {
             isDarkMode
                 ? AppCompatDelegate.MODE_NIGHT_NO
                 : AppCompatDelegate.MODE_NIGHT_YES);
+    }
+
+    public static String themeToString(boolean isDarkMode) {
+        return isDarkMode ? Res.str(R.string.theme_dark) : Res.str(R.string.theme_light);
     }
 
 
@@ -66,12 +69,12 @@ public class Settings {
 
     public static void setOnFontSizeChangeHandler(Consumer<FontSize> handler) { onFontSizeChangeHandler = handler; }
 
-    public static int fontSizeToStringId(FontSize fontSize) {
+    public static String fontSizeToString(FontSize fontSize) {
         switch (fontSize) {
-            case Normal: return R.string.font_normal;
-            case Big: return R.string.font_big;
-            case VeryBig: return R.string.font_very_big;
-            default: return -1;
+            case Normal: return Res.str(R.string.font_normal);
+            case Big: return Res.str(R.string.font_big);
+            case VeryBig: return Res.str(R.string.font_very_big);
+            default: return "";
         }
     }
 
@@ -84,21 +87,21 @@ public class Settings {
         }
     }
 
-    public static FontSize stringVariantToFontSize(String variant, Resources res) {
-        if (variant.equals(res.getString(R.string.font_normal))) {
+    public static FontSize stringVariantToFontSize(String variant) {
+        if (variant.equals(Res.str(R.string.font_normal))) {
             return FontSize.Normal;
-        } else if (variant.equals(res.getString(R.string.font_big))) {
+        } else if (variant.equals(Res.str(R.string.font_big))) {
             return FontSize.Big;
         } else {
             return FontSize.VeryBig;
         }
     }
 
-    public static String[] getFontSizeVariants(Resources res) {
+    public static String[] getFontSizeVariants() {
         return new String[] {
-            res.getString(R.string.font_normal),
-            res.getString(R.string.font_big),
-            res.getString(R.string.font_very_big)
+            Res.str(R.string.font_normal),
+            Res.str(R.string.font_big),
+            Res.str(R.string.font_very_big)
         };
     }
 }

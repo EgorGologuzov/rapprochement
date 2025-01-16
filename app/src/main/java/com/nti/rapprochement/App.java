@@ -1,12 +1,12 @@
-package com.nti.rapprochement.navigation;
+package com.nti.rapprochement;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
-import androidx.fragment.app.FragmentOnAttachListener;
-
-import com.nti.rapprochement.R;
+import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.models.HistoryBase;
 import com.nti.rapprochement.models.HistoryMain;
 import com.nti.rapprochement.models.PanelBase;
@@ -14,31 +14,26 @@ import com.nti.rapprochement.models.PanelMain;
 
 import java.util.Stack;
 
-public class Navigation {
+public class App {
+    private static MainActivity mainActivity;
+
     private static final Stack<HistoryBase> historyStack = new Stack<>();
     private static FrameLayout historyFrame;
 
     private static final Stack<PanelBase> panelStack = new Stack<>();
     private static FrameLayout panelFrame;
 
-    public static void initFrames(FrameLayout historyFrame, FrameLayout panelFrame) {
-        Navigation.historyFrame = historyFrame;
-        Navigation.panelFrame = panelFrame;
+    public static void init(MainActivity mainActivity) {
+        App.mainActivity = mainActivity;
+        App.historyFrame = mainActivity.findViewById(R.id.historyFrame);
+        App.panelFrame = mainActivity.findViewById(R.id.panelFrame);
 
-        if (historyStack.isEmpty()) {
-            historyStack.push(HistoryMain.shared);
-            historyFrame.addView(HistoryMain.shared.getView());
-        } else {
-            historyFrame.addView(historyStack.peek().getView());
-        }
-
-        if (panelStack.isEmpty()) {
-            panelStack.push(PanelMain.shared);
-            panelFrame.addView(PanelMain.shared.getView());
-        } else {
-            panelFrame.addView(panelStack.peek().getView());
-        }
+        setCurrentHistoryAndPanelView();
     }
+
+    public static Context getHistoryContext() { return historyFrame.getContext(); }
+
+    public static Context getPanelContext() { return panelFrame.getContext(); }
 
     public static void navigate(HistoryBase history, PanelBase panel) {
         if (history != null) {
@@ -63,7 +58,23 @@ public class Navigation {
         }
     }
 
-    public static void pushHistory(HistoryBase history) {
+    private static void setCurrentHistoryAndPanelView() {
+        if (historyStack.isEmpty()) {
+            historyStack.push(HistoryMain.shared);
+            historyFrame.addView(HistoryMain.shared.getView());
+        } else {
+            historyFrame.addView(historyStack.peek().getView());
+        }
+
+        if (panelStack.isEmpty()) {
+            panelStack.push(PanelMain.shared);
+            panelFrame.addView(PanelMain.shared.getView());
+        } else {
+            panelFrame.addView(panelStack.peek().getView());
+        }
+    }
+
+    private static void pushHistory(HistoryBase history) {
         View view = history.getView();
 
         if (historyFrame.getChildCount() > 0) {
@@ -80,7 +91,7 @@ public class Navigation {
         historyStack.push(history);
     }
 
-    public static void popHistory() {
+    private static void popHistory() {
         if (!historyStack.isEmpty()) {
             View currentView = historyFrame.getChildAt(historyFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(historyFrame.getContext(), R.anim.slide_right));
@@ -97,7 +108,7 @@ public class Navigation {
         }
     }
 
-    public static void pushPanel(PanelBase panel) {
+    private static void pushPanel(PanelBase panel) {
         View view = panel.getView();
 
         if (panelFrame.getChildCount() > 0) {
@@ -114,7 +125,7 @@ public class Navigation {
         panelStack.push(panel);
     }
 
-    public static void popPanel() {
+    private static void popPanel() {
         if (!panelStack.isEmpty()) {
             View currentView = panelFrame.getChildAt(panelFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(panelFrame.getContext(), R.anim.slide_down));

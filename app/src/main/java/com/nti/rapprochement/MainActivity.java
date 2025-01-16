@@ -1,7 +1,6 @@
 package com.nti.rapprochement;
 
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -10,22 +9,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
-import com.nti.rapprochement.models.HistoryBase;
-import com.nti.rapprochement.models.PanelBase;
-import com.nti.rapprochement.navigation.Navigation;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static int currentFontThemeId = -1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        initSettings();
-        setFontTheme();
+        Settings.init(this);
+        setFontSize();
+        setDarkMode();
 
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -34,43 +30,33 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        initNavigationFrames();
+        App.init(this);
+        Res.init(this);
         setBackButtonCallback();
+        setOnFontSizeChangeHandler();
     }
 
-    private void initSettings() {
-        Settings.init(this);
-        Settings.setOnFontSizeChangeHandler(fs -> {
-            currentFontThemeId = Settings.fontSizeToStyleId(fs);
-            recreate();
-        });
+    private void setFontSize() {
+        int themeId = Settings.fontSizeToStyleId(Settings.getFontSize());
+        setTheme(themeId);
     }
 
-    public void setFontTheme() {
-        if (currentFontThemeId == -1) {
-            currentFontThemeId = Settings.fontSizeToStyleId(Settings.getFontSize());
-        }
-
-        setTheme(currentFontThemeId);
-    }
-
-    private void initNavigationFrames() {
-        FrameLayout historyFrame = findViewById(R.id.historyFrame);
-        FrameLayout panelFrame = findViewById(R.id.panelFrame);
-
-        HistoryBase.initParent(historyFrame);
-        PanelBase.initParent(panelFrame);
-        Navigation.initFrames(historyFrame, panelFrame);
+    private void setDarkMode() {
+        Settings.setTheme(Settings.getTheme());
     }
 
     private void setBackButtonCallback() {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Navigation.navigateBack();
+                App.navigateBack();
             }
         };
 
         getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    private void setOnFontSizeChangeHandler() {
+        Settings.setOnFontSizeChangeHandler(fs -> recreate());
     }
 }

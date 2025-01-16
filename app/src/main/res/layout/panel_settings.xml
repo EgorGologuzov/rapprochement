@@ -10,7 +10,6 @@
         android:id="@+id/backButton"
         style="@style/ActionButton"
         android:layout_marginStart="0dp"
-        app:iconReference="@drawable/icon_back"
-        app:backgroundColor="@color/secondary" />
+        android:src="@drawable/btn_back" />
 
 </LinearLayout>
