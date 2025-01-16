@@ -10,12 +10,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.nti.rapprochement.App;
 import com.nti.rapprochement.MainActivity;
 import com.nti.rapprochement.R;
+import com.nti.rapprochement.utils.Event;
 
 import java.util.function.Consumer;
 
 public class Settings {
 
 
+    // Инициализация
     private static final String APP_PREFERENCES = "app_preferences";
     private static SharedPreferences preferences;
 
@@ -24,6 +26,7 @@ public class Settings {
     }
 
 
+    // Ночная/Дневаня тема
     private static final String THEME = "theme";
 
     public static boolean getTheme() {
@@ -46,8 +49,10 @@ public class Settings {
     }
 
 
+    // Размер шрифта
     private static final String FONT_SIZE = "font_size";
-    private static Consumer<FontSize> onFontSizeChangeHandler;
+
+    public static Event<FontSize> onFontSizeChange = new Event<>();
 
     public enum FontSize {
         Normal, Big, VeryBig;
@@ -61,13 +66,8 @@ public class Settings {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(FONT_SIZE, value.name());
         editor.apply();
-
-        if (onFontSizeChangeHandler != null) {
-            onFontSizeChangeHandler.accept(value);
-        }
+        onFontSizeChange.call(value);
     }
-
-    public static void setOnFontSizeChangeHandler(Consumer<FontSize> handler) { onFontSizeChangeHandler = handler; }
 
     public static String fontSizeToString(FontSize fontSize) {
         switch (fontSize) {
@@ -104,4 +104,6 @@ public class Settings {
             Res.str(R.string.font_very_big)
         };
     }
+
+
 }

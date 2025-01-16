@@ -13,7 +13,7 @@ public class HistoryView {
         RecyclerView view = (RecyclerView) ViewsUtils.createView(R.layout.history, App.getHistoryContext());
 
         view.setAdapter(adapter);
-        adapter.setOnItemInsertedListener(view::smoothScrollToPosition);
+        adapter.onItemInserted.add(view::smoothScrollToPosition);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         layoutManager.setStackFromEnd(true);

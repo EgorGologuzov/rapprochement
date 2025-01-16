@@ -24,7 +24,7 @@ public class SettingsParameterView {
             if (onClick != null) onClick.accept(param);
         });
 
-        param.setOnValueChange(valueView::setText);
+        param.onValueChange.add(valueView::setText);
 
         return view;
     }

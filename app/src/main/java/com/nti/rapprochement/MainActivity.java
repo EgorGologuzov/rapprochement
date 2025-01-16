@@ -57,6 +57,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setOnFontSizeChangeHandler() {
-        Settings.setOnFontSizeChangeHandler(fs -> recreate());
+        Settings.onFontSizeChange.add(fs -> recreate());
     }
 }
