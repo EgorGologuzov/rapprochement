@@ -26,7 +26,7 @@ public class Settings {
     }
 
 
-    // Ночная/Дневаня тема
+    // Ночная/Дневная тема
     private static final String THEME = "theme";
 
     public static boolean getTheme() {
@@ -40,8 +40,8 @@ public class Settings {
 
         AppCompatDelegate.setDefaultNightMode(
             isDarkMode
-                ? AppCompatDelegate.MODE_NIGHT_NO
-                : AppCompatDelegate.MODE_NIGHT_YES);
+                ? AppCompatDelegate.MODE_NIGHT_YES
+                : AppCompatDelegate.MODE_NIGHT_NO);
     }
 
     public static String themeToString(boolean isDarkMode) {

@@ -20,11 +20,11 @@ public class HistorySettings extends HistoryBase {
 
         params.add(new SettingsParameter(
                 Res.str(R.string.theme),
-                Settings.themeToString(!Settings.getTheme()),
+                Settings.themeToString(Settings.getTheme()),
                 (sp) -> {
                     boolean isDarkMode = Settings.getTheme();
                     Settings.setTheme(!isDarkMode);
-                    sp.setValue(Settings.themeToString(isDarkMode));
+                    sp.setValue(Settings.themeToString(!isDarkMode));
                 }));
 
         params.add(new SettingsParameter(
