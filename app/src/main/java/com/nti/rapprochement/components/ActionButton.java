@@ -1,21 +1,16 @@
 package com.nti.rapprochement.components;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import androidx.appcompat.widget.AppCompatImageButton;
-
 import com.nti.rapprochement.R;
-import com.nti.rapprochement.utils.CompositeOnClickListener;
+import com.nti.rapprochement.utils.Event;
 
 public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton {
-    final private CompositeOnClickListener onClickListener = new CompositeOnClickListener();
+    final public Event<View> onCLick = new Event<>();
 
     public ActionButton(Context context) {
         super(context);
@@ -33,12 +28,12 @@ public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton
     }
 
     private void init(Context context) {
-        initCompositeOnClickListener();
+        initOnClickListener();
         initAnimation(context);
     }
 
-    private void initCompositeOnClickListener() {
-        super.setOnClickListener(onClickListener);
+    private void initOnClickListener() {
+        super.setOnClickListener(onCLick::call);
     }
 
     private void initAnimation(Context context) {
@@ -48,6 +43,8 @@ public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton
 
     @Override
     public void setOnClickListener(OnClickListener l) {
-        onClickListener.registerListener(l);
+        if (l != null) {
+            onCLick.add(l::onClick);
+        }
     }
 }
