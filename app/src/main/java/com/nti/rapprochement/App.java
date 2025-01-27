@@ -1,9 +1,11 @@
 package com.nti.rapprochement;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
 import com.nti.rapprochement.data.Settings;
@@ -22,6 +24,8 @@ public class App {
 
     private static final Stack<PanelBase> panelStack = new Stack<>();
     private static FrameLayout panelFrame;
+
+    private static PanelBase temporaryPanel;
 
     public static void init(MainActivity mainActivity) {
         App.mainActivity = mainActivity;
@@ -55,6 +59,33 @@ public class App {
         } else if (history > 1 && panel > 1) {
             popHistory();
             popPanel();
+        }
+    }
+
+    public static void setTemporaryPanel(PanelBase panel) {
+        if (panel != null && temporaryPanel == null) {
+            pushPanel(panel);
+        } else if (panel == null && temporaryPanel != null) {
+            popPanel();
+        } else if (panel != null && temporaryPanel != null) {
+            popPanel();
+            pushPanel(panel);
+        }
+
+        temporaryPanel = panel;
+    }
+
+    public static void setKeyboardOpen(boolean isOpen) {
+        if (isOpen) {
+            InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        } else {
+            InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            View view = mainActivity.getCurrentFocus();
+            if (view == null) {
+                view = new View(mainActivity);
+            }
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 

@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 public class SettingsParameterView {
     public static View create(ViewGroup parent, SettingsParameter param) {
-        View view = ViewsUtils.createView(R.layout.settings_group_item, parent);
+        View view = ViewsUtils.createView(R.layout.settings_parameter, parent);
 
         TextView nameView = view.findViewById(R.id.parameterName);
         TextView valueView = view.findViewById(R.id.parameterValue);

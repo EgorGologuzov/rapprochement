@@ -25,9 +25,8 @@ public class RecordSettingsGroup extends RecordBase {
     }
 
     @Override
-    public RecordVMBase getViewModel(ViewGroup parent) {
-        View view = RecordSettingsGroupView.create(parent, this);
-        return new RecordSettingsGroupVM(view);
+    public View getView(ViewGroup parent) {
+        return RecordSettingsGroupView.create(parent, this);
     }
 
     public String getTitle() {
@@ -36,14 +35,5 @@ public class RecordSettingsGroup extends RecordBase {
 
     public ArrayList<SettingsParameter> getParameters() {
         return parameters;
-    }
-
-    public static class RecordSettingsGroupVM extends RecordVMBase {
-        public RecordSettingsGroupVM(View itemView) {
-            super(itemView);
-        }
-
-        @Override
-        public void bind(RecordBase model) {}
     }
 }

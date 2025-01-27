@@ -2,14 +2,17 @@
 <!--    Глобальные-->
     <string name="app_name">Сближение</string>
     <string name="text_not_set">[Текст не установлен]</string>
+    <string name="record_view_not_set">[Вид записи не определен]</string>
+    <string name="multi_mode_record_view_not_set">[Вид мультирежимной записи не определен]</string>
+    <string name="rmode_view_not_set">[Вид режима не определен]</string>
 
-<!--    RecordInfo-->
+<!--    Приветственное сообщение-->
     <string name="begin_rapprochement">Начните сближение</string>
     <string name="recognize_gestures">распознать жесты</string>
     <string name="recognize_voice">распознать голос</string>
     <string name="text_to_voice_or_gestures">текст в голос или жесты</string>
 
-<!--    RecordSettingsGroup-->
+<!--    Настройки-->
     <string name="title_settings">Настройки</string>
     <string name="title_general">Общие</string>
     <string name="title_history">История</string>
@@ -24,4 +27,7 @@
     <string name="font_normal">Нормальный</string>
     <string name="font_big">Большой</string>
     <string name="font_very_big">Очень большой</string>
+
+<!--    Режим ввода текста-->
+    <string name="prompt_input_text">Введите текст</string>
 </resources>

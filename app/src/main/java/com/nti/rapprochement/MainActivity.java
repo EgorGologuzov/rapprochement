@@ -1,6 +1,10 @@
 package com.nti.rapprochement;
 
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Res.init(this);
         setBackButtonCallback();
         setOnFontSizeChangeHandler();
+        setAdaptiveLayoutListener();
     }
 
     private void setFontSize() {
@@ -48,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private void setBackButtonCallback() {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
-            public void handleOnBackPressed() {
-                App.navigateBack();
-            }
+            public void handleOnBackPressed() {}
         };
 
         getOnBackPressedDispatcher().addCallback(this, callback);
@@ -58,5 +61,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void setOnFontSizeChangeHandler() {
         Settings.onFontSizeChange.add(fs -> recreate());
+    }
+
+    private void setAdaptiveLayoutListener() {
+        final View activityRootView = findViewById(android.R.id.content);
+        final LinearLayout adaptiveLayout = findViewById(R.id.adaptiveLayout);
+
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect r = new Rect();
+            activityRootView.getWindowVisibleDisplayFrame(r);
+
+            int actualHeight = r.bottom - r.top;
+            int adaptiveLayoutHeight = adaptiveLayout.getHeight();
+
+            if (adaptiveLayoutHeight != actualHeight) {
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) adaptiveLayout.getLayoutParams();
+                params.height = actualHeight;
+                adaptiveLayout.setLayoutParams(params);
+            }
+        });
     }
 }

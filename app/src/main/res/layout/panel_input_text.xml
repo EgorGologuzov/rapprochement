@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Panel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.nti.rapprochement.components.ActionButton
+        android:id="@+id/backButton"
+        style="@style/ActionButton"
+        android:layout_marginStart="0dp"
+        android:src="@drawable/btn_back" />
+
+    <com.nti.rapprochement.components.ActionButton
+        android:id="@+id/toText"
+        style="@style/ActionButton"
+        android:src="@drawable/btn_to_text" />
+
+    <com.nti.rapprochement.components.ActionButton
+        android:id="@+id/toSound"
+        style="@style/ActionButton"
+        android:src="@drawable/btn_to_sound" />
+
+    <com.nti.rapprochement.components.ActionButton
+        android:id="@+id/toGesture"
+        style="@style/ActionButton"
+        android:src="@drawable/btn_to_gesture" />
+
+</LinearLayout>

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordVMBase> {
+public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordHolder> {
 
     final private List<RecordBase> records;
 
@@ -24,15 +24,16 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordVMBase>
 
     @NotNull
     @Override
-    public RecordBase.RecordVMBase onCreateViewHolder(@NotNull ViewGroup parent, int position) {
+    public RecordBase.RecordHolder onCreateViewHolder(@NotNull ViewGroup parent, int position) {
         RecordBase model = records.get(position);
-        return model.getViewModel(parent);
+        return model.getHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(RecordBase.RecordVMBase holder, int position) {
+    public void onBindViewHolder(RecordBase.RecordHolder holder, int position) {
         RecordBase model = records.get(position);
         holder.bind(model);
+        model.onUpdate.add(rb -> this.notifyItemChanged(position));
     }
 
     @Override

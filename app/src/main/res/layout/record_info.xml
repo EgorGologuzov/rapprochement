@@ -13,7 +13,7 @@
                 style="@style/RecordInfo_ImageView"
                 android:src="@drawable/btn_gesture"/>
             <TextView
-                style="@style/Record_TextArea"
+                style="@style/RecordInfo_TextView"
                 android:text="@string/recognize_gestures"/>
         </LinearLayout>
         <LinearLayout
@@ -22,7 +22,7 @@
                 style="@style/RecordInfo_ImageView"
                 android:src="@drawable/btn_sound"/>
             <TextView
-                style="@style/Record_TextArea"
+                style="@style/RecordInfo_TextView"
                 android:text="@string/recognize_voice"/>
         </LinearLayout>
         <LinearLayout
@@ -31,7 +31,7 @@
                 style="@style/RecordInfo_ImageView"
                 android:src="@drawable/btn_text"/>
             <TextView
-                style="@style/Record_TextArea"
+                style="@style/RecordInfo_TextView"
                 android:text="@string/text_to_voice_or_gestures"/>
         </LinearLayout>
     </LinearLayout>
