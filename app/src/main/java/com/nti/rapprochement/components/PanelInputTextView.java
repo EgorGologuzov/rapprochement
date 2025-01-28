@@ -16,7 +16,7 @@ public class PanelInputTextView {
         view.findViewById(R.id.backButton)
                 .setOnClickListener(v -> {
                     model.deactivatePanel();
-                    HistoryMain.shared.pop();
+                    HistoryMain.shared.remove(model);
                     App.setKeyboardOpen(false);
                 });
 

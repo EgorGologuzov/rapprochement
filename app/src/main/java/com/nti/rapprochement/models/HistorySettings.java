@@ -12,7 +12,7 @@ public class HistorySettings extends HistoryBase {
 
     public HistorySettings() {
         RecordSettingsGroup settingsGroup1 = initGeneralGroup();
-        this.push(settingsGroup1);
+        this.add(settingsGroup1);
     }
 
     public static RecordSettingsGroup initGeneralGroup() {

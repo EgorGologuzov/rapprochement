@@ -58,12 +58,4 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordHolder>
         notifyItemRemoved(index);
         onItemRemoved.call(index);
     }
-
-    public void removeLastItem() {
-        int index = records.size() - 1;
-        if (index < 0) return;
-        records.remove(index);
-        notifyItemRemoved(index);
-        onItemRemoved.call(index);
-    }
 }

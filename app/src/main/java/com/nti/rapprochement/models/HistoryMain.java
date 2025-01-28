@@ -5,6 +5,6 @@ public class HistoryMain extends HistoryBase {
 
     public HistoryMain() {
         RecordInfo info = new RecordInfo();
-        this.push(info);
+        this.add(info);
     }
 }

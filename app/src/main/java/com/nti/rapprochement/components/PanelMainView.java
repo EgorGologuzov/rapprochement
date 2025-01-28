@@ -22,14 +22,14 @@ public class PanelMainView {
                 .setOnClickListener(v -> {
                     RecordMultiMode record = new RecordMultiMode();
                     record.activatePanel();
-                    HistoryMain.shared.push(record);
+                    HistoryMain.shared.add(record);
                 });
 
         view.findViewById(R.id.soundButton)
                 .setOnClickListener(v -> {
                     RecordMultiMode record = new RecordMultiMode();
                     record.activatePanel();
-                    HistoryMain.shared.push(record);
+                    HistoryMain.shared.add(record);
                 });
 
         view.findViewById(R.id.textButton)
@@ -38,7 +38,7 @@ public class PanelMainView {
                     RModeInputText defaultMode = new RModeInputText();
                     record.setMode(defaultMode);
                     record.activatePanel();
-                    HistoryMain.shared.push(record);
+                    HistoryMain.shared.add(record);
                 });
 
         return view;
