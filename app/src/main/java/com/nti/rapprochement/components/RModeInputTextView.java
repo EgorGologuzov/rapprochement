@@ -40,6 +40,8 @@ public class RModeInputTextView {
             @Override public void afterTextChanged(Editable s) {}
         });
 
+        edit.setText(model.getText());
+
         edit.requestFocus();
         App.openKeyboard();
 

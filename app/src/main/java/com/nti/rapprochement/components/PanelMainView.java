@@ -8,6 +8,7 @@ import com.nti.rapprochement.models.HistoryMain;
 import com.nti.rapprochement.models.HistorySettings;
 import com.nti.rapprochement.models.PanelSettings;
 import com.nti.rapprochement.models.RModeInputText;
+import com.nti.rapprochement.models.RModeShowText;
 import com.nti.rapprochement.models.RecordMultiMode;
 import com.nti.rapprochement.utils.ViewsUtils;
 
@@ -20,21 +21,27 @@ public class PanelMainView {
 
         view.findViewById(R.id.gestureButton)
                 .setOnClickListener(v -> {
-                    RecordMultiMode record = new RecordMultiMode();
+                    RecordMultiMode record = new RecordMultiMode(RecordMultiMode.SourceType.Gesture);
+                    RModeShowText defaultMode = new RModeShowText();
+                    record.setText("[Запись из жестов]");
+                    record.setMode(defaultMode);
                     record.activatePanel();
                     HistoryMain.shared.add(record);
                 });
 
         view.findViewById(R.id.soundButton)
                 .setOnClickListener(v -> {
-                    RecordMultiMode record = new RecordMultiMode();
+                    RecordMultiMode record = new RecordMultiMode(RecordMultiMode.SourceType.Sound);
+                    RModeShowText defaultMode = new RModeShowText();
+                    record.setText("[Запись из звука]");
+                    record.setMode(defaultMode);
                     record.activatePanel();
                     HistoryMain.shared.add(record);
                 });
 
         view.findViewById(R.id.textButton)
                 .setOnClickListener(v -> {
-                    RecordMultiMode record = new RecordMultiMode();
+                    RecordMultiMode record = new RecordMultiMode(RecordMultiMode.SourceType.Text);
                     RModeInputText defaultMode = new RModeInputText();
                     record.setMode(defaultMode);
                     record.activatePanel();

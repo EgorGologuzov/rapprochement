@@ -12,19 +12,17 @@ import java.util.Date;
 
 public class RecordMultiMode extends RecordBase {
 
-    public enum SourceType { Gesture, Voice, Text }
-
-    public String getText() {
-        return text;
-    }
+    public enum SourceType { Gesture, Sound, Text }
 
     private String text;
     private Date createTime;
     private SourceType sourceType;
     private RModeBase mode;
 
-    public RecordMultiMode() {
+    public RecordMultiMode(SourceType sourceType) {
+        this.sourceType = sourceType;
         mode = new RModeBase();
+        createTime = new Date();
     }
 
     @Override
@@ -65,6 +63,10 @@ public class RecordMultiMode extends RecordBase {
 
     public void update() {
         this.onUpdate.call(this);
+    }
+
+    public String getText() {
+        return text;
     }
 
     public void setText(String text) {

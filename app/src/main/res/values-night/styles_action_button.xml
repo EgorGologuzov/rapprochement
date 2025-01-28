@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ActionButton_Record_ToGesture" parent="ActionButton_Record">
+        <item name="android:src">@drawable/ic_to_gesture_d</item>
+    </style>
+
+    <style name="ActionButton_Record_ToSound" parent="ActionButton_Record">
+        <item name="android:src">@drawable/ic_to_sound_d</item>
+    </style>
+
+    <style name="ActionButton_Record_Options" parent="ActionButton_Record">
+        <item name="android:src">@drawable/ic_options_d</item>
+    </style>
+</resources>

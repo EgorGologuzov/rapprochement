@@ -2,6 +2,7 @@ package com.nti.rapprochement;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
+import com.nti.rapprochement.utils.Event;
 
 
 public class MainActivity extends AppCompatActivity {

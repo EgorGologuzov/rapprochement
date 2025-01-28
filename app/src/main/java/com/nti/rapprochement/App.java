@@ -16,6 +16,7 @@ import com.nti.rapprochement.models.PanelBase;
 import com.nti.rapprochement.models.PanelMain;
 
 import java.util.Stack;
+import java.util.function.Consumer;
 
 public class App {
     private static MainActivity mainActivity;

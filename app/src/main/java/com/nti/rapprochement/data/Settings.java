@@ -106,4 +106,16 @@ public class Settings {
     }
 
 
+    // Локализация
+    private static final String LOCALE = "locale";
+
+    public static String getLocale() {
+        return preferences.getString(LOCALE, "ru");
+    }
+
+    public static void setLocale(String locale) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(FONT_SIZE, locale);
+        editor.apply();
+    }
 }

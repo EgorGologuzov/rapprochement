@@ -8,23 +8,23 @@
 
     <com.nti.rapprochement.components.ActionButton
         android:id="@+id/settingsButton"
-        style="@style/ActionButton"
+        style="@style/ActionButton_Panel"
         android:layout_marginStart="0dp"
         android:src="@drawable/btn_settings"/>
 
     <com.nti.rapprochement.components.ActionButton
         android:id="@+id/textButton"
-        style="@style/ActionButton"
+        style="@style/ActionButton_Panel"
         android:src="@drawable/btn_text"/>
 
     <com.nti.rapprochement.components.ActionButton
         android:id="@+id/soundButton"
-        style="@style/ActionButton"
+        style="@style/ActionButton_Panel"
         android:src="@drawable/btn_sound"/>
 
     <com.nti.rapprochement.components.ActionButton
         android:id="@+id/gestureButton"
-        style="@style/ActionButton"
+        style="@style/ActionButton_Panel"
         android:src="@drawable/btn_gesture"/>
 
 </LinearLayout>

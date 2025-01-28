@@ -8,7 +8,7 @@
 
     <com.nti.rapprochement.components.ActionButton
         android:id="@+id/backButton"
-        style="@style/ActionButton"
+        style="@style/ActionButton_Panel"
         android:layout_marginStart="0dp"
         android:src="@drawable/btn_back" />
 

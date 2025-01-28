@@ -1,6 +1,7 @@
 package com.nti.rapprochement.data;
 
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 
 import com.nti.rapprochement.MainActivity;
 
