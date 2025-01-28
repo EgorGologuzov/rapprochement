@@ -75,18 +75,19 @@ public class App {
         temporaryPanel = panel;
     }
 
-    public static void setKeyboardOpen(boolean isOpen) {
-        if (isOpen) {
-            InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        } else {
-            InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            View view = mainActivity.getCurrentFocus();
-            if (view == null) {
-                view = new View(mainActivity);
-            }
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+    public static void openKeyboard() {
+        InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) return;
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public static void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (imm == null) return;
+
+        View view = mainActivity.getCurrentFocus();
+        if (view == null) view = new View(mainActivity);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private static void setCurrentHistoryAndPanelView() {

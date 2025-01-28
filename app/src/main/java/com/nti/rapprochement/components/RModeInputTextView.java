@@ -12,7 +12,7 @@ public class RModeInputTextView {
     public static View create(ViewGroup parent, RecordMultiMode model) {
         View view = ViewsUtils.createView(R.layout.rmode_input_text, parent);
         view.findViewById(R.id.editText).requestFocus();
-        App.setKeyboardOpen(true);
+        App.openKeyboard();
         return view;
     }
 }

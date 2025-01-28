@@ -17,7 +17,7 @@ public class PanelInputTextView {
                 .setOnClickListener(v -> {
                     model.deactivatePanel();
                     HistoryMain.shared.remove(model);
-                    App.setKeyboardOpen(false);
+                    App.hideKeyboard();
                 });
 
         view.findViewById(R.id.toText)
@@ -26,7 +26,7 @@ public class PanelInputTextView {
                     model.setMode(mode);
                     model.activatePanel();
                     model.update();
-                    App.setKeyboardOpen(false);
+                    App.hideKeyboard();
                 });
 
         return view;
