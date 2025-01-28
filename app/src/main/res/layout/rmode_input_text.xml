@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/RModeInputText_LinearLayout">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <TextView
         android:id="@+id/symbolCount"
-        style="@style/RModeInputText_Counter"
+        style="@style/Theme.Rapprochement.TextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
         android:text="0/1000"/>
     <EditText
         android:id="@+id/editText"
-        style="@style/RModeInputText_EditText" />
+        style="@style/Theme.Rapprochement.BgRect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:hint="@string/prompt_input_text"
+        android:padding="8dp"
+        android:gravity="top|start" />
 </LinearLayout>

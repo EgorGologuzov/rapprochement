@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.models.HistoryBase;
@@ -88,6 +89,10 @@ public class App {
         View view = mainActivity.getCurrentFocus();
         if (view == null) view = new View(mainActivity);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void showToast(String text) {
+        Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
     }
 
     private static void setCurrentHistoryAndPanelView() {

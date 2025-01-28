@@ -14,6 +14,10 @@ public class RecordMultiMode extends RecordBase {
 
     public enum SourceType { Gesture, Voice, Text }
 
+    public String getText() {
+        return text;
+    }
+
     private String text;
     private Date createTime;
     private SourceType sourceType;
@@ -61,5 +65,25 @@ public class RecordMultiMode extends RecordBase {
 
     public void update() {
         this.onUpdate.call(this);
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public SourceType getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(SourceType sourceType) {
+        this.sourceType = sourceType;
     }
 }
