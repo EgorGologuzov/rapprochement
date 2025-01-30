@@ -47,10 +47,4 @@ public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton
             onCLick.add(l::onClick);
         }
     }
-
-    public void removeOnClickListener(OnClickListener l) {
-        if (l != null) {
-            onCLick.remove(l::onClick);
-        }
-    }
 }

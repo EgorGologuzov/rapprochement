@@ -8,6 +8,8 @@ import com.nti.rapprochement.R;
 import com.nti.rapprochement.models.HistoryMain;
 import com.nti.rapprochement.models.HistorySettings;
 import com.nti.rapprochement.models.PanelSettings;
+import com.nti.rapprochement.models.RModeInputGesture;
+import com.nti.rapprochement.models.RModeInputSound;
 import com.nti.rapprochement.models.RModeInputText;
 import com.nti.rapprochement.models.RModeShowText;
 import com.nti.rapprochement.models.RecordMultiMode;
@@ -16,7 +18,7 @@ import com.nti.rapprochement.utils.ViewsUtils;
 public class PanelMainVF extends ViewFactoryBase {
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.panel_main, App.getPanelContext());
+        View view = ViewsUtils.createView(R.layout.panel_main, parent);
 
         view.findViewById(R.id.settingsButton)
                 .setOnClickListener(v -> App.navigate(HistorySettings.shared, PanelSettings.shared));
@@ -24,8 +26,7 @@ public class PanelMainVF extends ViewFactoryBase {
         view.findViewById(R.id.gestureButton)
                 .setOnClickListener(v -> {
                     RecordMultiMode record = new RecordMultiMode(RecordMultiMode.SourceType.Gesture);
-                    RModeShowText defaultMode = new RModeShowText(record);
-                    record.setText("[Запись из жестов]");
+                    RModeInputGesture defaultMode = new RModeInputGesture(record);
                     record.setMode(defaultMode);
                     record.activatePanel();
                     HistoryMain.shared.add(record);
@@ -34,8 +35,7 @@ public class PanelMainVF extends ViewFactoryBase {
         view.findViewById(R.id.soundButton)
                 .setOnClickListener(v -> {
                     RecordMultiMode record = new RecordMultiMode(RecordMultiMode.SourceType.Sound);
-                    RModeShowText defaultMode = new RModeShowText(record);
-                    record.setText("[Запись из звука]");
+                    RModeInputSound defaultMode = new RModeInputSound(record);
                     record.setMode(defaultMode);
                     record.activatePanel();
                     HistoryMain.shared.add(record);

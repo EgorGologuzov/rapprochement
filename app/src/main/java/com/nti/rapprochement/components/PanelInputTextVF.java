@@ -8,6 +8,8 @@ import com.nti.rapprochement.App;
 import com.nti.rapprochement.R;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.models.HistoryMain;
+import com.nti.rapprochement.models.RModeShowGesture;
+import com.nti.rapprochement.models.RModeShowSound;
 import com.nti.rapprochement.models.RModeShowText;
 import com.nti.rapprochement.models.RecordMultiMode;
 import com.nti.rapprochement.utils.ViewsUtils;
@@ -21,7 +23,7 @@ public class PanelInputTextVF extends ViewFactoryBase {
 
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.panel_input_text, App.getPanelContext());
+        View view = ViewsUtils.createView(R.layout.panel_input_text, parent);
 
         view.findViewById(R.id.backButton)
                 .setOnClickListener(v -> {
@@ -30,11 +32,33 @@ public class PanelInputTextVF extends ViewFactoryBase {
                     App.hideKeyboard();
                 });
 
-        view.findViewById(R.id.toText)
+        view.findViewById(R.id.toTextButton)
                 .setOnClickListener(v -> {
                     if (isInputTextEmpty(model.getText())) return;
 
                     RModeShowText mode = new RModeShowText(model);
+                    model.setMode(mode);
+                    model.activatePanel();
+                    model.update();
+                    App.hideKeyboard();
+                });
+
+        view.findViewById(R.id.toSoundButton)
+                .setOnClickListener(v -> {
+                    if (isInputTextEmpty(model.getText())) return;
+
+                    RModeShowSound mode = new RModeShowSound(model);
+                    model.setMode(mode);
+                    model.activatePanel();
+                    model.update();
+                    App.hideKeyboard();
+                });
+
+        view.findViewById(R.id.toGestureButton)
+                .setOnClickListener(v -> {
+                    if (isInputTextEmpty(model.getText())) return;
+
+                    RModeShowGesture mode = new RModeShowGesture(model);
                     model.setMode(mode);
                     model.activatePanel();
                     model.update();

@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.nti.rapprochement.R;
 import com.nti.rapprochement.data.Settings;
+import com.nti.rapprochement.models.RModeShowGesture;
+import com.nti.rapprochement.models.RModeShowSound;
 import com.nti.rapprochement.models.RecordMultiMode;
 import com.nti.rapprochement.utils.ViewsUtils;
 
@@ -43,6 +45,20 @@ public class RModeShowTextVF extends ViewFactoryBase {
         datetimeView.setText(formatTime(model.getCreateTime()));
 
         recordTextView.setText(model.getText());
+
+        toGestureButton.setOnClickListener(v -> {
+            RModeShowGesture mode = new RModeShowGesture(model);
+            model.setMode(mode);
+            model.activatePanel();
+            model.update();
+        });
+
+        toSoundButton.setOnClickListener(v -> {
+            RModeShowSound mode = new RModeShowSound(model);
+            model.setMode(mode);
+            model.activatePanel();
+            model.update();
+        });
 
         return view;
     }

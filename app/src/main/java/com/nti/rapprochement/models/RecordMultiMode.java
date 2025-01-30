@@ -17,6 +17,7 @@ public class RecordMultiMode extends RecordBase {
     private String text;
     private Date createTime;
     private SourceType sourceType;
+
     private RModeBase mode;
 
     public RecordMultiMode(SourceType sourceType) {
@@ -47,10 +48,6 @@ public class RecordMultiMode extends RecordBase {
         }
     }
 
-    public void setMode(RModeBase mode) {
-        this.mode = mode;
-    }
-
     public void activatePanel() {
         if (mode != null) {
             PanelBase panel = mode.getPanel(this);
@@ -64,6 +61,18 @@ public class RecordMultiMode extends RecordBase {
 
     public void update() {
         this.onUpdate.call(this);
+
+        if (!(mode instanceof RModeShowText)) {
+            HistoryMain.shared.setFocus(this);
+        }
+    }
+
+    public RModeBase getMode() {
+        return mode;
+    }
+
+    public void setMode(RModeBase mode) {
+        this.mode = mode;
     }
 
     public String getText() {
