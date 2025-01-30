@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -16,11 +15,18 @@ import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.models.RecordMultiMode;
 import com.nti.rapprochement.utils.ViewsUtils;
 
-public class RModeInputTextView {
+public class RModeInputTextVF extends ViewFactoryBase {
     private static final int MAX_LENGTH = 500;
 
-    @SuppressLint("ClickableViewAccessibility")
-    public static View create(ViewGroup parent, RecordMultiMode model) {
+    private final RecordMultiMode model;
+
+    public RModeInputTextVF(RecordMultiMode model) {
+        this.model = model;
+    }
+
+//    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public View create(ViewGroup parent) {
         View view = ViewsUtils.createView(R.layout.rmode_input_text, parent);
         EditText edit = view.findViewById(R.id.editText);
         TextView counter = view.findViewById(R.id.symbolCount);

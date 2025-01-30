@@ -1,17 +1,7 @@
 package com.nti.rapprochement.models;
 
-import android.content.res.Resources;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.nti.rapprochement.App;
-import com.nti.rapprochement.R;
-import com.nti.rapprochement.components.FontSizeDialog;
-import com.nti.rapprochement.components.RecordSettingsGroupView;
-import com.nti.rapprochement.data.Res;
-import com.nti.rapprochement.data.Settings;
+import com.nti.rapprochement.components.RecordSettingsGroupVF;
+import com.nti.rapprochement.components.ViewFactoryBase;
 
 import java.util.ArrayList;
 
@@ -25,8 +15,8 @@ public class RecordSettingsGroup extends RecordBase {
     }
 
     @Override
-    public View getView(ViewGroup parent) {
-        return RecordSettingsGroupView.create(parent, this);
+    public ViewFactoryBase getViewFactory() {
+        return new RecordSettingsGroupVF(this);
     }
 
     public String getTitle() {

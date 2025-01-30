@@ -52,11 +52,7 @@ public class Settings {
     // Размер шрифта
     private static final String FONT_SIZE = "font_size";
 
-    public static Event<FontSize> onFontSizeChange = new Event<>();
-
-    public enum FontSize {
-        Normal, Big, VeryBig;
-    }
+    public enum FontSize { Normal, Big, VeryBig; }
 
     public static FontSize getFontSize() {
         return FontSize.valueOf(preferences.getString(FONT_SIZE, FontSize.Normal.name()));
@@ -66,7 +62,7 @@ public class Settings {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(FONT_SIZE, value.name());
         editor.apply();
-        onFontSizeChange.call(value);
+        App.recreateMainActivity();
     }
 
     public static String fontSizeToString(FontSize fontSize) {

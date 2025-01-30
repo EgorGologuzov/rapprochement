@@ -2,21 +2,18 @@ package com.nti.rapprochement;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.models.HistoryBase;
 import com.nti.rapprochement.models.HistoryMain;
 import com.nti.rapprochement.models.PanelBase;
 import com.nti.rapprochement.models.PanelMain;
 
 import java.util.Stack;
-import java.util.function.Consumer;
 
 public class App {
     private static MainActivity mainActivity;
@@ -96,29 +93,34 @@ public class App {
         Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
     }
 
+    public static void recreateMainActivity() {
+        mainActivity.recreate();
+    }
+
     private static void setCurrentHistoryAndPanelView() {
         if (historyStack.isEmpty()) {
             historyStack.push(HistoryMain.shared);
-            historyFrame.addView(HistoryMain.shared.getView());
+            historyFrame.addView(HistoryMain.shared.getViewFactory().create(historyFrame));
         } else {
-            historyFrame.addView(historyStack.peek().getView());
+            historyFrame.addView(historyStack.peek().getViewFactory().create(historyFrame));
         }
 
         if (panelStack.isEmpty()) {
             panelStack.push(PanelMain.shared);
-            panelFrame.addView(PanelMain.shared.getView());
+            panelFrame.addView(PanelMain.shared.getViewFactory().create(panelFrame));
         } else {
-            panelFrame.addView(panelStack.peek().getView());
+            panelFrame.addView(panelStack.peek().getViewFactory().create(panelFrame));
         }
     }
 
     private static void pushHistory(HistoryBase history) {
-        View view = history.getView();
+        View view = history.getViewFactory().create(historyFrame);
 
         if (historyFrame.getChildCount() > 0) {
             View currentView = historyFrame.getChildAt(historyFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(historyFrame.getContext(), R.anim.disappearance));
             historyFrame.removeView(currentView);
+            historyStack.peek().getViewFactory().destroy(currentView);
         }
 
         historyFrame.addView(view);
@@ -134,10 +136,10 @@ public class App {
             View currentView = historyFrame.getChildAt(historyFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(historyFrame.getContext(), R.anim.slide_right));
             historyFrame.removeView(currentView);
-            historyStack.pop();
+            historyStack.pop().getViewFactory().destroy(currentView);
 
             if (!historyStack.isEmpty()) {
-                View previousView = historyStack.peek().getView();
+                View previousView = historyStack.peek().getViewFactory().create(historyFrame);
                 historyFrame.addView(previousView);
                 previousView.setVisibility(View.INVISIBLE);
                 previousView.startAnimation(AnimationUtils.loadAnimation(historyFrame.getContext(), R.anim.appearance));
@@ -147,12 +149,13 @@ public class App {
     }
 
     private static void pushPanel(PanelBase panel) {
-        View view = panel.getView();
+        View view = panel.getViewFactory().create(panelFrame);
 
         if (panelFrame.getChildCount() > 0) {
             View currentView = panelFrame.getChildAt(panelFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(panelFrame.getContext(), R.anim.disappearance));
             panelFrame.removeView(currentView);
+            panelStack.peek().getViewFactory().destroy(currentView);
         }
 
         panelFrame.addView(view);
@@ -168,10 +171,10 @@ public class App {
             View currentView = panelFrame.getChildAt(panelFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(panelFrame.getContext(), R.anim.slide_down));
             panelFrame.removeView(currentView);
-            panelStack.pop();
+            panelStack.pop().getViewFactory().destroy(currentView);
 
             if (!panelStack.isEmpty()) {
-                View previousView = panelStack.peek().getView();
+                View previousView = panelStack.peek().getViewFactory().create(panelFrame);
                 panelFrame.addView(previousView);
                 previousView.setVisibility(View.INVISIBLE);
                 previousView.startAnimation(AnimationUtils.loadAnimation(panelFrame.getContext(), R.anim.appearance));

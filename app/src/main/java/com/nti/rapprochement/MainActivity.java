@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         App.init(this);
         Res.init(this);
         setBackButtonCallback();
-        setOnFontSizeChangeHandler();
         setAdaptiveLayoutListener();
     }
 
@@ -59,10 +58,6 @@ public class MainActivity extends AppCompatActivity {
         };
 
         getOnBackPressedDispatcher().addCallback(this, callback);
-    }
-
-    private void setOnFontSizeChangeHandler() {
-        Settings.onFontSizeChange.add(fs -> recreate());
     }
 
     private void setAdaptiveLayoutListener() {

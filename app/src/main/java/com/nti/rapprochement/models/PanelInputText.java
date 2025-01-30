@@ -1,18 +1,17 @@
 package com.nti.rapprochement.models;
 
-import android.view.View;
-
-import com.nti.rapprochement.components.PanelInputTextView;
+import com.nti.rapprochement.components.PanelInputTextVF;
+import com.nti.rapprochement.components.ViewFactoryBase;
 
 public class PanelInputText extends PanelBase {
-    private RecordMultiMode model;
+    private final RecordMultiMode model;
 
     public PanelInputText(RecordMultiMode model) {
         this.model = model;
     }
 
     @Override
-    public View getView() {
-        return PanelInputTextView.create(model);
+    public ViewFactoryBase getViewFactory() {
+        return new PanelInputTextVF(model);
     }
 }

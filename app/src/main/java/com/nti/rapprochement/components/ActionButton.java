@@ -10,7 +10,7 @@ import com.nti.rapprochement.R;
 import com.nti.rapprochement.utils.Event;
 
 public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton {
-    final public Event<View> onCLick = new Event<>();
+    private final Event<View> onCLick = new Event<>();
 
     public ActionButton(Context context) {
         super(context);
@@ -45,6 +45,12 @@ public class ActionButton extends androidx.appcompat.widget.AppCompatImageButton
     public void setOnClickListener(OnClickListener l) {
         if (l != null) {
             onCLick.add(l::onClick);
+        }
+    }
+
+    public void removeOnClickListener(OnClickListener l) {
+        if (l != null) {
+            onCLick.remove(l::onClick);
         }
     }
 }

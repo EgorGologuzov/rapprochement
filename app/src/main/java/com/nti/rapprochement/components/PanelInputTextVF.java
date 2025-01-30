@@ -2,6 +2,7 @@ package com.nti.rapprochement.components;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.nti.rapprochement.App;
 import com.nti.rapprochement.R;
@@ -11,8 +12,15 @@ import com.nti.rapprochement.models.RModeShowText;
 import com.nti.rapprochement.models.RecordMultiMode;
 import com.nti.rapprochement.utils.ViewsUtils;
 
-public class PanelInputTextView {
-    public static View create(RecordMultiMode model) {
+public class PanelInputTextVF extends ViewFactoryBase {
+    private final RecordMultiMode model;
+
+    public PanelInputTextVF(RecordMultiMode model) {
+        this.model = model;
+    }
+
+    @Override
+    public View create(ViewGroup parent) {
         View view = ViewsUtils.createView(R.layout.panel_input_text, App.getPanelContext());
 
         view.findViewById(R.id.backButton)
@@ -26,7 +34,7 @@ public class PanelInputTextView {
                 .setOnClickListener(v -> {
                     if (isInputTextEmpty(model.getText())) return;
 
-                    RModeShowText mode = new RModeShowText();
+                    RModeShowText mode = new RModeShowText(model);
                     model.setMode(mode);
                     model.activatePanel();
                     model.update();

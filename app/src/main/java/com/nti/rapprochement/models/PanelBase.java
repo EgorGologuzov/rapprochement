@@ -1,8 +1,9 @@
 package com.nti.rapprochement.models;
 
 import android.view.View;
-import android.view.ViewGroup;
+
+import com.nti.rapprochement.components.ViewFactoryBase;
 
 public abstract class PanelBase {
-    public abstract View getView();
+    public abstract ViewFactoryBase getViewFactory();
 }

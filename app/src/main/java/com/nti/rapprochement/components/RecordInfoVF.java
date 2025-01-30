@@ -6,8 +6,9 @@ import android.view.ViewGroup;
 import com.nti.rapprochement.R;
 import com.nti.rapprochement.utils.ViewsUtils;
 
-public class RecordInfoView {
-    public static View create(ViewGroup parent) {
+public class RecordInfoVF extends ViewFactoryBase {
+    @Override
+    public View create(ViewGroup parent) {
         return ViewsUtils.createView(R.layout.record_info, parent);
     }
 }

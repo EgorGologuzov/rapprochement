@@ -1,28 +1,28 @@
 package com.nti.rapprochement.components;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nti.rapprochement.App;
-import com.nti.rapprochement.MainActivity;
 import com.nti.rapprochement.R;
 import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.models.RecordMultiMode;
-import com.nti.rapprochement.utils.Event;
 import com.nti.rapprochement.utils.ViewsUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
-public class RModeShowTextView {
-    public static View create(ViewGroup parent, RecordMultiMode model) {
+public class RModeShowTextVF extends ViewFactoryBase {
+    private final RecordMultiMode model;
+
+    public RModeShowTextVF(RecordMultiMode model) {
+        this.model = model;
+    }
+
+    @Override
+    public View create(ViewGroup parent) {
         View view = ViewsUtils.createView(R.layout.rmode_show_text, parent);
         ImageView sourceTypeView = view.findViewById(R.id.sourceTypeView);
         TextView datetimeView = view.findViewById(R.id.datetimeView);

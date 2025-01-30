@@ -7,7 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nti.rapprochement.R;
-import com.nti.rapprochement.components.RecordDefaultView;
+import com.nti.rapprochement.components.TextViewVF;
+import com.nti.rapprochement.components.ViewFactoryBase;
 import com.nti.rapprochement.utils.Event;
 
 public abstract class RecordBase {
@@ -15,11 +16,11 @@ public abstract class RecordBase {
     public Event<RecordBase> onUpdate = new Event<>();
 
     public RecordHolder getHolder(ViewGroup parent) {
-        return new RecordHolder(getView(parent));
+        return new RecordHolder(getViewFactory().create(parent));
     }
 
-    public View getView(ViewGroup parent) {
-        return RecordDefaultView.create(parent, R.string.record_view_not_set);
+    public ViewFactoryBase getViewFactory() {
+        return new TextViewVF(R.string.record_view_not_set);
     }
 
     public void bind(View view) {}

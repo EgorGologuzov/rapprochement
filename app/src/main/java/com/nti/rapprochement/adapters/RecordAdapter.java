@@ -33,7 +33,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordHolder>
     public void onBindViewHolder(RecordBase.RecordHolder holder, int position) {
         RecordBase model = records.get(position);
         holder.bind(model);
-        model.onUpdate.add(rb -> this.notifyItemChanged(position));
     }
 
     @Override
@@ -48,14 +47,22 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordHolder>
 
     public void addItem(RecordBase item) {
         records.add(item);
-        notifyItemInserted(records.size() - 1);
-        onItemInserted.call(records.size() - 1);
+        int index = records.size() - 1;
+        item.onUpdate.add(this::onUpdateItem);
+        notifyItemInserted(index);
+        onItemInserted.call(index);
     }
 
     public void removeItem(RecordBase item) {
         int index = records.indexOf(item);
         records.remove(index);
+        item.onUpdate.remove(this::onUpdateItem);
         notifyItemRemoved(index);
         onItemRemoved.call(index);
+    }
+
+    public void onUpdateItem(RecordBase item) {
+        int index = records.indexOf(item);
+        notifyItemChanged(index);
     }
 }

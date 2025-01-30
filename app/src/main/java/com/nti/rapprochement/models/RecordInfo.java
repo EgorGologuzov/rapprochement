@@ -1,17 +1,11 @@
 package com.nti.rapprochement.models;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-
-import com.nti.rapprochement.R;
-import com.nti.rapprochement.components.RecordInfoView;
+import com.nti.rapprochement.components.RecordInfoVF;
+import com.nti.rapprochement.components.ViewFactoryBase;
 
 public class RecordInfo extends RecordBase {
     @Override
-    public View getView(ViewGroup parent) {
-        return RecordInfoView.create(parent);
+    public ViewFactoryBase getViewFactory() {
+        return new RecordInfoVF();
     }
 }

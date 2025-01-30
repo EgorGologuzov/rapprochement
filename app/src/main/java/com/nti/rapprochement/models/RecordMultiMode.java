@@ -1,12 +1,12 @@
 package com.nti.rapprochement.models;
 
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.nti.rapprochement.App;
 import com.nti.rapprochement.R;
-import com.nti.rapprochement.components.RecordDefaultView;
+import com.nti.rapprochement.components.RecordMultiModeBaseVF;
+import com.nti.rapprochement.components.ViewFactoryBase;
 
 import java.util.Date;
 
@@ -21,13 +21,13 @@ public class RecordMultiMode extends RecordBase {
 
     public RecordMultiMode(SourceType sourceType) {
         this.sourceType = sourceType;
-        mode = new RModeBase();
+        mode = new RModeBase(this);
         createTime = new Date();
     }
 
     @Override
-    public View getView(ViewGroup parent) {
-        return RecordDefaultView.create(parent, R.string.multi_mode_record_view_not_set);
+    public ViewFactoryBase getViewFactory() {
+        return new RecordMultiModeBaseVF();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class RecordMultiMode extends RecordBase {
         FrameLayout frame = (FrameLayout) view;
         unsetCurrentMode(frame);
 
-        View innerView = mode.getView(frame, this);
+        View innerView = mode.getViewFactory().create(frame);
         frame.addView(innerView);
     }
 
@@ -43,6 +43,7 @@ public class RecordMultiMode extends RecordBase {
         if (mode != null) {
             View currentView = frame.getChildAt(0);
             frame.removeView(currentView);
+            mode.getViewFactory().destroy(currentView);
         }
     }
 

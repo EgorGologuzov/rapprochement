@@ -1,14 +1,15 @@
 package com.nti.rapprochement.models;
 
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.nti.rapprochement.components.RModeInputTextView;
-import com.nti.rapprochement.components.RModeShowTextView;
+import com.nti.rapprochement.components.RModeShowTextVF;
+import com.nti.rapprochement.components.ViewFactoryBase;
 
 public class RModeShowText extends RModeBase {
+    public RModeShowText(RecordMultiMode model) {
+        super(model);
+    }
+
     @Override
-    public View getView(ViewGroup parent, RecordMultiMode model) {
-        return RModeShowTextView.create(parent, model);
+    public ViewFactoryBase getViewFactory() {
+        return new RModeShowTextVF(model);
     }
 }
