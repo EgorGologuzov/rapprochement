@@ -22,11 +22,6 @@
         <item name="android:textColor">@color/text_d</item>
     </style>
 
-    <style name="Theme.Rapprochement.BgText">
-        <item name="android:background">@color/bg_d</item>
-        <item name="android:textColor">@color/text_d</item>
-    </style>
-
     <style name="Theme.Rapprochement.BgHands">
         <item name="android:src">@drawable/bg_d</item>
         <item name="android:scaleType">centerCrop</item>

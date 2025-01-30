@@ -4,8 +4,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Rapprochement" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary_1</item>
-        <item name="colorPrimaryVariant">@color/primary_2</item>
+        <item name="colorPrimary">@color/primary_2</item>
+        <item name="colorPrimaryVariant">@color/primary_1</item>
         <item name="colorOnPrimary">@color/bg_l</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/primary_3</item>
@@ -33,11 +33,6 @@
     </style>
 
     <style name="Theme.Rapprochement.Text">
-        <item name="android:textColor">@color/text_l</item>
-    </style>
-
-    <style name="Theme.Rapprochement.BgText">
-        <item name="android:background">@color/bg_l</item>
         <item name="android:textColor">@color/text_l</item>
     </style>
 

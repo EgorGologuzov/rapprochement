@@ -2,9 +2,19 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parametersGroup"
-    style="@style/RecordSettingsGroup_FirstLayout">
+    style="@style/Theme.Rapprochement.BgRect"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="8dp"
+    android:gravity="center">
     <TextView
         android:id="@+id/groupTitle"
-        style="@style/RecordSettingsGroup_GroupTitle"
+        style="@style/Theme.Rapprochement.TextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/text_not_set"/>
 </LinearLayout>

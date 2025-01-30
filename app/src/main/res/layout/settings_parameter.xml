@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parameterItem"
-    style="@style/RecordSettingsGroup_ParametersLayout">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="16dp">
     <TextView
         android:id="@+id/parameterName"
-        style="@style/RecordSettingsGroup_Name"
+        style="@style/Theme.Rapprochement.TextNormal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAlignment="textStart"
         android:text="@string/text_not_set"/>
     <TextView
         android:id="@+id/parameterValue"
-        style="@style/RecordSettingsGroup_Value"
+        style="@style/Theme.Rapprochement.TextTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAlignment="textEnd"
         android:text="@string/text_not_set"/>
 </LinearLayout>
