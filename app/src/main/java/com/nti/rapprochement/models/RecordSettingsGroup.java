@@ -10,13 +10,9 @@ public class RecordSettingsGroup extends RecordBase {
     private final ArrayList<SettingsParameter> parameters;
 
     public RecordSettingsGroup(String title, ArrayList<SettingsParameter> parameters) {
+        setViewFactory(new RecordSettingsGroupVF(this));
         this.title = title;
         this.parameters = parameters;
-    }
-
-    @Override
-    public ViewFactoryBase getViewFactory() {
-        return new RecordSettingsGroupVF(this);
     }
 
     public String getTitle() {

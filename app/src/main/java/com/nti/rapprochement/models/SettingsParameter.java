@@ -1,5 +1,8 @@
 package com.nti.rapprochement.models;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.nti.rapprochement.components.SettingsParameterVF;
 import com.nti.rapprochement.components.ViewFactoryBase;
 import com.nti.rapprochement.utils.Event;
@@ -7,6 +10,8 @@ import com.nti.rapprochement.utils.Event;
 import java.util.function.Consumer;
 
 public class SettingsParameter {
+    private final ViewFactoryBase viewFactory = new SettingsParameterVF(this);
+
     private String name;
     private String value;
 
@@ -19,8 +24,12 @@ public class SettingsParameter {
         this.onClick.add(onClick);
     }
 
-    public ViewFactoryBase getViewFactory() {
-        return new SettingsParameterVF(this);
+    public View createView(ViewGroup parent) {
+        return viewFactory.create(parent);
+    }
+
+    public void destroyView(View view) {
+        viewFactory.destroy(view);
     }
 
     public String getName() {

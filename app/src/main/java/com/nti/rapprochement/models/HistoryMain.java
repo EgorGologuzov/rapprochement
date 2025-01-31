@@ -1,7 +1,7 @@
 package com.nti.rapprochement.models;
 
 public class HistoryMain extends HistoryBase {
-    public static final HistoryMain shared = new HistoryMain();
+    public static final HistoryMain current = new HistoryMain();
 
     private static RecordMultiMode focusedRecord;
 

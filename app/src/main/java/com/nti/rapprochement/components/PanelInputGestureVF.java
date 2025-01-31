@@ -3,7 +3,6 @@ package com.nti.rapprochement.components;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nti.rapprochement.App;
 import com.nti.rapprochement.R;
 import com.nti.rapprochement.models.HistoryMain;
 import com.nti.rapprochement.models.RecordMultiMode;
@@ -23,7 +22,7 @@ public class PanelInputGestureVF extends ViewFactoryBase {
         view.findViewById(R.id.backButton)
                 .setOnClickListener(v -> {
                     model.deactivatePanel();
-                    HistoryMain.shared.remove(model);
+                    HistoryMain.current.remove(model);
                 });
 
         return view;

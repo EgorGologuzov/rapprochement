@@ -7,15 +7,7 @@ import com.nti.rapprochement.components.ViewFactoryBase;
 public class RModeInputGesture extends RModeBase {
     public RModeInputGesture(RecordMultiMode model) {
         super(model);
-    }
-
-    @Override
-    public ViewFactoryBase getViewFactory() {
-        return new RModeInputGestureVF(model);
-    }
-
-    @Override
-    public PanelBase getPanel(RecordMultiMode model) {
-        return new PanelInputGesture(model);
+        setViewFactory(new RModeInputGestureVF(model));
+        setPanel(new PanelInputGesture(model));
     }
 }

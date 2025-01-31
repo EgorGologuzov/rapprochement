@@ -28,7 +28,7 @@ public class PanelInputTextVF extends ViewFactoryBase {
         view.findViewById(R.id.backButton)
                 .setOnClickListener(v -> {
                     model.deactivatePanel();
-                    HistoryMain.shared.remove(model);
+                    HistoryMain.current.remove(model);
                     App.hideKeyboard();
                 });
 

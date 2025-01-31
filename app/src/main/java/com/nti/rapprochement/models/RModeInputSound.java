@@ -7,15 +7,7 @@ import com.nti.rapprochement.components.ViewFactoryBase;
 public class RModeInputSound extends RModeBase {
     public RModeInputSound(RecordMultiMode model) {
         super(model);
-    }
-
-    @Override
-    public ViewFactoryBase getViewFactory() {
-        return new RModeInputSoundVF(model);
-    }
-
-    @Override
-    public PanelBase getPanel(RecordMultiMode model) {
-        return new PanelInputSound(model);
+        setViewFactory(new RModeInputSoundVF(model));
+        setPanel(new PanelInputSound(model));
     }
 }

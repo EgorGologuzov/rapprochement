@@ -11,7 +11,6 @@ import com.nti.rapprochement.models.PanelSettings;
 import com.nti.rapprochement.models.RModeInputGesture;
 import com.nti.rapprochement.models.RModeInputSound;
 import com.nti.rapprochement.models.RModeInputText;
-import com.nti.rapprochement.models.RModeShowText;
 import com.nti.rapprochement.models.RecordMultiMode;
 import com.nti.rapprochement.utils.ViewsUtils;
 
@@ -21,7 +20,7 @@ public class PanelMainVF extends ViewFactoryBase {
         View view = ViewsUtils.createView(R.layout.panel_main, parent);
 
         view.findViewById(R.id.settingsButton)
-                .setOnClickListener(v -> App.navigate(HistorySettings.shared, PanelSettings.shared));
+                .setOnClickListener(v -> App.navigate(HistorySettings.current, PanelSettings.current));
 
         view.findViewById(R.id.gestureButton)
                 .setOnClickListener(v -> {
@@ -29,7 +28,7 @@ public class PanelMainVF extends ViewFactoryBase {
                     RModeInputGesture defaultMode = new RModeInputGesture(record);
                     record.setMode(defaultMode);
                     record.activatePanel();
-                    HistoryMain.shared.add(record);
+                    HistoryMain.current.add(record);
                 });
 
         view.findViewById(R.id.soundButton)
@@ -38,7 +37,7 @@ public class PanelMainVF extends ViewFactoryBase {
                     RModeInputSound defaultMode = new RModeInputSound(record);
                     record.setMode(defaultMode);
                     record.activatePanel();
-                    HistoryMain.shared.add(record);
+                    HistoryMain.current.add(record);
                 });
 
         view.findViewById(R.id.textButton)
@@ -47,7 +46,7 @@ public class PanelMainVF extends ViewFactoryBase {
                     RModeInputText defaultMode = new RModeInputText(record);
                     record.setMode(defaultMode);
                     record.activatePanel();
-                    HistoryMain.shared.add(record);
+                    HistoryMain.current.add(record);
                 });
 
         return view;

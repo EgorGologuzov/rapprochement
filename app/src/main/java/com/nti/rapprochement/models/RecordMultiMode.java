@@ -16,34 +16,38 @@ public class RecordMultiMode extends RecordBase {
     private String text;
     private Date createTime;
     private SourceType sourceType;
-
     private RModeBase mode;
+    private RModeBase boundMode;
 
     public RecordMultiMode(SourceType sourceType) {
+        setViewFactory(new RecordMultiModeBaseVF());
         this.sourceType = sourceType;
         mode = new RModeBase(this);
         createTime = new Date();
     }
 
     @Override
-    public ViewFactoryBase getViewFactory() {
-        return new RecordMultiModeBaseVF();
+    public void bind(View view) {
+        FrameLayout frame = (FrameLayout) view;
+        destroyBoundModeView(frame);
+
+        View innerView = mode.createView(frame);
+        frame.addView(innerView);
+
+        boundMode = mode;
     }
 
     @Override
-    public void bind(View view) {
-        FrameLayout frame = (FrameLayout) view;
-        unsetCurrentMode(frame);
-
-        View innerView = mode.getViewFactory().create(frame);
-        frame.addView(innerView);
+    public void destroyView(View view) {
+        super.destroyView(view);
+        destroyBoundModeView((FrameLayout) view);
     }
 
-    private void unsetCurrentMode(FrameLayout frame) {
-        if (mode != null) {
+    private void destroyBoundModeView(FrameLayout frame) {
+        if (boundMode != null) {
             View currentView = frame.getChildAt(0);
             frame.removeView(currentView);
-            mode.getViewFactory().destroy(currentView);
+            boundMode.destroyView(currentView);
         }
     }
 
@@ -62,9 +66,9 @@ public class RecordMultiMode extends RecordBase {
         this.onUpdate.call(this);
 
         if (mode instanceof RModeShowText) {
-            HistoryMain.shared.removeFocus(this);
+            HistoryMain.current.removeFocus(this);
         } else {
-            HistoryMain.shared.requestFocus(this);
+            HistoryMain.current.requestFocus(this);
         }
     }
 

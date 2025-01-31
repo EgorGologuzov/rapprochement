@@ -1,13 +1,13 @@
 package com.nti.rapprochement.models;
 
+import com.nti.rapprochement.components.PanelMainVF;
 import com.nti.rapprochement.components.PanelSettingsVF;
 import com.nti.rapprochement.components.ViewFactoryBase;
 
 public class PanelSettings extends PanelBase {
-    public final static PanelSettings shared = new PanelSettings();
+    public final static PanelSettings current = new PanelSettings();
 
-    @Override
-    public ViewFactoryBase getViewFactory() {
-        return new PanelSettingsVF();
+    public PanelSettings() {
+        super(new PanelSettingsVF());
     }
 }

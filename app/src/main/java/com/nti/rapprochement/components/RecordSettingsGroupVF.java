@@ -30,7 +30,7 @@ public class RecordSettingsGroupVF extends ViewFactoryBase {
         titleView.setText(model.getTitle());
 
         for (SettingsParameter param : model.getParameters()) {
-            View paramView = param.getViewFactory().create(view);
+            View paramView = param.createView(view);
             view.addView(paramView);
         }
 
@@ -45,7 +45,7 @@ public class RecordSettingsGroupVF extends ViewFactoryBase {
         for (int i = 0; i < params.size(); i++) {
             View paramView = ll.getChildAt(i);
             SettingsParameter param = params.get(i);
-            param.getViewFactory().destroy(paramView);
+            param.destroyView(paramView);
         }
     }
 }

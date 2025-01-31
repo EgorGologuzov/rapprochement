@@ -8,7 +8,7 @@ import com.nti.rapprochement.data.Settings;
 import java.util.ArrayList;
 
 public class HistorySettings extends HistoryBase {
-    public static final HistorySettings shared = new HistorySettings();
+    public static final HistorySettings current = new HistorySettings();
 
     public HistorySettings() {
         RecordSettingsGroup settingsGroup1 = initGeneralGroup();

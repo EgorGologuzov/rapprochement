@@ -1,6 +1,8 @@
 package com.nti.rapprochement.adapters;
 
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nti.rapprochement.models.RecordBase;
@@ -9,7 +11,6 @@ import com.nti.rapprochement.utils.Event;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordHolder> {
 
@@ -26,13 +27,18 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordHolder>
     @Override
     public RecordBase.RecordHolder onCreateViewHolder(@NotNull ViewGroup parent, int position) {
         RecordBase model = records.get(position);
-        return model.getHolder(parent);
+        return model.createHolder(parent);
     }
 
     @Override
     public void onBindViewHolder(RecordBase.RecordHolder holder, int position) {
         RecordBase model = records.get(position);
         holder.bind(model);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecordBase.RecordHolder holder) {
+        holder.destroy();
     }
 
     @Override
