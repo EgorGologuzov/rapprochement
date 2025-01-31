@@ -10,14 +10,19 @@ public class HistoryMain extends HistoryBase {
         this.add(info);
     }
 
-    public void setFocus(RecordMultiMode record) {
-        if (focusedRecord != null) {
+    public void requestFocus(RecordMultiMode record) {
+        if (focusedRecord != null && focusedRecord != record) {
             RModeShowText defaultMode = new RModeShowText(focusedRecord);
             focusedRecord.setMode(defaultMode);
             focusedRecord.update();
         }
-
         focusedRecord = record;
+    }
+
+    public void removeFocus(RecordMultiMode record) {
+        if (focusedRecord == record) {
+            focusedRecord = null;
+        }
     }
 
     @Override

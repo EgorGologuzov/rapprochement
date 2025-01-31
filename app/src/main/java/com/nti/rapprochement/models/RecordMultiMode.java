@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.nti.rapprochement.App;
-import com.nti.rapprochement.R;
 import com.nti.rapprochement.components.RecordMultiModeBaseVF;
 import com.nti.rapprochement.components.ViewFactoryBase;
 
@@ -62,8 +61,10 @@ public class RecordMultiMode extends RecordBase {
     public void update() {
         this.onUpdate.call(this);
 
-        if (!(mode instanceof RModeShowText)) {
-            HistoryMain.shared.setFocus(this);
+        if (mode instanceof RModeShowText) {
+            HistoryMain.shared.removeFocus(this);
+        } else {
+            HistoryMain.shared.requestFocus(this);
         }
     }
 
