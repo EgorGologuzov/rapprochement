@@ -6,11 +6,8 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nti.rapprochement.App;
 import com.nti.rapprochement.R;
-import com.nti.rapprochement.adapters.RecordAdapter;
 import com.nti.rapprochement.models.HistoryBase;
-import com.nti.rapprochement.utils.ViewsUtils;
 
 public class HistoryVF extends ViewFactoryBase {
     private final HistoryBase model;

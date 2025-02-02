@@ -3,7 +3,7 @@ package com.nti.rapprochement.models;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nti.rapprochement.adapters.RecordAdapter;
+import com.nti.rapprochement.utils.RecordAdapter;
 import com.nti.rapprochement.components.HistoryVF;
 import com.nti.rapprochement.components.ViewFactoryBase;
 

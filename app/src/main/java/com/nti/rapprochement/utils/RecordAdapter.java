@@ -1,4 +1,4 @@
-package com.nti.rapprochement.adapters;
+package com.nti.rapprochement.utils;
 
 import android.view.ViewGroup;
 
@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nti.rapprochement.models.RecordBase;
-import com.nti.rapprochement.utils.Event;
 
 import org.jetbrains.annotations.NotNull;
 
