@@ -9,6 +9,6 @@ import com.nti.rapprochement.utils.ViewsUtils;
 public class RecordInfoVF extends ViewFactoryBase {
     @Override
     public View create(ViewGroup parent) {
-        return ViewsUtils.createView(R.layout.record_info, parent);
+        return createAndRegister(R.layout.record_info, parent);
     }
 }

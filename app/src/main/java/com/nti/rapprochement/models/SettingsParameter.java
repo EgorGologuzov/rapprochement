@@ -16,7 +16,7 @@ public class SettingsParameter {
     private String value;
 
     public final Event<SettingsParameter> onClick = new Event<>();
-    public final Event<String> onValueChange = new Event<>();
+    public final Event<SettingsParameter> onValueChange = new Event<>();
 
     public SettingsParameter(String name, String value, Consumer<SettingsParameter> onClick) {
         this.name = name;
@@ -42,7 +42,7 @@ public class SettingsParameter {
 
     public void setValue(String value) {
         this.value = value;
-        onValueChange.call(value);
+        onValueChange.call(this);
     }
 
     public void callOnClick() {

@@ -16,7 +16,7 @@ public class RModeInputSoundVF extends ViewFactoryBase {
 
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.rmode_input_sound, parent);
+        View view = createAndRegister(R.layout.rmode_input_sound, parent);
         return view;
     }
 }

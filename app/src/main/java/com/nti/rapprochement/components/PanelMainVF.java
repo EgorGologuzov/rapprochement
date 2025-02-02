@@ -17,7 +17,7 @@ import com.nti.rapprochement.utils.ViewsUtils;
 public class PanelMainVF extends ViewFactoryBase {
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.panel_main, parent);
+        View view = createAndRegister(R.layout.panel_main, parent);
 
         view.findViewById(R.id.settingsButton)
                 .setOnClickListener(v -> App.navigate(HistorySettings.current, PanelSettings.current));

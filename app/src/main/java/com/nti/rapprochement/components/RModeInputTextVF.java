@@ -27,7 +27,7 @@ public class RModeInputTextVF extends ViewFactoryBase {
 //    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.rmode_input_text, parent);
+        View view = createAndRegister(R.layout.rmode_input_text, parent);
         EditText edit = view.findViewById(R.id.editText);
         TextView counter = view.findViewById(R.id.symbolCount);
 

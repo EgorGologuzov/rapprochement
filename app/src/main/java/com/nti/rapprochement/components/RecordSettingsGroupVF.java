@@ -23,15 +23,16 @@ public class RecordSettingsGroupVF extends ViewFactoryBase {
 
     @Override
     public View create(ViewGroup parent) {
-        LinearLayout view = (LinearLayout) ViewsUtils.createView(R.layout.record_settings_group, parent);
+        LinearLayout view = (LinearLayout) createAndRegister(R.layout.record_settings_group, parent);
 
+        LinearLayout parametersList = view.findViewById(R.id.parametersList);
         TextView titleView = view.findViewById(R.id.groupTitle);
 
         titleView.setText(model.getTitle());
 
         for (SettingsParameter param : model.getParameters()) {
             View paramView = param.createView(view);
-            view.addView(paramView);
+            parametersList.addView(paramView);
         }
 
         return view;
@@ -39,7 +40,9 @@ public class RecordSettingsGroupVF extends ViewFactoryBase {
 
     @Override
     public void destroy(View view) {
-        LinearLayout ll = (LinearLayout) view;
+        super.destroy(view);
+
+        LinearLayout ll = view.findViewById(R.id.parametersList);
         ArrayList<SettingsParameter> params = model.getParameters();
 
         for (int i = 0; i < params.size(); i++) {

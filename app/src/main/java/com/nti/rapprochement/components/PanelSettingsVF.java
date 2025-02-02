@@ -10,7 +10,7 @@ import com.nti.rapprochement.utils.ViewsUtils;
 public class PanelSettingsVF extends ViewFactoryBase {
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.panel_settings, parent);
+        View view = createAndRegister(R.layout.panel_settings, parent);
         view.findViewById(R.id.backButton).setOnClickListener(v -> App.navigateBack());
         return view;
     }

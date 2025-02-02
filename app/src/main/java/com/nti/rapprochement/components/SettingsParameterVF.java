@@ -21,7 +21,8 @@ public class SettingsParameterVF extends ViewFactoryBase {
 
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.settings_parameter, parent);
+        OptionalData optionalData = new OptionalData();
+        View view = createAndRegister(R.layout.settings_parameter, parent, optionalData);
 
         TextView nameView = view.findViewById(R.id.parameterName);
         TextView valueView = view.findViewById(R.id.parameterValue);
@@ -30,14 +31,22 @@ public class SettingsParameterVF extends ViewFactoryBase {
         valueView.setText(param.getValue());
         valueView.setOnClickListener(v -> param.callOnClick());
 
-        param.onValueChange.add(valueView::setText);
+        optionalData.paramOnValueChangeHandler = sp -> valueView.setText(sp.getValue());
+        param.onValueChange.add(optionalData.paramOnValueChangeHandler);
 
         return view;
     }
 
     @Override
     public void destroy(View view) {
-        TextView valueView = view.findViewById(R.id.parameterValue);
-        param.onValueChange.remove(valueView::setText);
+        super.destroy(view);
+        if (currentOptionalData != null) {
+            OptionalData od = (OptionalData) currentOptionalData;
+            param.onValueChange.remove(od.paramOnValueChangeHandler);
+        }
+    }
+
+    private static class OptionalData {
+        public Consumer<SettingsParameter> paramOnValueChangeHandler;
     }
 }

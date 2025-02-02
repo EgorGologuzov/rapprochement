@@ -21,7 +21,7 @@ public class HistoryVF extends ViewFactoryBase {
 
     @Override
     public View create(ViewGroup parent) {
-        RecyclerView view = (RecyclerView) ViewsUtils.createView(R.layout.history, parent);
+        RecyclerView view = (RecyclerView) createAndRegister(R.layout.history, parent);
 
         view.setAdapter(model.getAdapter());
         model.getAdapter().onItemInserted.add(view::smoothScrollToPosition);
@@ -35,6 +35,7 @@ public class HistoryVF extends ViewFactoryBase {
 
     @Override
     public void destroy(View view) {
+        super.destroy(view);
         RecyclerView rv = (RecyclerView) view;
         model.getAdapter().onItemRemoved.remove(rv::smoothScrollToPosition);
     }

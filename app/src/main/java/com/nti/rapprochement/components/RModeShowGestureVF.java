@@ -16,7 +16,7 @@ public class RModeShowGestureVF extends ViewFactoryBase {
 
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.rmode_show_gesture, parent);
+        View view = createAndRegister(R.layout.rmode_show_gesture, parent);
         return view;
     }
 }

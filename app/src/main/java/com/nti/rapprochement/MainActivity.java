@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.nti.rapprochement.components.RModeInputGestureVF;
+import com.nti.rapprochement.components.ViewFactoryBase;
 import com.nti.rapprochement.data.Camera;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
@@ -81,5 +82,11 @@ public class MainActivity extends AppCompatActivity {
                 adaptiveLayout.setLayoutParams(params);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ViewFactoryBase.destroyAllDangerously();
     }
 }

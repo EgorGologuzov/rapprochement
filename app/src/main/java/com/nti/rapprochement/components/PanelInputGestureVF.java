@@ -17,7 +17,7 @@ public class PanelInputGestureVF extends ViewFactoryBase {
 
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.panel_input_gesture, parent);
+        View view = createAndRegister(R.layout.panel_input_gesture, parent);
 
         view.findViewById(R.id.backButton)
                 .setOnClickListener(v -> {

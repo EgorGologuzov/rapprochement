@@ -25,7 +25,7 @@ public class RModeShowTextVF extends ViewFactoryBase {
 
     @Override
     public View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.rmode_show_text, parent);
+        View view = createAndRegister(R.layout.rmode_show_text, parent);
         ImageView sourceTypeView = view.findViewById(R.id.sourceTypeView);
         TextView datetimeView = view.findViewById(R.id.datetimeView);
         TextView recordTextView = view.findViewById(R.id.recordTextView);
