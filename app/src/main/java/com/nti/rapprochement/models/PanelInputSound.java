@@ -6,6 +6,6 @@ import com.nti.rapprochement.components.ViewFactoryBase;
 
 public class PanelInputSound extends PanelBase {
     public PanelInputSound(RecordMultiMode model) {
-        super(new PanelInputSoundVF(model));
+        setViewFactory(new PanelInputSoundVF(model));
     }
 }

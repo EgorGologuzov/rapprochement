@@ -5,6 +5,6 @@ import com.nti.rapprochement.components.ViewFactoryBase;
 
 public class PanelInputText extends PanelBase {
     public PanelInputText(RecordMultiMode model) {
-        super(new PanelInputTextVF(model));
+        setViewFactory(new PanelInputTextVF(model));
     }
 }

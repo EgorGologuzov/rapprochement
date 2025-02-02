@@ -5,6 +5,6 @@ import com.nti.rapprochement.components.ViewFactoryBase;
 
 public class PanelShowGesture extends PanelBase {
     public PanelShowGesture(RecordMultiMode model) {
-        super(new PanelShowGestureVF(model));
+        setViewFactory(new PanelShowGestureVF(model));
     }
 }

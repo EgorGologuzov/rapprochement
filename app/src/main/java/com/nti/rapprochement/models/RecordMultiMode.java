@@ -38,6 +38,14 @@ public class RecordMultiMode extends RecordBase {
     }
 
     @Override
+    public void destroySelf() {
+        super.destroySelf();
+        if (mode != null) {
+            mode.destroySelf();
+        }
+    }
+
+    @Override
     public void destroyView(View view) {
         super.destroyView(view);
         destroyBoundModeView((FrameLayout) view);
@@ -77,6 +85,7 @@ public class RecordMultiMode extends RecordBase {
     }
 
     public void setMode(RModeBase mode) {
+        this.mode.destroySelf();
         this.mode = mode;
     }
 

@@ -8,6 +8,6 @@ public class PanelSettings extends PanelBase {
     public final static PanelSettings current = new PanelSettings();
 
     public PanelSettings() {
-        super(new PanelSettingsVF());
+        setViewFactory(new PanelSettingsVF());
     }
 }

@@ -136,7 +136,9 @@ public class App {
             View currentView = historyFrame.getChildAt(historyFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(historyFrame.getContext(), R.anim.slide_right));
             historyFrame.removeView(currentView);
-            historyStack.pop().destroyView(currentView);
+            HistoryBase removed = historyStack.pop();
+            removed.destroyView(currentView);
+            removed.destroySelf();
 
             if (!historyStack.isEmpty()) {
                 View previousView = historyStack.peek().createView(historyFrame);
@@ -171,7 +173,9 @@ public class App {
             View currentView = panelFrame.getChildAt(panelFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(panelFrame.getContext(), R.anim.slide_down));
             panelFrame.removeView(currentView);
-            panelStack.pop().destroyView(currentView);
+            PanelBase removed = panelStack.pop();
+            removed.destroyView(currentView);
+            removed.destroySelf();
 
             if (!panelStack.isEmpty()) {
                 View previousView = panelStack.peek().createView(panelFrame);

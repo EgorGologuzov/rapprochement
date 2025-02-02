@@ -22,4 +22,10 @@ public class RecordSettingsGroup extends RecordBase {
     public ArrayList<SettingsParameter> getParameters() {
         return parameters;
     }
+
+    @Override
+    public void destroySelf() {
+        super.destroySelf();
+        parameters.forEach(ModelBase::destroySelf);
+    }
 }

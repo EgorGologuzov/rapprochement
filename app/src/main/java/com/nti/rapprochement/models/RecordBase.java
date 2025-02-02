@@ -11,9 +11,7 @@ import com.nti.rapprochement.components.TextViewVF;
 import com.nti.rapprochement.components.ViewFactoryBase;
 import com.nti.rapprochement.utils.Event;
 
-public abstract class RecordBase {
-    private ViewFactoryBase viewFactory = new TextViewVF(R.string.record_view_not_set);
-
+public abstract class RecordBase extends ModelBase {
     public Event<RecordBase> onUpdate = new Event<>();
 
     public RecordHolder createHolder(ViewGroup parent) {
@@ -21,18 +19,6 @@ public abstract class RecordBase {
     }
 
     public void bind(View view) {}
-
-    public void setViewFactory(ViewFactoryBase viewFactory) {
-        this.viewFactory = viewFactory;
-    }
-
-    public View createView(ViewGroup parent) {
-        return viewFactory.create(parent);
-    }
-
-    public void destroyView(View view) {
-        viewFactory.destroy(view);
-    }
 
     public static class RecordHolder extends RecyclerView.ViewHolder {
         private RecordBase model;

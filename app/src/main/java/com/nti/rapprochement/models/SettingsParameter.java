@@ -9,9 +9,7 @@ import com.nti.rapprochement.utils.Event;
 
 import java.util.function.Consumer;
 
-public class SettingsParameter {
-    private final ViewFactoryBase viewFactory = new SettingsParameterVF(this);
-
+public class SettingsParameter extends ModelBase {
     private String name;
     private String value;
 
@@ -22,14 +20,7 @@ public class SettingsParameter {
         this.name = name;
         this.value = value;
         this.onClick.add(onClick);
-    }
-
-    public View createView(ViewGroup parent) {
-        return viewFactory.create(parent);
-    }
-
-    public void destroyView(View view) {
-        viewFactory.destroy(view);
+        setViewFactory(new SettingsParameterVF(this));
     }
 
     public String getName() {

@@ -7,6 +7,6 @@ public class PanelMain extends PanelBase {
     public final static PanelMain current = new PanelMain();
 
     public PanelMain() {
-        super(new PanelMainVF());
+        setViewFactory(new PanelMainVF());
     }
 }

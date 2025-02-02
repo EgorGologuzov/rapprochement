@@ -9,10 +9,12 @@ import com.nti.rapprochement.components.ViewFactoryBase;
 
 import java.util.ArrayList;
 
-public class HistoryBase {
+public class HistoryBase extends ModelBase {
     private final RecordAdapter adapter = new RecordAdapter(new ArrayList<>());
 
-    private ViewFactoryBase viewFactory = new HistoryVF(this);
+    public HistoryBase() {
+        setViewFactory(new HistoryVF(adapter));
+    }
 
     public void add(RecordBase record) {
         adapter.addItem(record);
@@ -20,21 +22,6 @@ public class HistoryBase {
 
     public void remove(RecordBase record) {
         adapter.removeItem(record);
-    }
-
-    public RecordAdapter getAdapter() {
-        return adapter;
-    }
-
-    public void setViewFactory(ViewFactoryBase viewFactory) {
-        this.viewFactory = viewFactory;
-    }
-
-    public View createView(ViewGroup parent) {
-        return viewFactory.create(parent);
-    }
-
-    public void destroyView(View view) {
-        viewFactory.destroy(view);
+        record.destroySelf();
     }
 }
