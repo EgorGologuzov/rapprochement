@@ -1,30 +1,25 @@
 package com.nti.rapprochement;
 
-import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.nti.rapprochement.components.RModeInputGestureVF;
-import com.nti.rapprochement.components.ViewFactoryBase;
-import com.nti.rapprochement.data.Camera;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
-import com.nti.rapprochement.utils.Event;
-
+import com.nti.rapprochement.utils.Convert;
 
 public class MainActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,16 +39,16 @@ public class MainActivity extends AppCompatActivity {
         App.init(this);
         Res.init(this);
         setBackButtonCallback();
-        setAdaptiveLayoutListener();
+        setKeyboardAdaptiveListener();
     }
 
     private void setFontSize() {
-        int themeId = Settings.fontSizeToStyleId(Settings.getFontSize());
+        int themeId = Convert.fontSizeToStyleId(Settings.getFontSize());
         setTheme(themeId);
     }
 
     private void setDarkMode() {
-        Settings.setTheme(Settings.getTheme());
+        Settings.setDarkMode(Settings.getDarkMode());
     }
 
     private void setBackButtonCallback() {
@@ -65,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
-    private void setAdaptiveLayoutListener() {
+    private void setKeyboardAdaptiveListener() {
         final View activityRootView = findViewById(android.R.id.content);
         final LinearLayout adaptiveLayout = findViewById(R.id.adaptiveLayout);
 
@@ -82,11 +77,5 @@ public class MainActivity extends AppCompatActivity {
                 adaptiveLayout.setLayoutParams(params);
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ViewFactoryBase.destroyAllDangerously();
     }
 }

@@ -6,38 +6,36 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nti.rapprochement.models.RecordBase;
+import com.nti.rapprochement.viewmodels.RecordBaseVM;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import java.util.List;
+public class RecordAdapter extends RecyclerView.Adapter<RecordBaseVM.RecordHolder> {
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordHolder> {
+    private final ArrayList<RecordBase> records;
+    private final HashMap<RecordBase, RecordBaseVM> viewModels;
 
-    final private List<RecordBase> records;
-
-    public final Event<Integer> onItemInserted = new Event<>();
-    public final Event<Integer> onItemRemoved = new Event<>();
-
-    public RecordAdapter(List<RecordBase> records) {
+    public RecordAdapter(ArrayList<RecordBase> records) {
         this.records = records;
+        this.viewModels = new HashMap<>();
+
+        for (RecordBase record : records) {
+            viewModels.put(record, record.createViewModel());
+        }
     }
 
-    @NotNull
+    @NonNull
     @Override
-    public RecordBase.RecordHolder onCreateViewHolder(@NotNull ViewGroup parent, int position) {
+    public RecordBaseVM.RecordHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
         RecordBase model = records.get(position);
-        return model.createHolder(parent);
+        return findOrCreateViewModel(model).createHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(RecordBase.RecordHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecordBaseVM.RecordHolder holder, int position) {
         RecordBase model = records.get(position);
-        holder.bind(model);
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(@NonNull RecordBase.RecordHolder holder) {
-        holder.destroy();
+        holder.bind(findOrCreateViewModel(model));
     }
 
     @Override
@@ -51,23 +49,40 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBase.RecordHolder>
     }
 
     public void addItem(RecordBase item) {
+        int index = records.size();
         records.add(item);
-        int index = records.size() - 1;
-        item.onUpdate.add(this::onUpdateItem);
+        viewModels.put(item, item.createViewModel());
         notifyItemInserted(index);
-        onItemInserted.call(index);
     }
 
     public void removeItem(RecordBase item) {
         int index = records.indexOf(item);
-        records.remove(index);
-        item.onUpdate.remove(this::onUpdateItem);
-        notifyItemRemoved(index);
-        onItemRemoved.call(index);
+        if (index >= 0) {
+            records.remove(index);
+            viewModels.remove(item);
+            notifyItemRemoved(index);
+        }
     }
 
-    public void onUpdateItem(RecordBase item) {
+    public void notifyItemChanged(RecordBase item) {
         int index = records.indexOf(item);
-        notifyItemChanged(index);
+        if (index >= 0) {
+            notifyItemChanged(index);
+        }
+    }
+
+    public RecordBaseVM findViewModel(RecordBase item) {
+        return viewModels.get(item);
+    }
+
+    private RecordBaseVM findOrCreateViewModel(RecordBase item) {
+        RecordBaseVM vm = viewModels.get(item);
+
+        if (vm == null) {
+            vm = item.createViewModel();
+            viewModels.put(item, vm);
+        }
+
+        return vm;
     }
 }

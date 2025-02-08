@@ -1,18 +1,24 @@
 package com.nti.rapprochement.models;
 
 import com.nti.rapprochement.R;
-import com.nti.rapprochement.components.FontSizeDialog;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
+import com.nti.rapprochement.utils.Convert;
+import com.nti.rapprochement.viewmodels.HistoryBaseVM;
+import com.nti.rapprochement.viewmodels.HistorySettingsVM;
+import com.nti.rapprochement.views.FontSizeDialog;
 
 import java.util.ArrayList;
 
 public class HistorySettings extends HistoryBase {
-    public static final HistorySettings current = new HistorySettings();
 
     public HistorySettings() {
-        RecordSettingsGroup settingsGroup1 = initGeneralGroup();
-        this.add(settingsGroup1);
+        records.add(initGeneralGroup());
+    }
+
+    @Override
+    public HistoryBaseVM createViewModel() {
+        return new HistorySettingsVM(this);
     }
 
     public static RecordSettingsGroup initGeneralGroup() {
@@ -20,19 +26,19 @@ public class HistorySettings extends HistoryBase {
 
         params.add(new SettingsParameter(
                 Res.str(R.string.theme),
-                Settings.themeToString(Settings.getTheme()),
+                Convert.darkModeToString(Settings.getDarkMode()),
                 (sp) -> {
-                    boolean isDarkMode = Settings.getTheme();
-                    Settings.setTheme(!isDarkMode);
-                    sp.setValue(Settings.themeToString(!isDarkMode));
+                    boolean isDarkMode = Settings.getDarkMode();
+                    Settings.setDarkMode(!isDarkMode);
+                    sp.setValue(Convert.darkModeToString(!isDarkMode));
                 }));
 
         params.add(new SettingsParameter(
                 Res.str(R.string.font),
-                Settings.fontSizeToString(Settings.getFontSize()),
+                Convert.fontSizeToString(Settings.getFontSize()),
                 (sp) -> FontSizeDialog.show(result -> {
                     Settings.setFontSize(result);
-                    sp.setValue(Settings.fontSizeToString(result));
+                    sp.setValue(Convert.fontSizeToString(result));
                 })));
 
         return new RecordSettingsGroup(Res.str(R.string.title_general), params);

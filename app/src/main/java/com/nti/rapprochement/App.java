@@ -12,33 +12,89 @@ import com.nti.rapprochement.models.HistoryBase;
 import com.nti.rapprochement.models.HistoryMain;
 import com.nti.rapprochement.models.PanelBase;
 import com.nti.rapprochement.models.PanelMain;
+import com.nti.rapprochement.models.RecordBase;
+import com.nti.rapprochement.viewmodels.HistoryBaseVM;
+import com.nti.rapprochement.viewmodels.RecordBaseVM;
 
 import java.util.Stack;
 
+// AppViewModel
 public class App {
-    private static MainActivity mainActivity;
 
-    private static final Stack<HistoryBase> historyStack = new Stack<>();
-    private static FrameLayout historyFrame;
+    public static App current;
 
-    private static final Stack<PanelBase> panelStack = new Stack<>();
-    private static FrameLayout panelFrame;
-
-    private static PanelBase temporaryPanel;
-
-    public static void init(MainActivity mainActivity) {
-        App.mainActivity = mainActivity;
-        App.historyFrame = mainActivity.findViewById(R.id.historyFrame);
-        App.panelFrame = mainActivity.findViewById(R.id.panelFrame);
-
-        setCurrentHistoryAndPanelView();
+    private static class AppModel {
+        public final static AppModel current = new AppModel();
+        public final Stack<HistoryBase> historyStack = new Stack<>();
+        public final Stack<PanelBase> panelStack = new Stack<>();
+        public final HistoryMain historyMain = new HistoryMain();
+        public final PanelMain panelMain = new PanelMain();
+        private AppModel() {
+            historyStack.push(historyMain);
+            panelStack.push(panelMain);
+        }
     }
 
-    public static Context getHistoryContext() { return historyFrame.getContext(); }
+    public static void init(MainActivity mainActivity) {
+        current = new App(mainActivity, AppModel.current);
+    }
 
-    public static Context getPanelContext() { return panelFrame.getContext(); }
+    private final MainActivity mainActivity;
+    private final AppModel appModel;
+    private PanelBase temporaryPanel;
+    private HistoryBaseVM currentHistoryVM;
 
-    public static void navigate(HistoryBase history, PanelBase panel) {
+    private App(MainActivity mainActivity, AppModel appModel) {
+        this.mainActivity = mainActivity;
+        this.appModel = appModel;
+
+        FrameLayout historyFrame = mainActivity.findViewById(R.id.historyFrame);
+        currentHistoryVM = appModel.historyStack.peek().createViewModel();
+        View lastHistoryView = currentHistoryVM.createView(historyFrame);
+        historyFrame.addView(lastHistoryView);
+
+        FrameLayout panelFrame = mainActivity.findViewById(R.id.panelFrame);
+        View lastPanelView = appModel.panelStack.peek().createViewModel().createView(panelFrame);
+        panelFrame.addView(lastPanelView);
+    }
+
+    public Context getDialogContext() {
+        FrameLayout historyFrame = mainActivity.findViewById(R.id.historyFrame);
+        return historyFrame.getContext();
+    }
+
+    public void recreateMainActivity() {
+        mainActivity.recreate();
+    }
+
+    public HistoryBaseVM getCurrentHistoryVM() {
+        return currentHistoryVM;
+    }
+
+    public RecordBaseVM findViewModel(RecordBase model) {
+        return currentHistoryVM.findViewModel(model);
+    }
+
+    public void showToast(String text) {
+        Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void openKeyboard() {
+        InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm == null) return;
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (imm == null) return;
+
+        View view = mainActivity.getCurrentFocus();
+        if (view == null) view = new View(mainActivity);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public void navigate(HistoryBase history, PanelBase panel) {
         if (history != null) {
             pushHistory(history);
         }
@@ -47,9 +103,9 @@ public class App {
         }
     }
 
-    public static void navigateBack() {
-        int history = historyStack.size();
-        int panel = panelStack.size();
+    public void navigateBack() {
+        int history = appModel.historyStack.size();
+        int panel = appModel.panelStack.size();
 
         if (history > panel && history > 1) {
             popHistory();
@@ -61,7 +117,7 @@ public class App {
         }
     }
 
-    public static void setTemporaryPanel(PanelBase panel) {
+    public void setTemporaryPanel(PanelBase panel) {
         if (panel != null && temporaryPanel == null) {
             pushPanel(panel);
         } else if (panel == null && temporaryPanel != null) {
@@ -74,53 +130,21 @@ public class App {
         temporaryPanel = panel;
     }
 
-    public static void openKeyboard() {
-        InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm == null) return;
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-
-    public static void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) mainActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if (imm == null) return;
-
-        View view = mainActivity.getCurrentFocus();
-        if (view == null) view = new View(mainActivity);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    public static void showToast(String text) {
-        Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
-    }
-
-    public static void recreateMainActivity() {
-        mainActivity.recreate();
-    }
-
-    private static void setCurrentHistoryAndPanelView() {
-        if (historyStack.isEmpty()) {
-            historyStack.push(HistoryMain.current);
-            historyFrame.addView(HistoryMain.current.createView(historyFrame));
-        } else {
-            historyFrame.addView(historyStack.peek().createView(historyFrame));
-        }
-
-        if (panelStack.isEmpty()) {
-            panelStack.push(PanelMain.current);
-            panelFrame.addView(PanelMain.current.createView(panelFrame));
-        } else {
-            panelFrame.addView(panelStack.peek().createView(panelFrame));
+    public void unsetTemporaryPanel(PanelBase panel) {
+        if (temporaryPanel == panel) {
+            setTemporaryPanel(null);
         }
     }
 
-    private static void pushHistory(HistoryBase history) {
-        View view = history.createView(historyFrame);
+    private void pushHistory(HistoryBase history) {
+        FrameLayout historyFrame = mainActivity.findViewById(R.id.historyFrame);
+        currentHistoryVM = history.createViewModel();
+        View view = currentHistoryVM.createView(historyFrame);
 
         if (historyFrame.getChildCount() > 0) {
             View currentView = historyFrame.getChildAt(historyFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(historyFrame.getContext(), R.anim.disappearance));
             historyFrame.removeView(currentView);
-            historyStack.peek().destroyView(currentView);
         }
 
         historyFrame.addView(view);
@@ -128,20 +152,20 @@ public class App {
         view.startAnimation(AnimationUtils.loadAnimation(historyFrame.getContext(), R.anim.slide_left));
         view.setVisibility(View.VISIBLE);
 
-        historyStack.push(history);
+        appModel.historyStack.push(history);
     }
 
-    private static void popHistory() {
-        if (!historyStack.isEmpty()) {
+    private void popHistory() {
+        if (!appModel.historyStack.isEmpty()) {
+            FrameLayout historyFrame = mainActivity.findViewById(R.id.historyFrame);
             View currentView = historyFrame.getChildAt(historyFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(historyFrame.getContext(), R.anim.slide_right));
             historyFrame.removeView(currentView);
-            HistoryBase removed = historyStack.pop();
-            removed.destroyView(currentView);
-            removed.destroySelf();
+            appModel.historyStack.pop();
 
-            if (!historyStack.isEmpty()) {
-                View previousView = historyStack.peek().createView(historyFrame);
+            if (!appModel.historyStack.isEmpty()) {
+                currentHistoryVM = appModel.historyStack.peek().createViewModel();
+                View previousView = currentHistoryVM.createView(historyFrame);
                 historyFrame.addView(previousView);
                 previousView.setVisibility(View.INVISIBLE);
                 previousView.startAnimation(AnimationUtils.loadAnimation(historyFrame.getContext(), R.anim.appearance));
@@ -150,14 +174,14 @@ public class App {
         }
     }
 
-    private static void pushPanel(PanelBase panel) {
-        View view = panel.createView(panelFrame);
+    private void pushPanel(PanelBase panel) {
+        FrameLayout panelFrame = mainActivity.findViewById(R.id.panelFrame);
+        View view = panel.createViewModel().createView(panelFrame);
 
         if (panelFrame.getChildCount() > 0) {
             View currentView = panelFrame.getChildAt(panelFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(panelFrame.getContext(), R.anim.disappearance));
             panelFrame.removeView(currentView);
-            panelStack.peek().destroyView(currentView);
         }
 
         panelFrame.addView(view);
@@ -165,20 +189,19 @@ public class App {
         view.startAnimation(AnimationUtils.loadAnimation(panelFrame.getContext(), R.anim.slide_up));
         view.setVisibility(View.VISIBLE);
 
-        panelStack.push(panel);
+        appModel.panelStack.push(panel);
     }
 
-    private static void popPanel() {
-        if (!panelStack.isEmpty()) {
+    private void popPanel() {
+        if (!appModel.panelStack.isEmpty()) {
+            FrameLayout panelFrame = mainActivity.findViewById(R.id.panelFrame);
             View currentView = panelFrame.getChildAt(panelFrame.getChildCount() - 1);
             currentView.startAnimation(AnimationUtils.loadAnimation(panelFrame.getContext(), R.anim.slide_down));
             panelFrame.removeView(currentView);
-            PanelBase removed = panelStack.pop();
-            removed.destroyView(currentView);
-            removed.destroySelf();
+            appModel.panelStack.pop();
 
-            if (!panelStack.isEmpty()) {
-                View previousView = panelStack.peek().createView(panelFrame);
+            if (!appModel.panelStack.isEmpty()) {
+                View previousView = appModel.panelStack.peek().createViewModel().createView(panelFrame);
                 panelFrame.addView(previousView);
                 previousView.setVisibility(View.INVISIBLE);
                 previousView.startAnimation(AnimationUtils.loadAnimation(panelFrame.getContext(), R.anim.appearance));

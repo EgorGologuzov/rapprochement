@@ -37,17 +37,17 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="end|center_vertical">
-            <com.nti.rapprochement.components.ActionButton
+            <com.nti.rapprochement.views.ActionButton
                 android:id="@+id/toGestureButton"
                 style="@style/ActionButton_Record_ToGesture"
                 android:layout_width="50dp"
                 android:layout_height="20dp" />
-            <com.nti.rapprochement.components.ActionButton
+            <com.nti.rapprochement.views.ActionButton
                 android:id="@+id/toSoundButton"
                 style="@style/ActionButton_Record_ToSound"
                 android:layout_width="50dp"
                 android:layout_height="18dp"/>
-            <com.nti.rapprochement.components.ActionButton
+            <com.nti.rapprochement.views.ActionButton
                 android:id="@+id/optionsButton"
                 style="@style/ActionButton_Record_Options"
                 android:layout_width="30dp"

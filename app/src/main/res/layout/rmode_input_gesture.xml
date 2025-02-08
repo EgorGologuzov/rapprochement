@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Theme.Rapprochement.TextNormal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="[Режим ввода жестов]">
-</TextView>
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/camera_placeholder"
+            android:adjustViewBounds="true"/>
+        <ImageView
+            android:id="@+id/analyzeResultView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
+    </FrameLayout>
+    <TextView
+        android:id="@+id/timeView"
+        style="@style/Theme.Rapprochement.TextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="0:15 / 1:00" />
+    <LinearLayout
+        style="@style/Theme.Rapprochement.BgRect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/timeLine"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/primary_1"/>
+        <TextView
+            android:id="@+id/outputTextView"
+            style="@style/Theme.Rapprochement.TextNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Распознанный текст выводиться тут"/>
+    </LinearLayout>
+</LinearLayout>

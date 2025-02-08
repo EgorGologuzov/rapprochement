@@ -1,42 +1,21 @@
 package com.nti.rapprochement.models;
 
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.nti.rapprochement.components.SettingsParameterVF;
-import com.nti.rapprochement.components.ViewFactoryBase;
-import com.nti.rapprochement.utils.Event;
+import com.nti.rapprochement.viewmodels.SettingsParameterVM;
 
 import java.util.function.Consumer;
 
-public class SettingsParameter extends ModelBase {
-    private String name;
-    private String value;
+public class SettingsParameter {
+    public String name;
+    public String value;
+    public Consumer<SettingsParameterVM> action;
 
-    public final Event<SettingsParameter> onClick = new Event<>();
-    public final Event<SettingsParameter> onValueChange = new Event<>();
-
-    public SettingsParameter(String name, String value, Consumer<SettingsParameter> onClick) {
+    public SettingsParameter(String name, String value, Consumer<SettingsParameterVM> action) {
         this.name = name;
         this.value = value;
-        this.onClick.add(onClick);
-        setViewFactory(new SettingsParameterVF(this));
+        this.action = action;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-        onValueChange.call(this);
-    }
-
-    public void callOnClick() {
-        onClick.call(this);
+    public SettingsParameterVM createViewModel() {
+        return new SettingsParameterVM(this);
     }
 }

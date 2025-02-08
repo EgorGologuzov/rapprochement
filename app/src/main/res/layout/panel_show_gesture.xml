@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.nti.rapprochement.components.ActionButton
+    <com.nti.rapprochement.views.ActionButton
         android:id="@+id/backButton"
         style="@style/ActionButton_Panel"
         android:layout_marginStart="0dp"

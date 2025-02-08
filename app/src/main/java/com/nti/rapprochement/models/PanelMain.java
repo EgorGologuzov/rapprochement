@@ -1,12 +1,11 @@
 package com.nti.rapprochement.models;
 
-import com.nti.rapprochement.components.PanelMainVF;
-import com.nti.rapprochement.components.ViewFactoryBase;
+import com.nti.rapprochement.viewmodels.PanelBaseVM;
+import com.nti.rapprochement.viewmodels.PanelMainVM;
 
 public class PanelMain extends PanelBase {
-    public final static PanelMain current = new PanelMain();
-
-    public PanelMain() {
-        setViewFactory(new PanelMainVF());
+    @Override
+    public PanelBaseVM createViewModel() {
+        return new PanelMainVM();
     }
 }

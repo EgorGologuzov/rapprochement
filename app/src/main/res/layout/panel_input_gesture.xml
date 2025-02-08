@@ -6,10 +6,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.nti.rapprochement.components.ActionButton
+    <com.nti.rapprochement.views.ActionButton
         android:id="@+id/backButton"
         style="@style/ActionButton_Panel"
         android:layout_marginStart="0dp"
         android:src="@drawable/btn_back" />
+
+    <com.nti.rapprochement.views.ActionButton
+        android:id="@+id/toggleCameraButton"
+        style="@style/ActionButton_Panel"
+        android:src="@drawable/btn_reverse" />
+
+    <com.nti.rapprochement.views.ActionButton
+        android:id="@+id/toTextButton"
+        style="@style/ActionButton_Panel"
+        android:src="@drawable/btn_to_text" />
+
+    <com.nti.rapprochement.views.ActionButton
+        android:id="@+id/toSoundButton"
+        style="@style/ActionButton_Panel"
+        android:src="@drawable/btn_to_sound" />
 
 </LinearLayout>

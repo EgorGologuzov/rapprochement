@@ -1,10 +1,11 @@
 package com.nti.rapprochement.models;
 
-import com.nti.rapprochement.components.RecordInfoVF;
-import com.nti.rapprochement.components.ViewFactoryBase;
+import com.nti.rapprochement.viewmodels.RecordBaseVM;
+import com.nti.rapprochement.viewmodels.RecordInfoVM;
 
 public class RecordInfo extends RecordBase {
-    public RecordInfo() {
-        setViewFactory(new RecordInfoVF());
+    @Override
+    public RecordBaseVM createViewModel() {
+        return new RecordInfoVM();
     }
 }
