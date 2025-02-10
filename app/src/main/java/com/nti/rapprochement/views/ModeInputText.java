@@ -24,7 +24,7 @@ public class ModeInputText extends RecordCallVM.Mode {
         ViewGroup parent = args.parent;
         RecordCallVM vm = args.vm;
 
-        View view = ViewsUtils.createView(R.layout.rmode_input_text, parent);
+        View view = ViewsUtils.createView(R.layout.mode_input_text, parent);
         EditText edit = view.findViewById(R.id.editText);
         TextView counter = view.findViewById(R.id.symbolCount);
 

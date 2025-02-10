@@ -8,7 +8,7 @@ import com.nti.rapprochement.utils.ViewsUtils;
 
 public class RecordCallView {
     public static View create(ViewGroup parent) {
-        View view = ViewsUtils.createView(R.layout.record_multi_mode_base, parent);
+        View view = ViewsUtils.createView(R.layout.record_call, parent);
         return view;
     }
 }

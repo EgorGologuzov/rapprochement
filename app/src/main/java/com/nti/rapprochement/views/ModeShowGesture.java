@@ -12,7 +12,7 @@ public class ModeShowGesture extends RecordCallVM.Mode {
     public View createInnerView(RecordCallVM.CreateArgs args) {
         ViewGroup parent = args.parent;
         RecordCallVM vm = args.vm;
-        View view = ViewsUtils.createView(R.layout.rmode_show_gesture, parent);
+        View view = ViewsUtils.createView(R.layout.mode_show_gesture, parent);
         return view;
     }
 

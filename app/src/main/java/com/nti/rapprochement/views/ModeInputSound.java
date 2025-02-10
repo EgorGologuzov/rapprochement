@@ -12,7 +12,7 @@ public class ModeInputSound extends RecordCallVM.Mode {
     public View createInnerView(RecordCallVM.CreateArgs args) {
         ViewGroup parent = args.parent;
         RecordCallVM vm = args.vm;
-        View view = ViewsUtils.createView(R.layout.rmode_input_sound, parent);
+        View view = ViewsUtils.createView(R.layout.mode_input_sound, parent);
         return view;
     }
 
