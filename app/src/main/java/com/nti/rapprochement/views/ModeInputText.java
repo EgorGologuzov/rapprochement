@@ -77,25 +77,27 @@ public class ModeInputText extends RecordCallVM.Mode {
                     App.current.hideKeyboard();
                 });
 
-//        view.findViewById(R.id.toSoundButton)
-//                .setOnClickListener(v -> {
-//                    if (isInputTextEmpty(model.getText())) return;
-//
-//                    RModeShowSound mode = new RModeShowSound(model);
-//                    model.setMode(mode);
-//                    model.activatePanel();
-//                    model.update();
-//                });
-//
-//        view.findViewById(R.id.toGestureButton)
-//                .setOnClickListener(v -> {
-//                    if (isInputTextEmpty(model.getText())) return;
-//
-//                    RModeShowGesture mode = new RModeShowGesture(model);
-//                    model.setMode(mode);
-//                    model.activatePanel();
-//                    model.update();
-//                });
+        view.findViewById(R.id.toSoundButton)
+                .setOnClickListener(v -> {
+                    if (isInputTextEmpty(vm.getText())) return;
+
+                    vm.setMode(new ModeShowSound());
+                    vm.activatePanel();
+                    vm.update();
+
+                    App.current.hideKeyboard();
+                });
+
+        view.findViewById(R.id.toGestureButton)
+                .setOnClickListener(v -> {
+                    if (isInputTextEmpty(vm.getText())) return;
+
+                    vm.setMode(new ModeShowGesture());
+                    vm.activatePanel();
+                    vm.update();
+
+                    App.current.hideKeyboard();
+                });
 
         return view;
     }

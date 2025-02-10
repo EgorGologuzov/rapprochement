@@ -10,6 +10,8 @@ import com.nti.rapprochement.viewmodels.RecordBaseVM;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordBaseVM.RecordHolder> {
 
@@ -73,6 +75,17 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBaseVM.RecordHolde
 
     public RecordBaseVM findViewModel(RecordBase item) {
         return viewModels.get(item);
+    }
+
+    public RecordBaseVM findViewModel(Function<RecordBaseVM, Boolean> selector) {
+        for(Map.Entry<RecordBase, RecordBaseVM> entry : viewModels.entrySet()) {
+            RecordBaseVM vm = entry.getValue();
+            if (selector.apply(vm)) {
+                return vm;
+            }
+        }
+
+        return null;
     }
 
     private RecordBaseVM findOrCreateViewModel(RecordBase item) {

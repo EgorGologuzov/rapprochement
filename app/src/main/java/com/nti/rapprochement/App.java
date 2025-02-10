@@ -17,6 +17,7 @@ import com.nti.rapprochement.viewmodels.HistoryBaseVM;
 import com.nti.rapprochement.viewmodels.RecordBaseVM;
 
 import java.util.Stack;
+import java.util.function.Function;
 
 // AppViewModel
 public class App {
@@ -73,6 +74,10 @@ public class App {
 
     public RecordBaseVM findViewModel(RecordBase model) {
         return currentHistoryVM.findViewModel(model);
+    }
+
+    public RecordBaseVM findViewModel(Function<RecordBaseVM, Boolean> selector) {
+        return currentHistoryVM.findViewModel(selector);
     }
 
     public void showToast(String text) {

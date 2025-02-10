@@ -9,6 +9,8 @@ import com.nti.rapprochement.utils.Event;
 import com.nti.rapprochement.utils.RecordAdapter;
 import com.nti.rapprochement.views.HistoryBaseView;
 
+import java.util.function.Function;
+
 public abstract class HistoryBaseVM {
 
     private final HistoryBase model;
@@ -40,5 +42,9 @@ public abstract class HistoryBaseVM {
 
     public RecordBaseVM findViewModel(RecordBase model) {
         return adapter.findViewModel(model);
+    }
+
+    public RecordBaseVM findViewModel(Function<RecordBaseVM, Boolean> selector) {
+        return adapter.findViewModel(selector);
     }
 }

@@ -32,6 +32,26 @@ public class PanelMainView {
                     vm.update();
                 });
 
+        view.findViewById(R.id.soundButton)
+                .setOnClickListener(v -> {
+                    RecordCall record = new RecordCall(RecordCall.SourceType.Sound);
+                    App.current.getCurrentHistoryVM().add(record);
+                    RecordCallVM vm = (RecordCallVM) App.current.findViewModel(record);
+                    vm.setMode(new ModeInputSound());
+                    vm.activatePanel();
+                    vm.update();
+                });
+
+        view.findViewById(R.id.gestureButton)
+                .setOnClickListener(v -> {
+                    RecordCall record = new RecordCall(RecordCall.SourceType.Gesture);
+                    App.current.getCurrentHistoryVM().add(record);
+                    RecordCallVM vm = (RecordCallVM) App.current.findViewModel(record);
+                    vm.setMode(new ModeInputGesture());
+                    vm.activatePanel();
+                    vm.update();
+                });
+
         return view;
     }
 }

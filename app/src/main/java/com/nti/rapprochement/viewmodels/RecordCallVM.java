@@ -1,5 +1,6 @@
 package com.nti.rapprochement.viewmodels;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -33,10 +34,13 @@ public class RecordCallVM extends RecordBaseVM {
     private final RecordCall model;
     private Mode mode;
     private PanelCall panel;
+    private boolean isFocused;
 
     public RecordCallVM(RecordCall model) {
         this.model = model;
         this.mode = new ModeShowText();
+        this.panel = null;
+        this.isFocused = false;
     }
 
     @Override
@@ -61,6 +65,10 @@ public class RecordCallVM extends RecordBaseVM {
 
     public void update() {
         App.current.getCurrentHistoryVM().notifyItemUpdate(model);
+
+        if (!(mode instanceof ModeShowText)) {
+            requestFocus();
+        }
     }
 
     public void activatePanel() {
@@ -75,14 +83,27 @@ public class RecordCallVM extends RecordBaseVM {
         App.current.getCurrentHistoryVM().remove(model);
     }
 
+    public boolean isFocused() {
+        return isFocused;
+    }
+
+    public void requestFocus() {
+        if (!isFocused) {
+            removeFocusFromCurrentFocused();
+            isFocused = true;
+        }
+    }
+
+    public void removeFocus() {
+        if (isFocused) {
+            finishInputOrShow();
+            isFocused = false;
+        }
+    }
+
     public void setMode(Mode mode) {
         this.mode = mode;
-
-        if (mode != null && mode.hasPanel()) {
-            panel = new PanelCall(model, mode::createPanelView);
-        } else {
-            panel = null;
-        }
+        setPanelForCurrentMode(mode);
     }
 
     public String getText() {
@@ -103,5 +124,38 @@ public class RecordCallVM extends RecordBaseVM {
 
     public RecordCall.SourceType getSourceType() {
         return model.sourceType;
+    }
+
+    private void finishInputOrShow() {
+        if (mode == null || mode instanceof ModeShowText) {
+            return;
+        }
+
+        if (TextUtils.isEmpty(getText())) {
+            deactivatePanel();
+            removeSelfFromHistory();
+        } else {
+            setMode(new ModeShowText());
+            update();
+            App.current.hideKeyboard();
+        }
+    }
+
+    private void removeFocusFromCurrentFocused() {
+        RecordCallVM currentFocused = (RecordCallVM) App.current.findViewModel(vm ->
+                vm instanceof RecordCallVM && ((RecordCallVM) vm).isFocused()
+        );
+
+        if (currentFocused != null) {
+            currentFocused.removeFocus();
+        }
+    }
+
+    private void setPanelForCurrentMode(Mode mode) {
+        if (mode != null && mode.hasPanel()) {
+            panel = new PanelCall(model, mode::createPanelView);
+        } else {
+            panel = null;
+        }
     }
 }
