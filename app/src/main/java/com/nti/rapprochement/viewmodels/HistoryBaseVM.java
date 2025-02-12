@@ -47,4 +47,8 @@ public abstract class HistoryBaseVM {
     public RecordBaseVM findViewModel(Function<RecordBaseVM, Boolean> selector) {
         return adapter.findViewModel(selector);
     }
+
+    public void handleGlobalEvent(Object args) {
+        adapter.handleGlobalEvent(args);
+    }
 }

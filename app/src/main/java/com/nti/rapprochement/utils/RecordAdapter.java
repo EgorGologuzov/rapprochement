@@ -61,7 +61,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBaseVM.RecordHolde
         int index = records.indexOf(item);
         if (index >= 0) {
             records.remove(index);
-            viewModels.remove(item);
+            viewModels.remove(item).dispose();
             notifyItemRemoved(index);
         }
     }
@@ -86,6 +86,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordBaseVM.RecordHolde
         }
 
         return null;
+    }
+
+    public void handleGlobalEvent(Object args) {
+        HashMap<RecordBase, RecordBaseVM> tmp = new HashMap<>(viewModels);
+        tmp.forEach((model, vm) -> vm.handleGlobalEvent(args));
     }
 
     private RecordBaseVM findOrCreateViewModel(RecordBase item) {

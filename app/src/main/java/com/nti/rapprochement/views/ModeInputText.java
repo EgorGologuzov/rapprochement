@@ -63,7 +63,6 @@ public class ModeInputText extends RecordCallVM.Mode {
                 .setOnClickListener(v -> {
                     vm.deactivatePanel();
                     vm.removeSelfFromHistory();
-                    App.current.hideKeyboard();
                 });
 
         view.findViewById(R.id.toTextButton)
@@ -73,8 +72,6 @@ public class ModeInputText extends RecordCallVM.Mode {
                     vm.setMode(new ModeShowText());
                     vm.activatePanel();
                     vm.update();
-
-                    App.current.hideKeyboard();
                 });
 
         view.findViewById(R.id.toSoundButton)
@@ -84,8 +81,6 @@ public class ModeInputText extends RecordCallVM.Mode {
                     vm.setMode(new ModeShowSound());
                     vm.activatePanel();
                     vm.update();
-
-                    App.current.hideKeyboard();
                 });
 
         view.findViewById(R.id.toGestureButton)
@@ -95,8 +90,6 @@ public class ModeInputText extends RecordCallVM.Mode {
                     vm.setMode(new ModeShowGesture());
                     vm.activatePanel();
                     vm.update();
-
-                    App.current.hideKeyboard();
                 });
 
         return view;
@@ -105,6 +98,12 @@ public class ModeInputText extends RecordCallVM.Mode {
     @Override
     public boolean hasPanel() {
         return true;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        App.current.hideKeyboard();
     }
 
     @SuppressLint("DefaultLocale")

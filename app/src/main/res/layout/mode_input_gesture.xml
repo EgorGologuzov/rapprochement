@@ -7,14 +7,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
+        <com.nti.rapprochement.views.RoundPreview
             android:id="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
             android:src="@drawable/camera_placeholder"
             android:adjustViewBounds="true"/>
-        <ImageView
+        <com.nti.rapprochement.views.RoundPreview
             android:id="@+id/analyzeResultView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

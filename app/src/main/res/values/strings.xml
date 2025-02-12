@@ -2,13 +2,11 @@
 <!--    Глобальные-->
     <string name="app_name">Сближение</string>
     <string name="text_not_set">[Текст не установлен]</string>
-    <string name="record_view_not_set">[Вид записи не определен]</string>
-    <string name="multi_mode_record_view_not_set">[Вид мультирежимной записи не определен]</string>
-    <string name="rmode_view_not_set">[Вид режима не определен]</string>
 
 <!--    Уведомления-->
     <string name="toast_input_text_is_empty">Текст не введен</string>
     <string name="toast_is_max_text_length">Максимальная длина текста</string>
+    <string name="toast_camera_permission_denied">Разрешение на камеру не получено</string>
 
 <!--    Приветственное сообщение-->
     <string name="begin_rapprochement">Начните сближение</string>
@@ -34,5 +32,10 @@
 
 <!--    Режим ввода текста-->
     <string name="prompt_input_text">Введите текст</string>
+
+<!--    Диалоговое окно сообщения-->
+    <string name="title_message">Сообщение</string>
+    <string name="btn_ok">Ок</string>
+    <string name="message_camera_permission_problems">Не удалось получить доступ к камере. Чтобы использовать этот функционал перейдите в настройки устройства и дайте разрешение на доступ к камере вручную.</string>
 
 </resources>

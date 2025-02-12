@@ -43,7 +43,7 @@ public class Settings {
     // Размер шрифта
     private static final String FONT_SIZE = "font_size";
 
-    public enum FontSize { Normal, Big, VeryBig; }
+    public enum FontSize { Normal, Big, VeryBig }
 
     public static FontSize getFontSize() {
         return FontSize.valueOf(preferences.getString(FONT_SIZE, FontSize.Normal.name()));
@@ -67,6 +67,22 @@ public class Settings {
     public static void setLocale(String locale) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(FONT_SIZE, locale);
+        editor.apply();
+    }
+
+
+    // Последнее направление камеры
+    private static final String LAST_CAMERA_FACING = "last_camera_facing";
+
+    public enum CameraFacing { Back, Front }
+
+    public static CameraFacing getLastCameraFacing() {
+        return CameraFacing.valueOf(preferences.getString(LAST_CAMERA_FACING, CameraFacing.Back.name()));
+    }
+
+    public static void setLastCameraFacing(CameraFacing value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(LAST_CAMERA_FACING, value.name());
         editor.apply();
     }
 }

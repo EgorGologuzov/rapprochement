@@ -6,13 +6,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.nti.rapprochement.App;
+import com.nti.rapprochement.data.Permissions;
 import com.nti.rapprochement.models.PanelCall;
 import com.nti.rapprochement.models.RecordCall;
 import com.nti.rapprochement.views.ModeShowText;
 import com.nti.rapprochement.views.RecordCallView;
 
 import java.util.Date;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 public class RecordCallVM extends RecordBaseVM {
 
@@ -29,12 +30,14 @@ public class RecordCallVM extends RecordBaseVM {
         public abstract View createInnerView(CreateArgs args);
         public abstract View createPanelView(CreateArgs args);
         public abstract boolean hasPanel(); // false если createPanelView возвращает null, иначе true
+        public void dispose() {}
     }
 
     private final RecordCall model;
     private Mode mode;
     private PanelCall panel;
     private boolean isFocused;
+    private Consumer<Permissions.RequestResult> permissionEventListener;
 
     public RecordCallVM(RecordCall model) {
         this.model = model;
@@ -60,6 +63,22 @@ public class RecordCallVM extends RecordBaseVM {
         if (mode != null) {
             View innerView = mode.createInnerView(new CreateArgs(frame, this));
             frame.addView(innerView);
+        }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (mode != null) {
+            mode.dispose();
+        }
+    }
+
+    @Override
+    public void handleGlobalEvent(Object args) {
+        super.handleGlobalEvent(args);
+        if (args instanceof Permissions.RequestResult && permissionEventListener != null) {
+            permissionEventListener.accept((Permissions.RequestResult) args);
         }
     }
 
@@ -102,6 +121,10 @@ public class RecordCallVM extends RecordBaseVM {
     }
 
     public void setMode(Mode mode) {
+        if (this.mode != null) {
+            this.mode.dispose();
+        }
+
         this.mode = mode;
         setPanelForCurrentMode(mode);
     }
@@ -126,6 +149,10 @@ public class RecordCallVM extends RecordBaseVM {
         return model.sourceType;
     }
 
+    public void setPermissionEventListener(Consumer<Permissions.RequestResult> permissionEventListener) {
+        this.permissionEventListener = permissionEventListener;
+    }
+
     private void finishInputOrShow() {
         if (mode == null || mode instanceof ModeShowText) {
             return;
@@ -137,7 +164,6 @@ public class RecordCallVM extends RecordBaseVM {
         } else {
             setMode(new ModeShowText());
             update();
-            App.current.hideKeyboard();
         }
     }
 

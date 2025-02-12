@@ -8,12 +8,14 @@ import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.nti.rapprochement.data.Camera;
+import com.nti.rapprochement.data.Permissions;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.utils.Convert;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         App.init(this);
         Res.init(this);
+        Camera.init(this);
+        Permissions.init(this);
         setBackButtonCallback();
         setKeyboardAdaptiveListener();
     }
@@ -77,5 +81,18 @@ public class MainActivity extends AppCompatActivity {
                 adaptiveLayout.setLayoutParams(params);
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0) {
+            App.current.notifyAboutGlobalEvent(
+                new Permissions.RequestResult(
+                    Permissions.typeFromRequestCode(requestCode),
+                    Permissions.resultFromGrantResults(grantResults[0])
+                )
+            );
+        }
     }
 }

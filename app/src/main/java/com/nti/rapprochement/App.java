@@ -8,6 +8,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.annotation.StringRes;
+
 import com.nti.rapprochement.models.HistoryBase;
 import com.nti.rapprochement.models.HistoryMain;
 import com.nti.rapprochement.models.PanelBase;
@@ -64,10 +66,6 @@ public class App {
         return historyFrame.getContext();
     }
 
-    public void recreateMainActivity() {
-        mainActivity.recreate();
-    }
-
     public HistoryBaseVM getCurrentHistoryVM() {
         return currentHistoryVM;
     }
@@ -80,8 +78,16 @@ public class App {
         return currentHistoryVM.findViewModel(selector);
     }
 
+    public void recreateMainActivity() {
+        mainActivity.recreate();
+    }
+
     public void showToast(String text) {
         Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showToast(@StringRes int resId) {
+        Toast.makeText(mainActivity, resId, Toast.LENGTH_SHORT).show();
     }
 
     public void openKeyboard() {
@@ -97,6 +103,14 @@ public class App {
         View view = mainActivity.getCurrentFocus();
         if (view == null) view = new View(mainActivity);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public void runOnUiThread(Runnable action) {
+        mainActivity.runOnUiThread(action);
+    }
+
+    public void notifyAboutGlobalEvent(Object args) {
+        currentHistoryVM.handleGlobalEvent(args);
     }
 
     public void navigate(HistoryBase history, PanelBase panel) {
