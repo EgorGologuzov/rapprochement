@@ -82,10 +82,6 @@ public class App {
         mainActivity.recreate();
     }
 
-    public void showToast(String text) {
-        Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
-    }
-
     public void showToast(@StringRes int resId) {
         Toast.makeText(mainActivity, resId, Toast.LENGTH_SHORT).show();
     }

@@ -29,6 +29,7 @@ public class ModeInputText extends RecordCallVM.Mode {
         TextView counter = view.findViewById(R.id.symbolCount);
 
         edit.setFilters(new InputFilter[] { new InputFilter.LengthFilter(MAX_LENGTH) });
+        edit.setText(vm.getText());
         counter.setText(formatCounterString(0));
 
         edit.addTextChangedListener(new TextWatcher() {
@@ -37,14 +38,12 @@ public class ModeInputText extends RecordCallVM.Mode {
                 counter.setText(formatCounterString(s.length()));
                 vm.setText(s.toString());
                 if (s.length() == MAX_LENGTH) {
-                    App.current.showToast(Res.str(R.string.toast_is_max_text_length));
+                    App.current.showToast(R.string.toast_is_max_text_length);
                 }
             }
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void afterTextChanged(Editable s) {}
         });
-
-        edit.setText(vm.getText());
 
         edit.requestFocus();
         App.current.openKeyboard();
@@ -113,7 +112,7 @@ public class ModeInputText extends RecordCallVM.Mode {
 
     private static boolean isInputTextEmpty(String text) {
         if (TextUtils.isEmpty(text)) {
-            App.current.showToast(Res.str(R.string.toast_input_text_is_empty));
+            App.current.showToast(R.string.toast_input_text_is_empty);
             return true;
         }
 

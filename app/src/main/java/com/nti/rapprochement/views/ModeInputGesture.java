@@ -36,81 +36,56 @@ public class ModeInputGesture extends RecordCallVM.Mode {
         TextView timeView = view.findViewById(R.id.timeView);
         FrameLayout timeLine = view.findViewById(R.id.timeLine);
 
-        Camera.openAnalyzeSession(imageProxy -> {
-            final float rotation = imageProxy.getImageInfo().getRotationDegrees();
-            final boolean isFacingFront = Settings.getLastCameraFacing() == Settings.CameraFacing.Front;
-            final Bitmap bitmap = imageProxy.toBitmap();
-
-            App.current.runOnUiThread(() -> {
-                preview.setRotation(rotation);
-                preview.setMirrorMode(isFacingFront);
-                preview.setImageBitmap(bitmap);
-            });
-        });
-
         Runnable startTimer = () -> {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                final Date startTime = new Date();
-                @Override
-                public void run() {
-                    App.current.runOnUiThread(() -> {
-                        float timeDelta = (float) (new Date().getTime() - startTime.getTime()) / 1000;
-                        float timeDefault = Settings.getGestureRecognizeTimeout();
-                        float timeRemain = timeDefault - timeDelta;
+            InputTimer.StartArgs startArgs = new InputTimer.StartArgs();
+            startArgs.timeView = timeView;
+            startArgs.timeLine = timeLine;
+            startArgs.timeLineParent = parent;
+            startArgs.timeoutSec = Settings.getGestureRecognizeTimeout();
+            startArgs.onTimeout = vm::finishInputOrShowAndSetTextShowMode;
+            timer = InputTimer.start(startArgs);
+        };
 
-                        if (timeRemain <= 0) {
-                            vm.finishInputOrShowAndSetTextShowMode();
-                            timer.cancel();
-                            timer.purge();
-                            return;
-                        }
-
-                        String timeStr = formatTime((int) timeRemain, (int) timeDefault);
-                        timeView.setText(timeStr);
-
-                        float percent = timeRemain / timeDefault;
-                        int targetWidth = Math.round(percent * parent.getWidth());
-                        ViewGroup.LayoutParams params = timeLine.getLayoutParams();
-                        params.width = targetWidth;
-                        timeLine.setLayoutParams(params);
-                    });
+        Runnable showCameraProblemsMessage = () ->
+            MessageDialog.show(R.string.message_camera_permission_problems, () -> {
+                    vm.deactivatePanel();
+                    vm.removeSelfFromHistory();
                 }
-            }, 0, 10);
+            );
+
+        Runnable startPreview = () ->
+            Camera.openAnalyzeSession(imageProxy -> {
+                final float rotation = imageProxy.getImageInfo().getRotationDegrees();
+                final boolean isFacingFront = Settings.getLastCameraFacing() == Settings.CameraFacing.Front;
+                final Bitmap bitmap = imageProxy.toBitmap();
+
+                App.current.runOnUiThread(() -> {
+                    preview.setRotation(rotation);
+                    preview.setMirrorMode(isFacingFront);
+                    preview.setImageBitmap(bitmap);
+                });
+            });
+
+        Runnable run = () -> {
+            startPreview.run();
+            startTimer.run();
         };
 
         if (Permissions.hasPermissionCamera()) {
-            startTimer.run();
+            run.run();
         } else {
             Permissions.requestPermissionCamera();
         }
 
         vm.setPermissionEventListener(result -> {
-            if (result.type != Permissions.Type.Camera) {
-                return;
-            }
-
-            if (result.result == Permissions.Result.Denied) {
-                MessageDialog.show(
-                    R.string.message_camera_permission_problems,
-                    () -> {
-                        vm.deactivatePanel();
-                        vm.removeSelfFromHistory();
-                    }
-                );
-            } else {
-                startTimer.run();
+            if (result.type == Permissions.Type.Camera) {
+                if (result.result == Permissions.Result.Granted) {
+                    run.run();
+                } else {
+                    showCameraProblemsMessage.run();
+                }
             }
         });
-
-//        Camera.startAnalyze(imageProxy -> {
-//            final Bitmap result = GestureTranslator.analyze(imageProxy.toBitmap());
-//            final Bitmap formatedResult = Camera.formatCircle(result);
-//            App.runOnUiThread(() -> {
-//                analyzeResultView.setRotation(imageProxy.getImageInfo().getRotationDegrees());
-//                analyzeResultView.setImageBitmap(formatedResult);
-//            });
-//        });
 
         return view;
     }
@@ -165,18 +140,5 @@ public class ModeInputGesture extends RecordCallVM.Mode {
             timer.cancel();
             timer.purge();
         }
-    }
-
-    private String formatTime(int timeRemain, int timeDefault) {
-        int min1 = timeRemain / 60;
-        int sec1 = timeRemain % 60;
-        int min2 = timeDefault / 60;
-        int sec2 = timeDefault % 60;
-        String sMin1 = "" + min1;
-        String sSec1 = sec1 < 10 ? "0" + sec1 : "" + sec1;
-        String sMin2 = "" + min2;
-        String sSec2 = sec2 < 10 ? "0" + sec2 : "" + sec2;
-
-        return sMin1 + ":" + sSec1 + " / " + sMin2 + ":" + sSec2;
     }
 }
