@@ -17,7 +17,14 @@ import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.utils.ViewsUtils;
 import com.nti.rapprochement.viewmodels.RecordCallVM;
 
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class ModeInputGesture extends RecordCallVM.Mode {
+
+    private Timer timer;
+
     @Override
     public View createInnerView(RecordCallVM.CreateArgs args) {
         ViewGroup parent = args.parent;
@@ -28,10 +35,6 @@ public class ModeInputGesture extends RecordCallVM.Mode {
         RoundPreview analyzeResultView = view.findViewById(R.id.analyzeResultView);
         TextView timeView = view.findViewById(R.id.timeView);
         FrameLayout timeLine = view.findViewById(R.id.timeLine);
-
-        if (!Permissions.hasPermissionCamera()) {
-            Permissions.requestPermissionCamera();
-        }
 
         Camera.openAnalyzeSession(imageProxy -> {
             final float rotation = imageProxy.getImageInfo().getRotationDegrees();
@@ -45,13 +48,58 @@ public class ModeInputGesture extends RecordCallVM.Mode {
             });
         });
 
+        Runnable startTimer = () -> {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                final Date startTime = new Date();
+                @Override
+                public void run() {
+                    App.current.runOnUiThread(() -> {
+                        float timeDelta = (float) (new Date().getTime() - startTime.getTime()) / 1000;
+                        float timeDefault = Settings.getGestureRecognizeTimeout();
+                        float timeRemain = timeDefault - timeDelta;
+
+                        if (timeRemain <= 0) {
+                            vm.finishInputOrShowAndSetTextShowMode();
+                            timer.cancel();
+                            timer.purge();
+                            return;
+                        }
+
+                        String timeStr = formatTime((int) timeRemain, (int) timeDefault);
+                        timeView.setText(timeStr);
+
+                        float percent = timeRemain / timeDefault;
+                        int targetWidth = Math.round(percent * parent.getWidth());
+                        ViewGroup.LayoutParams params = timeLine.getLayoutParams();
+                        params.width = targetWidth;
+                        timeLine.setLayoutParams(params);
+                    });
+                }
+            }, 0, 10);
+        };
+
+        if (Permissions.hasPermissionCamera()) {
+            startTimer.run();
+        } else {
+            Permissions.requestPermissionCamera();
+        }
+
         vm.setPermissionEventListener(result -> {
-            if (result.type == Permissions.Type.Camera && result.result == Permissions.Result.Denied) {
-                MessageDialog.show(R.string.message_camera_permission_problems, () -> {
+            if (result.type != Permissions.Type.Camera) {
+                return;
+            }
+
+            if (result.result == Permissions.Result.Denied) {
+                MessageDialog.show(
+                    R.string.message_camera_permission_problems,
+                    () -> {
                         vm.deactivatePanel();
                         vm.removeSelfFromHistory();
                     }
                 );
+            } else {
+                startTimer.run();
             }
         });
 
@@ -63,30 +111,6 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 //                analyzeResultView.setImageBitmap(formatedResult);
 //            });
 //        });
-
-//        RModeInputGesture mode = (RModeInputGesture) model.getMode();
-//
-//        mode.setStartTime(new Date());
-//
-//        optionalData.timerId = GlobalTimer.addThreadSafetyTimer(() -> {
-//            float timeDelta = (float) (new Date().getTime() - mode.getStartTime().getTime()) / 1000;
-//            float timeDefault = 10;
-//            float timeRemain = timeDefault - timeDelta;
-//
-//            if (timeRemain <= 0) {
-//                model.finishInputOrShow();
-//            }
-//
-//            String timeStr = formatTime((int) timeRemain, (int) timeDefault);
-//            timeView.setText(timeStr);
-//
-//            float percent = timeRemain / timeDefault;
-//            int targetWidth = Math.round(percent * parent.getWidth());
-//
-//            ViewGroup.LayoutParams params = timeLine.getLayoutParams();
-//            params.width = targetWidth;
-//            timeLine.setLayoutParams(params);
-//        }, 0, 10);
 
         return view;
     }
@@ -134,6 +158,25 @@ public class ModeInputGesture extends RecordCallVM.Mode {
     @Override
     public void dispose() {
         super.dispose();
+
         Camera.closeAllAnalyzeSessions();
+
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
+    }
+
+    private String formatTime(int timeRemain, int timeDefault) {
+        int min1 = timeRemain / 60;
+        int sec1 = timeRemain % 60;
+        int min2 = timeDefault / 60;
+        int sec2 = timeDefault % 60;
+        String sMin1 = "" + min1;
+        String sSec1 = sec1 < 10 ? "0" + sec1 : "" + sec1;
+        String sMin2 = "" + min2;
+        String sSec2 = sec2 < 10 ? "0" + sec2 : "" + sec2;
+
+        return sMin1 + ":" + sSec1 + " / " + sMin2 + ":" + sSec2;
     }
 }

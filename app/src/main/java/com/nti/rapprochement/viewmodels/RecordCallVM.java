@@ -115,7 +115,7 @@ public class RecordCallVM extends RecordBaseVM {
 
     public void removeFocus() {
         if (isFocused) {
-            finishInputOrShow();
+            finishInputOrShowAndSetTextShowMode();
             isFocused = false;
         }
     }
@@ -153,7 +153,7 @@ public class RecordCallVM extends RecordBaseVM {
         this.permissionEventListener = permissionEventListener;
     }
 
-    private void finishInputOrShow() {
+    public void finishInputOrShowAndSetTextShowMode() {
         if (mode == null || mode instanceof ModeShowText) {
             return;
         }

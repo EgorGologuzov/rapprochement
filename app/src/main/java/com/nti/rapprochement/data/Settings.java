@@ -85,4 +85,18 @@ public class Settings {
         editor.putString(LAST_CAMERA_FACING, value.name());
         editor.apply();
     }
+
+
+    // Время автоматического заврешения рапознавания жестов
+    private static final String GESTURE_RECOGNIZE_TIMEOUT = "gesture_recognize_timeout";
+
+    public static int getGestureRecognizeTimeout() {
+        return preferences.getInt(GESTURE_RECOGNIZE_TIMEOUT, 30);
+    }
+
+    public static void setGestureRecognizeTimeout(int value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(GESTURE_RECOGNIZE_TIMEOUT, value);
+        editor.apply();
+    }
 }
