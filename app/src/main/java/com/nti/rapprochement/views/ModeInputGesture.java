@@ -1,7 +1,8 @@
 package com.nti.rapprochement.views;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -14,16 +15,19 @@ import com.nti.rapprochement.data.Camera;
 import com.nti.rapprochement.data.Permissions;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
+import com.nti.rapprochement.domain.Domain;
+import com.nti.rapprochement.domain.contracts.IGestureAnalyzer;
 import com.nti.rapprochement.utils.ViewsUtils;
 import com.nti.rapprochement.viewmodels.RecordCallVM;
 
-import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
+import java.util.function.Consumer;
 
 public class ModeInputGesture extends RecordCallVM.Mode {
 
     private Timer timer;
+    private IGestureAnalyzer analyzer;
+    private LiveText liveText;
 
     @Override
     public View createInnerView(RecordCallVM.CreateArgs args) {
@@ -32,28 +36,39 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 
         LinearLayout view = (LinearLayout) ViewsUtils.createView(R.layout.mode_input_gesture, parent);
         RoundPreview preview = view.findViewById(R.id.preview);
-        RoundPreview analyzeResultView = view.findViewById(R.id.analyzeResultView);
+        RoundPreview analyzePreview = view.findViewById(R.id.analyzePreview);
         TextView timeView = view.findViewById(R.id.timeView);
         FrameLayout timeLine = view.findViewById(R.id.timeLine);
+        TextView outputTextView = view.findViewById(R.id.outputTextView);
 
         Runnable startTimer = () -> {
-            InputTimer.StartArgs startArgs = new InputTimer.StartArgs();
-            startArgs.timeView = timeView;
-            startArgs.timeLine = timeLine;
-            startArgs.timeLineParent = parent;
-            startArgs.timeoutSec = Settings.getGestureRecognizeTimeout();
-            startArgs.onTimeout = vm::finishInputOrShowAndSetTextShowMode;
-            timer = InputTimer.start(startArgs);
+            InputTimer.CreateArgs createArgs = new InputTimer.CreateArgs();
+            createArgs.timeView = timeView;
+            createArgs.timeLine = timeLine;
+            createArgs.timeLineParent = parent;
+            createArgs.timeoutSec = Settings.getGestureRecognizeTimeout();
+            createArgs.onTimeout = vm::finishInputOrShow;
+            timer = InputTimer.create(createArgs);
         };
 
-        Runnable showCameraProblemsMessage = () ->
+        Runnable createLiveText = () -> {
+            LiveText.CreateArgs createArgs = new LiveText.CreateArgs();
+            createArgs.target = outputTextView;
+            createArgs.vm = vm;
+            createArgs.lightedTextBackground = Res.color(R.color.primary_1);
+            createArgs.lightedTextForeground = Color.BLACK;
+            liveText = LiveText.create(createArgs);
+        };
+
+        Runnable showCameraProblemsMessage = () -> {
             MessageDialog.show(Res.str(R.string.message_camera_permission_problems), () -> {
                     vm.deactivatePanel();
                     vm.removeSelfFromHistory();
                 }
             );
+        };
 
-        Runnable startPreview = () ->
+        Runnable startPreview = () -> {
             Camera.openAnalyzeSession(imageProxy -> {
                 final float rotation = imageProxy.getImageInfo().getRotationDegrees();
                 final boolean isFacingFront = Settings.getLastCameraFacing() == Settings.CameraFacing.Front;
@@ -65,19 +80,41 @@ public class ModeInputGesture extends RecordCallVM.Mode {
                     preview.setImageBitmap(bitmap);
                 });
             });
+        };
+
+        Runnable startAnalyze = () -> {
+            analyzer = Domain.getGestureAnalyzer(parent.getContext());
+
+            analyzer.setPreviewChangeCallback(bitmap -> {
+                App.current.runOnUiThread(() -> analyzePreview.setImageBitmap(bitmap));
+            });
+
+            analyzer.setTextChangeCallback(text -> {
+                App.current.runOnUiThread(() -> liveText.setText(text));
+            });
+
+            Camera.openAnalyzeSession(imageProxy -> {
+                final float rotation = imageProxy.getImageInfo().getRotationDegrees();
+                final boolean isFacingFront = Settings.getLastCameraFacing() == Settings.CameraFacing.Front;
+                final Bitmap bitmap = imageProxy.toBitmap();
+
+                analyzer.analyze(bitmap);
+
+                App.current.runOnUiThread(() -> {
+                    analyzePreview.setRotation(rotation);
+                    analyzePreview.setMirrorMode(isFacingFront);
+                });
+            });
+        };
 
         Runnable run = () -> {
+            createLiveText.run();
             startPreview.run();
+            startAnalyze.run();
             startTimer.run();
         };
 
-        if (Permissions.hasPermissionCamera()) {
-            run.run();
-        } else {
-            Permissions.requestPermissionCamera();
-        }
-
-        vm.setPermissionEventListener(result -> {
+        Consumer<Permissions.RequestResult> handlePermissionRequestResult = result -> {
             if (result.type == Permissions.Type.Camera) {
                 if (result.result == Permissions.Result.Granted) {
                     run.run();
@@ -85,7 +122,15 @@ public class ModeInputGesture extends RecordCallVM.Mode {
                     showCameraProblemsMessage.run();
                 }
             }
-        });
+        };
+
+        vm.setPermissionEventListener(handlePermissionRequestResult);
+
+        if (Permissions.hasPermissionCamera()) {
+            run.run();
+        } else {
+            Permissions.requestPermissionCamera();
+        }
 
         return view;
     }
@@ -110,6 +155,8 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 
         view.findViewById(R.id.toTextButton)
                 .setOnClickListener(v -> {
+                    if (isInputTextEmpty(vm.getText())) return;
+
                     vm.setMode(new ModeShowText());
                     vm.activatePanel();
                     vm.update();
@@ -117,6 +164,8 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 
         view.findViewById(R.id.toSoundButton)
                 .setOnClickListener(v -> {
+                    if (isInputTextEmpty(vm.getText())) return;
+
                     vm.setMode(new ModeShowSound());
                     vm.activatePanel();
                     vm.update();
@@ -140,5 +189,18 @@ public class ModeInputGesture extends RecordCallVM.Mode {
             timer.cancel();
             timer.purge();
         }
+
+        if (analyzer != null) {
+            analyzer.dispose();
+        }
+    }
+
+    private static boolean isInputTextEmpty(String text) {
+        if (TextUtils.isEmpty(text)) {
+            App.current.showToast(R.string.toast_text_not_recognized);
+            return true;
+        }
+
+        return false;
     }
 }

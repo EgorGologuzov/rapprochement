@@ -4,11 +4,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.google.android.datatransport.runtime.dagger.Component;
-import com.google.auto.value.AutoBuilder;
-import com.google.auto.value.AutoValue;
 import com.nti.rapprochement.App;
-import com.nti.rapprochement.data.Settings;
 
 import java.util.Date;
 import java.util.Timer;
@@ -19,7 +15,7 @@ public class InputTimer {
     private static final int DELAY = 0;
     private static final int PERIOD = 50;
 
-    public static class StartArgs {
+    public static class CreateArgs {
         TextView timeView;
         FrameLayout timeLine;
         ViewGroup timeLineParent;
@@ -27,7 +23,7 @@ public class InputTimer {
         Runnable onTimeout;
     }
 
-    public static Timer start(StartArgs args) {
+    public static Timer create(CreateArgs args) {
         TextView timeView = args.timeView;
         FrameLayout timeLine = args.timeLine;
         ViewGroup timeLineParent = args.timeLineParent;

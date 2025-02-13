@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Rapprochement"
 include(":app")
+include(":domain")

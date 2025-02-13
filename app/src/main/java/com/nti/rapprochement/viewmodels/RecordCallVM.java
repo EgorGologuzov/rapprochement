@@ -115,7 +115,7 @@ public class RecordCallVM extends RecordBaseVM {
 
     public void removeFocus() {
         if (isFocused) {
-            finishInputOrShowAndSetTextShowMode();
+            finishInputOrShow();
             isFocused = false;
         }
     }
@@ -153,7 +153,7 @@ public class RecordCallVM extends RecordBaseVM {
         this.permissionEventListener = permissionEventListener;
     }
 
-    public void finishInputOrShowAndSetTextShowMode() {
+    public void finishInputOrShow() {
         if (mode == null || mode instanceof ModeShowText) {
             return;
         }
@@ -162,6 +162,7 @@ public class RecordCallVM extends RecordBaseVM {
             deactivatePanel();
             removeSelfFromHistory();
         } else {
+            deactivatePanel();
             setMode(new ModeShowText());
             update();
         }

@@ -6,7 +6,7 @@
 <!--    Уведомления-->
     <string name="toast_input_text_is_empty">Текст не введен</string>
     <string name="toast_is_max_text_length">Максимальная длина текста</string>
-    <string name="toast_camera_permission_denied">Разрешение на камеру не получено</string>
+    <string name="toast_text_not_recognized">Текст не распознан</string>
 
 <!--    Приветственное сообщение-->
     <string name="begin_rapprochement">Начните сближение</string>
@@ -32,6 +32,10 @@
 
 <!--    Режим ввода текста-->
     <string name="prompt_input_text">Введите текст</string>
+
+<!--    Режим распознавания-->
+    <string name="placeholder_time">0:00 / 0:00</string>
+    <string name="placeholder_text">-</string>
 
 <!--    Диалоговое окно сообщения-->
     <string name="title_message">Сообщение</string>
