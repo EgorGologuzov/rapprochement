@@ -61,26 +61,4 @@ public class Permissions {
         return ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.RECORD_AUDIO)
                 == PackageManager.PERMISSION_GRANTED;
     }
-
-    public static Type typeFromRequestCode(int requestCode) {
-        switch (requestCode) {
-            case CAMERA_PERMISSION_REQUEST_CODE:
-                return Type.Camera;
-            case RECORD_AUDIO_PERMISSION_REQUEST_CODE:
-                return Type.RecordAudio;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    public static Result resultFromGrantResults(int result) {
-        switch (result) {
-            case PackageManager.PERMISSION_GRANTED:
-                return Result.Granted;
-            case PackageManager.PERMISSION_DENIED:
-                return Result.Denied;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
 }

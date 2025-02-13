@@ -1,8 +1,14 @@
 package com.nti.rapprochement.utils;
 
+import android.content.pm.PackageManager;
+
+import androidx.annotation.DrawableRes;
+
 import com.nti.rapprochement.R;
+import com.nti.rapprochement.data.Permissions;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
+import com.nti.rapprochement.models.RecordCall;
 
 public class Convert {
 
@@ -15,7 +21,7 @@ public class Convert {
             case Normal: return Res.str(R.string.font_normal);
             case Big: return Res.str(R.string.font_big);
             case VeryBig: return Res.str(R.string.font_very_big);
-            default: return "";
+            default: throw new IllegalArgumentException();
         }
     }
 
@@ -24,7 +30,7 @@ public class Convert {
             case Normal: return R.style.Theme_Rapprochement_FontNormal;
             case Big: return R.style.Theme_Rapprochement_FontBig;
             case VeryBig: return R.style.Theme_Rapprochement_FontVeryBig;
-            default: return -1;
+            default: throw new IllegalArgumentException();
         }
     }
 
@@ -33,8 +39,10 @@ public class Convert {
             return Settings.FontSize.Normal;
         } else if (variant.equals(Res.str(R.string.font_big))) {
             return Settings.FontSize.Big;
-        } else {
+        } else if (variant.equals(Res.str(R.string.font_very_big))) {
             return Settings.FontSize.VeryBig;
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 
@@ -44,5 +52,31 @@ public class Convert {
                 Res.str(R.string.font_big),
                 Res.str(R.string.font_very_big)
         };
+    }
+
+    @DrawableRes
+    public static int sourceTypeToDrawableId(RecordCall.SourceType sourceType) {
+        switch (sourceType) {
+            case Gesture: return R.drawable.source_type_gesture;
+            case Sound: return R.drawable.source_type_sound;
+            case Text: return R.drawable.source_type_text;
+            default: throw new IllegalArgumentException();
+        }
+    }
+
+    public static Permissions.Type requestCodeToType(int requestCode) {
+        switch (requestCode) {
+            case Permissions.CAMERA_PERMISSION_REQUEST_CODE: return Permissions.Type.Camera;
+            case Permissions.RECORD_AUDIO_PERMISSION_REQUEST_CODE: return Permissions.Type.RecordAudio;
+            default: throw new IllegalArgumentException();
+        }
+    }
+
+    public static Permissions.Result grantResultsToPermissionResult(int result) {
+        switch (result) {
+            case PackageManager.PERMISSION_GRANTED: return Permissions.Result.Granted;
+            case PackageManager.PERMISSION_DENIED: return Permissions.Result.Denied;
+            default: throw new IllegalArgumentException();
+        }
     }
 }

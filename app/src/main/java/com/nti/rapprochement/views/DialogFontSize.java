@@ -4,13 +4,12 @@ import android.app.AlertDialog;
 
 import com.nti.rapprochement.App;
 import com.nti.rapprochement.R;
-import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.utils.Convert;
 
 import java.util.function.Consumer;
 
-public class FontSizeDialog {
+public class DialogFontSize {
     public static void show(Consumer<Settings.FontSize> onVariantSelected) {
         String[] variants = Convert.getFontSizeStringVariants();
 

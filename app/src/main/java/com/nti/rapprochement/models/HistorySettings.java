@@ -6,7 +6,7 @@ import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.utils.Convert;
 import com.nti.rapprochement.viewmodels.HistoryBaseVM;
 import com.nti.rapprochement.viewmodels.HistorySettingsVM;
-import com.nti.rapprochement.views.FontSizeDialog;
+import com.nti.rapprochement.views.DialogFontSize;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,7 @@ public class HistorySettings extends HistoryBase {
         params.add(new SettingsParameter(
                 Res.str(R.string.font),
                 Convert.fontSizeToString(Settings.getFontSize()),
-                (sp) -> FontSizeDialog.show(result -> {
+                (sp) -> DialogFontSize.show(result -> {
                     Settings.setFontSize(result);
                     sp.setValue(Convert.fontSizeToString(result));
                 })));

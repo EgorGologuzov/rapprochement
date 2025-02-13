@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.nti.rapprochement.R;
 import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.models.RecordCall;
+import com.nti.rapprochement.utils.Convert;
 import com.nti.rapprochement.utils.ViewsUtils;
 import com.nti.rapprochement.viewmodels.RecordCallVM;
 
@@ -29,14 +30,7 @@ public class ModeShowText extends RecordCallVM.Mode {
         ActionButton toSoundButton = view.findViewById(R.id.toSoundButton);
         ActionButton optionsButton = view.findViewById(R.id.optionsButton);
 
-        RecordCall.SourceType sourceType = vm.getSourceType();
-        if (sourceType == RecordCall.SourceType.Gesture) {
-            sourceTypeView.setImageResource(R.drawable.source_type_gesture);
-        } else if (sourceType == RecordCall.SourceType.Sound) {
-            sourceTypeView.setImageResource(R.drawable.source_type_sound);
-        } else if (sourceType == RecordCall.SourceType.Text) {
-            sourceTypeView.setImageResource(R.drawable.source_type_text);
-        }
+        sourceTypeView.setImageResource(Convert.sourceTypeToDrawableId(vm.getSourceType()));
 
         datetimeView.setText(formatTime(vm.getCreationTime()));
 

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class InputTimer {
+public class HelperInputTimer {
 
     private static final int DELAY = 0;
     private static final int PERIOD = 50;

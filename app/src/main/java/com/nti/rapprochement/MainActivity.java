@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
         if (grantResults.length > 0) {
             App.current.notifyAboutGlobalEvent(
                 new Permissions.RequestResult(
-                    Permissions.typeFromRequestCode(requestCode),
-                    Permissions.resultFromGrantResults(grantResults[0])
+                    Convert.requestCodeToType(requestCode),
+                    Convert.grantResultsToPermissionResult(grantResults[0])
                 )
             );
         }

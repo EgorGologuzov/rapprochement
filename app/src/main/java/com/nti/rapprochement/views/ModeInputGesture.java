@@ -27,7 +27,7 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 
     private Timer timer;
     private IGestureAnalyzer analyzer;
-    private LiveText liveText;
+    private HelperLiveText liveText;
 
     @Override
     public View createInnerView(RecordCallVM.CreateArgs args) {
@@ -42,26 +42,26 @@ public class ModeInputGesture extends RecordCallVM.Mode {
         TextView outputTextView = view.findViewById(R.id.outputTextView);
 
         Runnable startTimer = () -> {
-            InputTimer.CreateArgs createArgs = new InputTimer.CreateArgs();
+            HelperInputTimer.CreateArgs createArgs = new HelperInputTimer.CreateArgs();
             createArgs.timeView = timeView;
             createArgs.timeLine = timeLine;
             createArgs.timeLineParent = parent;
             createArgs.timeoutSec = Settings.getGestureRecognizeTimeout();
             createArgs.onTimeout = vm::finishInputOrShow;
-            timer = InputTimer.create(createArgs);
+            timer = HelperInputTimer.create(createArgs);
         };
 
         Runnable createLiveText = () -> {
-            LiveText.CreateArgs createArgs = new LiveText.CreateArgs();
+            HelperLiveText.CreateArgs createArgs = new HelperLiveText.CreateArgs();
             createArgs.target = outputTextView;
             createArgs.vm = vm;
             createArgs.lightedTextBackground = Res.color(R.color.primary_1);
             createArgs.lightedTextForeground = Color.BLACK;
-            liveText = LiveText.create(createArgs);
+            liveText = HelperLiveText.create(createArgs);
         };
 
         Runnable showCameraProblemsMessage = () -> {
-            MessageDialog.show(Res.str(R.string.message_camera_permission_problems), () -> {
+            DialogMessage.show(Res.str(R.string.message_camera_permission_problems), () -> {
                     vm.deactivatePanel();
                     vm.removeSelfFromHistory();
                 }

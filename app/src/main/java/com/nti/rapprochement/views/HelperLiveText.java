@@ -1,6 +1,5 @@
 package com.nti.rapprochement.views;
 
-import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
@@ -9,11 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 
-import com.nti.rapprochement.R;
-import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.viewmodels.RecordCallVM;
 
-public class LiveText {
+public class HelperLiveText {
 
     public static class CreateArgs {
         public TextView target;
@@ -22,13 +19,13 @@ public class LiveText {
         public @ColorInt int lightedTextForeground;
     }
 
-    public static LiveText create(CreateArgs args) {
-        return new LiveText(args);
+    public static HelperLiveText create(CreateArgs args) {
+        return new HelperLiveText(args);
     }
 
     private final CreateArgs args;
 
-    private LiveText(CreateArgs args) {
+    private HelperLiveText(CreateArgs args) {
         this.args = args;
     }
 
