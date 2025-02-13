@@ -47,7 +47,7 @@ public class ModeInputGesture extends RecordCallVM.Mode {
         };
 
         Runnable showCameraProblemsMessage = () ->
-            MessageDialog.show(R.string.message_camera_permission_problems, () -> {
+            MessageDialog.show(Res.str(R.string.message_camera_permission_problems), () -> {
                     vm.deactivatePanel();
                     vm.removeSelfFromHistory();
                 }

@@ -83,7 +83,7 @@ public class RecordCallVM extends RecordBaseVM {
     }
 
     public void update() {
-        App.current.getCurrentHistoryVM().notifyItemUpdate(model);
+        App.current.getCurrentHistoryVM().update(model);
 
         if (!(mode instanceof ModeShowText)) {
             requestFocus();
@@ -168,9 +168,8 @@ public class RecordCallVM extends RecordBaseVM {
     }
 
     private void removeFocusFromCurrentFocused() {
-        RecordCallVM currentFocused = (RecordCallVM) App.current.findViewModel(vm ->
-                vm instanceof RecordCallVM && ((RecordCallVM) vm).isFocused()
-        );
+        RecordCallVM currentFocused = (RecordCallVM) App.current.getCurrentHistoryVM()
+                .findViewModel(vm -> vm instanceof RecordCallVM && ((RecordCallVM) vm).isFocused());
 
         if (currentFocused != null) {
             currentFocused.removeFocus();

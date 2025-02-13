@@ -14,7 +14,7 @@ import com.nti.rapprochement.utils.Convert;
 import java.util.function.Consumer;
 
 public class MessageDialog {
-    public static void show(@StringRes int message, Runnable onClose) {
+    public static void show(String message, Runnable onClose) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(App.current.getDialogContext());
         builder

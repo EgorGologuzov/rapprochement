@@ -18,7 +18,7 @@ public class SettingsParameterView {
         valueView.setText(vm.getValue());
         valueView.setOnClickListener(v -> vm.callAction());
 
-        vm.onValueChange.add(vm2 -> valueView.setText(vm2.getValue()));
+        vm.setValueChangeListener(vm2 -> valueView.setText(vm2.getValue()));
 
         return view;
     }

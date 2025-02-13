@@ -16,6 +16,9 @@ import java.util.TimerTask;
 
 public class InputTimer {
 
+    private static final int DELAY = 0;
+    private static final int PERIOD = 50;
+
     public static class StartArgs {
         TextView timeView;
         FrameLayout timeLine;
@@ -50,7 +53,7 @@ public class InputTimer {
                         return;
                     }
 
-                    String timeStr = formatTime((int) timeRemain, (int) timeout);
+                    String timeStr = formatTime((int) Math.ceil(timeRemain), (int) timeout);
                     timeView.setText(timeStr);
 
                     float percent = timeRemain / timeout;
@@ -60,7 +63,7 @@ public class InputTimer {
                     timeLine.setLayoutParams(params);
                 });
             }
-        }, 0, 10);
+        }, DELAY, PERIOD);
 
         return timer;
     }

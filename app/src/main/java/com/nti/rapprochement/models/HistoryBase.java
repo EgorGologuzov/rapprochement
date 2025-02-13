@@ -1,6 +1,5 @@
 package com.nti.rapprochement.models;
 
-import com.nti.rapprochement.utils.RecordAdapter;
 import com.nti.rapprochement.viewmodels.HistoryBaseVM;
 
 import java.util.ArrayList;

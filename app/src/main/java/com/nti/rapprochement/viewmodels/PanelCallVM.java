@@ -16,7 +16,9 @@ public class PanelCallVM extends PanelBaseVM {
 
     @Override
     public View createView(ViewGroup parent) {
-        RecordCallVM vm = (RecordCallVM) App.current.findViewModel(model.recordModel);
+        RecordCallVM vm = (RecordCallVM) App.current.getCurrentHistoryVM()
+                .findViewModel(model.recordModel);
+
         return model.viewCreator.apply(new RecordCallVM.CreateArgs(parent, vm));
     }
 }

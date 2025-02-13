@@ -11,9 +11,9 @@ import java.util.function.Consumer;
 
 public class SettingsParameterVM {
 
-    public final Event<SettingsParameterVM> onValueChange = new Event<>();
-
     private final SettingsParameter model;
+
+    private Consumer<SettingsParameterVM> valueChangeListener;
 
     public SettingsParameterVM(SettingsParameter model) {
         this.model = model;
@@ -33,7 +33,13 @@ public class SettingsParameterVM {
 
     public void setValue(String value) {
         model.value = value;
-        onValueChange.call(this);
+        if (valueChangeListener != null) {
+            valueChangeListener.accept(this);
+        }
+    }
+
+    public void setValueChangeListener(Consumer<SettingsParameterVM> valueChangeListener) {
+        this.valueChangeListener = valueChangeListener;
     }
 
     public void callAction() {

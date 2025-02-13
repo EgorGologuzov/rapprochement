@@ -70,20 +70,16 @@ public class App {
         return currentHistoryVM;
     }
 
-    public RecordBaseVM findViewModel(RecordBase model) {
-        return currentHistoryVM.findViewModel(model);
-    }
-
-    public RecordBaseVM findViewModel(Function<RecordBaseVM, Boolean> selector) {
-        return currentHistoryVM.findViewModel(selector);
-    }
-
     public void recreateMainActivity() {
         mainActivity.recreate();
     }
 
     public void showToast(@StringRes int resId) {
         Toast.makeText(mainActivity, resId, Toast.LENGTH_SHORT).show();
+    }
+
+    public void showToast(String text) {
+        Toast.makeText(mainActivity, text, Toast.LENGTH_SHORT).show();
     }
 
     public void openKeyboard() {
