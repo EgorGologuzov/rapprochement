@@ -17,6 +17,12 @@ import com.nti.rapprochement.domain.contracts.IGestureAnalyzer;
 
 import java.util.function.Consumer;
 
+/**
+ * Пример реализации интрефеса IGestureAnalyzer. Используется для тестирования.
+ * Использует Mediapipe для распознвания точек рук. Рисует схему на прозрачном Bitmap.
+ * Иммитирует распознавание текста: каждые n кадров добавляет к распознанному тексту по одному
+ * слову из заранее заданной строки.
+ */
 public class FakeGestureAnalyzer implements IGestureAnalyzer {
 
     private static final String HAND_LANDMARKER_MODEL_PATH = "hand_landmarker.task";
@@ -35,11 +41,13 @@ public class FakeGestureAnalyzer implements IGestureAnalyzer {
 
     @Override
     public void setPreviewChangeCallback(Consumer<Bitmap> callback) {
+        // Сохраняем колбек
         this.previewChangeCallback = callback;
     }
 
     @Override
     public void setTextChangeCallback(Consumer<String> callback) {
+        // Сохраняем колбек
         this.textChangeCallback = callback;
     }
 
@@ -48,26 +56,37 @@ public class FakeGestureAnalyzer implements IGestureAnalyzer {
         HandLandmarkerResult result;
 
         try {
+            // пытаемся распознать точки
             MPImage mpImage = new BitmapImageBuilder(bitmap).build();
             result = handLandmarker.detect(mpImage);
         } catch (MediaPipeException e) {
+            // в случае неудачи ничего не делаем, выходим
             return;
         }
 
+        /*
+         * Тут же вызываю колбеки (для простоты). Допустимо, если анализ кадров
+         * будет распределен по многим потокам. Колбеки можно вызывать из любого потока.
+         */
         if (previewChangeCallback != null) {
+            // рисуем схему точек
             Bitmap analyzePreview = drawPreview(result, bitmap.getWidth(), bitmap.getHeight());
+            // вызываем колбек для передачи схемы в интерфейс
             previewChangeCallback.accept(analyzePreview);
         }
 
         if (textChangeCallback != null) {
+            // вызываем колбек, передаем фейковый текст
             textChangeCallback.accept(getDetectedText());
         }
 
+        // нужно для генерации фейкового текста
         frameCounter++;
     }
 
     @Override
     public void dispose() {
+        // закрываю лендмаркер, тут же можно закрывать открытые потоки и др. требующие этого объекты
         handLandmarker.close();
     }
 
@@ -126,21 +145,21 @@ public class FakeGestureAnalyzer implements IGestureAnalyzer {
     }
 
     private String getDetectedText() {
-        int n = frameCounter / TEXT_REFRESH_RATE_EACH_N_FRAME;
-        return trimNWordsFromStart(FAKE_TEXT, n);
+        int wordsCount = frameCounter / TEXT_REFRESH_RATE_EACH_N_FRAME;
+        return trimAnyWordsFromStart(FAKE_TEXT, wordsCount);
     }
 
-    public static String trimNWordsFromStart(String text, int n) {
+    private static String trimAnyWordsFromStart(String text, int any) {
         String[] words = text.split(" ");
 
-        if (n > words.length) {
+        if (any > words.length) {
             return text;
         }
 
         StringBuilder trimmedText = new StringBuilder();
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < any; i++) {
             trimmedText.append(words[i]);
-            if (i < n - 1) {
+            if (i < any - 1) {
                 trimmedText.append(" ");
             }
         }
