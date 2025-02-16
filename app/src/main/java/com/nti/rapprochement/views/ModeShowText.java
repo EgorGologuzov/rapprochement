@@ -37,15 +37,11 @@ public class ModeShowText extends RecordCallVM.Mode {
         recordTextView.setText(vm.getText());
 
         toGestureButton.setOnClickListener(v -> {
-            vm.setMode(new ModeShowGesture());
-            vm.activatePanel();
-            vm.update();
+            vm.activateMode(new ModeShowGesture());
         });
 
         toSoundButton.setOnClickListener(v -> {
-            vm.setMode(new ModeShowSound());
-            vm.activatePanel();
-            vm.update();
+            vm.activateMode(new ModeShowSound());
         });
 
         return view;

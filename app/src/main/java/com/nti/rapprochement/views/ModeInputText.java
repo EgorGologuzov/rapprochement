@@ -60,35 +60,28 @@ public class ModeInputText extends RecordCallVM.Mode {
 
         view.findViewById(R.id.backButton)
                 .setOnClickListener(v -> {
-                    vm.deactivatePanel();
                     vm.removeSelfFromHistory();
                 });
 
         view.findViewById(R.id.toTextButton)
                 .setOnClickListener(v -> {
-                    if (isInputTextEmpty(vm.getText())) return;
-
-                    vm.setMode(new ModeShowText());
-                    vm.activatePanel();
-                    vm.update();
+                    if (checkTextNotEmpty(vm)) {
+                        vm.activateMode(new ModeShowText());
+                    }
                 });
 
         view.findViewById(R.id.toSoundButton)
                 .setOnClickListener(v -> {
-                    if (isInputTextEmpty(vm.getText())) return;
-
-                    vm.setMode(new ModeShowSound());
-                    vm.activatePanel();
-                    vm.update();
+                    if (checkTextNotEmpty(vm)) {
+                        vm.activateMode(new ModeShowSound());
+                    }
                 });
 
         view.findViewById(R.id.toGestureButton)
                 .setOnClickListener(v -> {
-                    if (isInputTextEmpty(vm.getText())) return;
-
-                    vm.setMode(new ModeShowGesture());
-                    vm.activatePanel();
-                    vm.update();
+                    if (checkTextNotEmpty(vm)) {
+                        vm.activateMode(new ModeShowGesture());
+                    }
                 });
 
         return view;
@@ -110,12 +103,11 @@ public class ModeInputText extends RecordCallVM.Mode {
         return String.format("%d/%d", count, MAX_LENGTH);
     }
 
-    private static boolean isInputTextEmpty(String text) {
-        if (TextUtils.isEmpty(text)) {
-            App.current.showToast(R.string.toast_input_text_is_empty);
-            return true;
+    private boolean checkTextNotEmpty(RecordCallVM vm) {
+        if (TextUtils.isEmpty(vm.getText())) {
+            App.current.showToast(R.string.toast_text_not_recognized);
+            return false;
         }
-
-        return false;
+        return true;
     }
 }

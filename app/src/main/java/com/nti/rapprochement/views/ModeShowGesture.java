@@ -24,9 +24,7 @@ public class ModeShowGesture extends RecordCallVM.Mode {
 
         view.findViewById(R.id.backButton)
                 .setOnClickListener(v -> {
-                    vm.setMode(new ModeShowText());
-                    vm.activatePanel();
-                    vm.update();
+                    vm.activateMode(new ModeShowText());
                 });
 
         return view;

@@ -62,7 +62,6 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 
         Runnable showCameraProblemsMessage = () -> {
             DialogMessage.show(Res.str(R.string.message_camera_permission_problems), () -> {
-                    vm.deactivatePanel();
                     vm.removeSelfFromHistory();
                 }
             );
@@ -144,7 +143,6 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 
         view.findViewById(R.id.backButton)
                 .setOnClickListener(v -> {
-                    vm.deactivatePanel();
                     vm.removeSelfFromHistory();
                 });
 
@@ -155,20 +153,16 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 
         view.findViewById(R.id.toTextButton)
                 .setOnClickListener(v -> {
-                    if (isInputTextEmpty(vm.getText())) return;
-
-                    vm.setMode(new ModeShowText());
-                    vm.activatePanel();
-                    vm.update();
+                    if (checkTextNotEmpty(vm)) {
+                        vm.activateMode(new ModeShowText());
+                    }
                 });
 
         view.findViewById(R.id.toSoundButton)
                 .setOnClickListener(v -> {
-                    if (isInputTextEmpty(vm.getText())) return;
-
-                    vm.setMode(new ModeShowSound());
-                    vm.activatePanel();
-                    vm.update();
+                    if (checkTextNotEmpty(vm)) {
+                        vm.activateMode(new ModeShowSound());
+                    }
                 });
 
         return view;
@@ -195,12 +189,11 @@ public class ModeInputGesture extends RecordCallVM.Mode {
         }
     }
 
-    private static boolean isInputTextEmpty(String text) {
-        if (TextUtils.isEmpty(text)) {
+    private boolean checkTextNotEmpty(RecordCallVM vm) {
+        if (TextUtils.isEmpty(vm.getText())) {
             App.current.showToast(R.string.toast_text_not_recognized);
-            return true;
+            return false;
         }
-
-        return false;
+        return true;
     }
 }

@@ -99,4 +99,24 @@ public class Settings {
         editor.putInt(GESTURE_RECOGNIZE_TIMEOUT, value);
         editor.apply();
     }
+
+
+    // Счетчик идентификаторов записей вызовов
+    private static final String RECORD_CALL_ID_COUNTER = "record_call_id_counter";
+
+    private static int getIdCounter() {
+        return preferences.getInt(RECORD_CALL_ID_COUNTER, 0);
+    }
+
+    private static void setIdCounter(int value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(RECORD_CALL_ID_COUNTER, value);
+        editor.apply();
+    }
+
+    public static int getNextId() {
+        int currentId = getIdCounter();
+        setIdCounter(currentId + 1);
+        return currentId;
+    }
 }

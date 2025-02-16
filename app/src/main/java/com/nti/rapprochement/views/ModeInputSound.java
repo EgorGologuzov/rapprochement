@@ -24,7 +24,6 @@ public class ModeInputSound extends RecordCallVM.Mode {
 
         view.findViewById(R.id.backButton)
                 .setOnClickListener(v -> {
-                    vm.deactivatePanel();
                     vm.removeSelfFromHistory();
                 });
 

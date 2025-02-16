@@ -82,51 +82,29 @@ public class RecordCallVM extends RecordBaseVM {
         }
     }
 
-    public void update() {
-        App.current.getCurrentHistoryVM().update(model);
-
-        if (!(mode instanceof ModeShowText)) {
-            requestFocus();
+    public void finishInputOrShow() {
+        if (mode == null || mode instanceof ModeShowText) {
+            return;
         }
-    }
 
-    public void activatePanel() {
-        App.current.setTemporaryPanel(panel);
-    }
-
-    public void deactivatePanel() {
-        App.current.unsetTemporaryPanel(panel);
+        if (TextUtils.isEmpty(getText())) {
+            removeSelfFromHistory();
+        } else {
+            deactivatePanel();
+            setMode(new ModeShowText());
+            update();
+        }
     }
 
     public void removeSelfFromHistory() {
+        deactivatePanel();
         App.current.getCurrentHistoryVM().remove(model);
     }
 
-    public boolean isFocused() {
-        return isFocused;
-    }
-
-    public void requestFocus() {
-        if (!isFocused) {
-            removeFocusFromCurrentFocused();
-            isFocused = true;
-        }
-    }
-
-    public void removeFocus() {
-        if (isFocused) {
-            finishInputOrShow();
-            isFocused = false;
-        }
-    }
-
-    public void setMode(Mode mode) {
-        if (this.mode != null) {
-            this.mode.dispose();
-        }
-
-        this.mode = mode;
-        setPanelForCurrentMode(mode);
+    public void activateMode(Mode mode) {
+        setMode(mode);
+        activatePanel();
+        update();
     }
 
     public String getText() {
@@ -149,23 +127,55 @@ public class RecordCallVM extends RecordBaseVM {
         return model.sourceType;
     }
 
+    public int getId() {
+        return model.id;
+    }
+
     public void setPermissionEventListener(Consumer<Permissions.RequestResult> permissionEventListener) {
         this.permissionEventListener = permissionEventListener;
     }
 
-    public void finishInputOrShow() {
-        if (mode == null || mode instanceof ModeShowText) {
-            return;
+    private void update() {
+        App.current.getCurrentHistoryVM().update(model);
+
+        if (!(mode instanceof ModeShowText)) {
+            requestFocus();
+        }
+    }
+
+    private void activatePanel() {
+        App.current.setTemporaryPanel(panel);
+    }
+
+    private void deactivatePanel() {
+        App.current.unsetTemporaryPanel(panel);
+    }
+
+    private boolean isFocused() {
+        return isFocused;
+    }
+
+    private void requestFocus() {
+        if (!isFocused) {
+            removeFocusFromCurrentFocused();
+            isFocused = true;
+        }
+    }
+
+    private void removeFocus() {
+        if (isFocused) {
+            finishInputOrShow();
+            isFocused = false;
+        }
+    }
+
+    private void setMode(Mode mode) {
+        if (this.mode != null) {
+            this.mode.dispose();
         }
 
-        if (TextUtils.isEmpty(getText())) {
-            deactivatePanel();
-            removeSelfFromHistory();
-        } else {
-            deactivatePanel();
-            setMode(new ModeShowText());
-            update();
-        }
+        this.mode = mode;
+        setPanelForCurrentMode(mode);
     }
 
     private void removeFocusFromCurrentFocused() {

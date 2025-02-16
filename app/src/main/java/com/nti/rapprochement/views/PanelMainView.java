@@ -25,32 +25,26 @@ public class PanelMainView {
 
         view.findViewById(R.id.textButton)
                 .setOnClickListener(v -> {
-                    RecordCall record = new RecordCall(RecordCall.SourceType.Text);
+                    RecordCall record = RecordCall.createDefault(RecordCall.SourceType.Text);
                     addToCurrentHistory(record);
                     RecordCallVM vm = findViewModel(record);
-                    vm.setMode(new ModeInputText());
-                    vm.activatePanel();
-                    vm.update();
+                    vm.activateMode(new ModeInputText());
                 });
 
         view.findViewById(R.id.soundButton)
                 .setOnClickListener(v -> {
-                    RecordCall record = new RecordCall(RecordCall.SourceType.Sound);
+                    RecordCall record = RecordCall.createDefault(RecordCall.SourceType.Sound);
                     addToCurrentHistory(record);
                     RecordCallVM vm = findViewModel(record);
-                    vm.setMode(new ModeInputSound());
-                    vm.activatePanel();
-                    vm.update();
+                    vm.activateMode(new ModeInputSound());
                 });
 
         view.findViewById(R.id.gestureButton)
                 .setOnClickListener(v -> {
-                    RecordCall record = new RecordCall(RecordCall.SourceType.Gesture);
+                    RecordCall record = RecordCall.createDefault(RecordCall.SourceType.Gesture);
                     addToCurrentHistory(record);
                     RecordCallVM vm = findViewModel(record);
-                    vm.setMode(new ModeInputGesture());
-                    vm.activatePanel();
-                    vm.update();
+                    vm.activateMode(new ModeInputGesture());
                 });
 
         return view;
