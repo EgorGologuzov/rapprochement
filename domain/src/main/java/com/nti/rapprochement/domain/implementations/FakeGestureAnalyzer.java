@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.SystemClock;
 
 import com.google.mediapipe.framework.MediaPipeException;
 import com.google.mediapipe.framework.image.BitmapImageBuilder;
@@ -53,40 +54,17 @@ public class FakeGestureAnalyzer implements IGestureAnalyzer {
 
     @Override
     public void analyze(Bitmap bitmap) {
-        HandLandmarkerResult result;
-
         try {
-            // пытаемся распознать точки
             MPImage mpImage = new BitmapImageBuilder(bitmap).build();
-            result = handLandmarker.detect(mpImage);
+            HandLandmarkerResult result = handLandmarker.detect(mpImage);
+            handleHandLandmarkerResult(result, mpImage);
         } catch (MediaPipeException e) {
-            // в случае неудачи ничего не делаем, выходим
             return;
         }
-
-        /*
-         * Тут же вызываю колбеки (для простоты). Допустимо, если анализ кадров
-         * будет распределен по многим потокам. Колбеки можно вызывать из любого потока.
-         */
-        if (previewChangeCallback != null) {
-            // рисуем схему точек
-            Bitmap analyzePreview = drawPreview(result, bitmap.getWidth(), bitmap.getHeight());
-            // вызываем колбек для передачи схемы в интерфейс
-            previewChangeCallback.accept(analyzePreview);
-        }
-
-        if (textChangeCallback != null) {
-            // вызываем колбек, передаем фейковый текст
-            textChangeCallback.accept(getDetectedText());
-        }
-
-        // нужно для генерации фейкового текста
-        frameCounter++;
     }
 
     @Override
     public void dispose() {
-        // закрываю лендмаркер, тут же можно закрывать открытые потоки и др. требующие этого объекты
         handLandmarker.close();
     }
 
@@ -105,65 +83,88 @@ public class FakeGestureAnalyzer implements IGestureAnalyzer {
                 .build();
     }
 
-    private Bitmap drawPreview(HandLandmarkerResult result, int width, int height) {
-        float scaleFactor = 1f;
+    private void handleHandLandmarkerResult(HandLandmarkerResult result, MPImage input) {
+        if (previewChangeCallback != null) {
+            Bitmap analyzePreview = drawSkeleton(result, input.getWidth(), input.getHeight());
+            previewChangeCallback.accept(analyzePreview);
+        }
+
+        if (textChangeCallback != null) {
+            textChangeCallback.accept(getFakeText());
+        }
+
+        frameCounter++;
+    }
+
+    private Bitmap drawSkeleton(HandLandmarkerResult result, int width, int height) {
+        final float pointRadius = 12f;
+        final float strokeWidth = 8f;
+        final float pointsStrokeWidth = 4f;
+        final int pointFillColor = Color.parseColor("#A5D8EB");
+        final int strokeColor = Color.WHITE;
 
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-        Paint pointPaint = new Paint();
-        pointPaint.setColor(Color.YELLOW);
-        pointPaint.setStrokeWidth(8f);
-        pointPaint.setStyle(Paint.Style.FILL);
+        Paint pointFillPaint = new Paint();
+        pointFillPaint.setColor(pointFillColor);
+        pointFillPaint.setStyle(Paint.Style.FILL);
+        pointFillPaint.setAntiAlias(true);
+
+        Paint pointStrokePaint = new Paint();
+        pointStrokePaint.setColor(strokeColor);
+        pointStrokePaint.setStyle(Paint.Style.STROKE);
+        pointStrokePaint.setStrokeWidth(pointsStrokeWidth);
+        pointStrokePaint.setAntiAlias(true);
 
         Paint linePaint = new Paint();
-        linePaint.setColor(Color.GREEN);
-        linePaint.setStrokeWidth(8f);
+        linePaint.setColor(strokeColor);
+        linePaint.setStrokeWidth(strokeWidth);
         linePaint.setStyle(Paint.Style.STROKE);
+        linePaint.setAntiAlias(true);
 
         result.landmarks().forEach(landmark -> {
+
             HandLandmarker.HAND_CONNECTIONS.forEach(item -> {
                 canvas.drawLine(
-                        landmark.get(item.start()).x() * width * scaleFactor,
-                        landmark.get(item.start()).y() * height * scaleFactor,
-                        landmark.get(item.end()).x() * width * scaleFactor,
-                        landmark.get(item.end()).y() * height * scaleFactor,
+                        landmark.get(item.start()).x() * width,
+                        landmark.get(item.start()).y() * height,
+                        landmark.get(item.end()).x() * width,
+                        landmark.get(item.end()).y() * height,
                         linePaint
                 );
             });
 
             landmark.forEach(normalizedLandmark -> {
-                canvas.drawPoint(
-                        normalizedLandmark.x() * width * scaleFactor,
-                        normalizedLandmark.y() * height * scaleFactor,
-                        pointPaint
-                );
+                float x = normalizedLandmark.x() * width;
+                float y = normalizedLandmark.y() * height;
+                canvas.drawCircle(x, y, pointRadius, pointFillPaint);
+                canvas.drawCircle(x, y, pointRadius, pointStrokePaint);
             });
         });
 
         return bitmap;
     }
 
-    private String getDetectedText() {
+    private String getFakeText() {
         int wordsCount = frameCounter / TEXT_REFRESH_RATE_EACH_N_FRAME;
-        return trimAnyWordsFromStart(FAKE_TEXT, wordsCount);
-    }
+        int spaceCount = 0;
+        int targetSpaceIndex = -1;
 
-    private static String trimAnyWordsFromStart(String text, int any) {
-        String[] words = text.split(" ");
-
-        if (any > words.length) {
-            return text;
-        }
-
-        StringBuilder trimmedText = new StringBuilder();
-        for (int i = 0; i < any; i++) {
-            trimmedText.append(words[i]);
-            if (i < any - 1) {
-                trimmedText.append(" ");
+        for (int i = 0; i < FAKE_TEXT.length(); i++) {
+            if (FAKE_TEXT.charAt(i) == ' ') {
+                spaceCount++;
+            }
+            if (spaceCount >= wordsCount) {
+                targetSpaceIndex = i;
+                break;
             }
         }
 
-        return trimmedText.toString();
+        if (targetSpaceIndex == -1) {
+            return FAKE_TEXT;
+        }
+
+        return FAKE_TEXT.substring(0, targetSpaceIndex);
     }
 }

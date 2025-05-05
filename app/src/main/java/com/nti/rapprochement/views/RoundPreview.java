@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 
 public class RoundPreview extends androidx.appcompat.widget.AppCompatImageView {
 
+    private Runnable onImageChangeListener;
+
     public RoundPreview(Context context) {
         super(context);
     }
@@ -28,6 +30,13 @@ public class RoundPreview extends androidx.appcompat.widget.AppCompatImageView {
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(roundBitmap(bm));
+        if (onImageChangeListener != null) {
+            onImageChangeListener.run();
+        }
+    }
+
+    public void setOnImageChangeListener(Runnable listener) {
+        onImageChangeListener = listener;
     }
 
     public void setMirrorMode(boolean needMirrorImage) {

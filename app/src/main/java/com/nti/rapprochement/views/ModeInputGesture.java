@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nti.rapprochement.App;
@@ -40,6 +41,11 @@ public class ModeInputGesture extends RecordCallVM.Mode {
         TextView timeView = view.findViewById(R.id.timeView);
         FrameLayout timeLine = view.findViewById(R.id.timeLine);
         TextView outputTextView = view.findViewById(R.id.outputTextView);
+        ProgressBar cameraLoadingSpinner = view.findViewById(R.id.cameraLoadingSpinner);
+
+        preview.setOnImageChangeListener(() -> {
+            cameraLoadingSpinner.setVisibility(View.GONE);
+        });
 
         Runnable startTimer = () -> {
             HelperInputTimer.CreateArgs createArgs = new HelperInputTimer.CreateArgs();

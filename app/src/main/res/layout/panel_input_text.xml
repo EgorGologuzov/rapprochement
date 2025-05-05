@@ -10,21 +10,23 @@
         android:id="@+id/backButton"
         style="@style/ActionButton_Panel"
         android:layout_marginStart="0dp"
-        android:src="@drawable/btn_back" />
+        android:src="@drawable/btn_cross" />
 
     <com.nti.rapprochement.views.ActionButton
         android:id="@+id/toTextButton"
         style="@style/ActionButton_Panel"
-        android:src="@drawable/btn_to_text" />
+        android:src="@drawable/btn_ok" />
 
     <com.nti.rapprochement.views.ActionButton
         android:id="@+id/toSoundButton"
         style="@style/ActionButton_Panel"
-        android:src="@drawable/btn_to_sound" />
+        android:src="@drawable/btn_to_sound"
+        android:visibility="gone" />
 
     <com.nti.rapprochement.views.ActionButton
         android:id="@+id/toGestureButton"
         style="@style/ActionButton_Panel"
-        android:src="@drawable/btn_to_gesture" />
+        android:src="@drawable/btn_to_gesture"
+        android:visibility="gone" />
 
 </LinearLayout>
