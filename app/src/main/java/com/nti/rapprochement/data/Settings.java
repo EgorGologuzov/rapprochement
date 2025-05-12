@@ -91,7 +91,7 @@ public class Settings {
     private static final String GESTURE_RECOGNIZE_TIMEOUT = "gesture_recognize_timeout";
 
     public static int getGestureRecognizeTimeout() {
-        return preferences.getInt(GESTURE_RECOGNIZE_TIMEOUT, 30);
+        return preferences.getInt(GESTURE_RECOGNIZE_TIMEOUT, 120);
     }
 
     public static void setGestureRecognizeTimeout(int value) {

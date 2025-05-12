@@ -22,12 +22,6 @@ import com.google.mediapipe.tasks.components.containers.NormalizedLandmark;
 import java.util.List;
 import java.util.function.Consumer;
 
-
-//import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
-//import com.google.mediapipe.solutioncore.ResultGlRenderer;
-//import com.google.mediapipe.solutions.hands.Hands;
-//import com.google.mediapipe.solutions.hands.HandsResult;
-
 /**
  * Пример реализации интрефеса IGestureAnalyzer. Используется для тестирования.
  * Использует Mediapipe для распознвания точек рук. Рисует схему на прозрачном Bitmap.
@@ -37,13 +31,10 @@ import java.util.function.Consumer;
 public class GestureAnalyzer implements IGestureAnalyzer {
 
     private static final String HAND_LANDMARKER_MODEL_PATH = "hand_landmarker.task";
-    private static final String FAKE_TEXT = "Установлен тестовый анализатор жестов. Настоящий анализатор еще не реализован. В скором будущем мы его реализуем и интегрируем в наше приложение. Конец текста.";
-    private static final int TEXT_REFRESH_RATE_EACH_N_FRAME = 3;
 
     private final HandLandmarker handLandmarker;
     private Consumer<Bitmap> previewChangeCallback;
     private Consumer<String> textChangeCallback;
-    private int frameCounter;
 
     // Запястье (wrist)
     private static final int WRIST_INDEX = 0;
@@ -78,61 +69,45 @@ public class GestureAnalyzer implements IGestureAnalyzer {
     public static final int PINKY_DIP_INDEX = 19;   // DIP (предпоследняя)
     private static final int PINKY_TIP_INDEX = 20;  // TIP (кончик)
 
-
-
     public GestureAnalyzer(Context context) {
         handLandmarker = HandLandmarker.createFromOptions(context, createHandLandmarkerOptions());
-        frameCounter = 0;
     }
 
     @Override
     public void setPreviewChangeCallback(Consumer<Bitmap> callback) {
-        // Сохраняем колбек
         this.previewChangeCallback = callback;
     }
 
     @Override
     public void setTextChangeCallback(Consumer<String> callback) {
-        // Сохраняем колбек
         this.textChangeCallback = callback;
     }
 
     @Override
-    public void analyze(Bitmap bitmap) {
+    public void analyze(Bitmap bitmap, float rotation) {
         HandLandmarkerResult result;
 
         try {
-            // пытаемся распознать точки
             MPImage mpImage = new BitmapImageBuilder(bitmap).build();
             result = handLandmarker.detect(mpImage);
         } catch (MediaPipeException e) {
-            // в случае неудачи ничего не делаем, выходим
             return;
         }
 
-        /*
-         * Тут же вызываю колбеки (для простоты). Допустимо, если анализ кадров
-         * будет распределен по многим потокам. Колбеки можно вызывать из любого потока.
-         */
         if (previewChangeCallback != null) {
-            // рисуем схему точек
-            Bitmap analyzePreview = drawPreview(result, bitmap.getWidth(), bitmap.getHeight());
-            // вызываем колбек для передачи схемы в интерфейс
+            Bitmap analyzePreview = drawSkeleton(result, bitmap.getWidth(), bitmap.getHeight());
             previewChangeCallback.accept(analyzePreview);
         }
 
-        if (textChangeCallback != null) {
-            // вызываем колбек, передаем фейковый текст
-            //textChangeCallback.accept(getDetectedText());
-        }
-
-        // нужно для генерации фейкового текста
-        frameCounter++;
+        result.landmarks().forEach(landmark -> {
+            String gestureName = analyzeLandmarks(landmark);
+//            Log.d("tatatest", gestureName + "");
+            textChangeCallback.accept(gestureName);
+        });
     }
 
     @Override
     public void dispose() {
-        // закрываю лендмаркер, тут же можно закрывать открытые потоки и др. требующие этого объекты
         handLandmarker.close();
     }
 
@@ -151,79 +126,74 @@ public class GestureAnalyzer implements IGestureAnalyzer {
                 .build();
     }
 
-    private boolean isFingerExtended(float landmarkTipY, float landmarkMcpY, float fingerExtendedThreshold) {
-        return landmarkTipY < landmarkMcpY - fingerExtendedThreshold;
+    private void handleHandLandmarkerResult(HandLandmarkerResult result, MPImage input) {
+        if (previewChangeCallback != null) {
+            Bitmap analyzePreview = drawSkeleton(result, input.getWidth(), input.getHeight());
+            previewChangeCallback.accept(analyzePreview);
+        }
+
+        result.landmarks().forEach(landmark -> {
+            String gestureName = analyzeLandmarks(landmark);
+//            Log.d("tatatest", gestureName + "");
+            textChangeCallback.accept(gestureName);
+        });
     }
 
-    private Bitmap drawPreview(HandLandmarkerResult result, int width, int height) {
-        float scaleFactor = 1f;
+    private Bitmap drawSkeleton(HandLandmarkerResult result, int width, int height) {
+        final float pointRadius = 12f;
+        final float strokeWidth = 8f;
+        final float pointsStrokeWidth = 4f;
+        final int pointFillColor = Color.parseColor("#A5D8EB");
+        final int strokeColor = Color.WHITE;
 
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-        Paint pointPaint = new Paint();
-        pointPaint.setColor(Color.YELLOW);
-        pointPaint.setStrokeWidth(8f);
-        pointPaint.setStyle(Paint.Style.FILL);
+        Paint pointFillPaint = new Paint();
+        pointFillPaint.setColor(pointFillColor);
+        pointFillPaint.setStyle(Paint.Style.FILL);
+        pointFillPaint.setAntiAlias(true);
+
+        Paint pointStrokePaint = new Paint();
+        pointStrokePaint.setColor(strokeColor);
+        pointStrokePaint.setStyle(Paint.Style.STROKE);
+        pointStrokePaint.setStrokeWidth(pointsStrokeWidth);
+        pointStrokePaint.setAntiAlias(true);
 
         Paint linePaint = new Paint();
-        linePaint.setColor(Color.GREEN);
-        linePaint.setStrokeWidth(8f);
+        linePaint.setColor(strokeColor);
+        linePaint.setStrokeWidth(strokeWidth);
         linePaint.setStyle(Paint.Style.STROKE);
-
+        linePaint.setAntiAlias(true);
 
         result.landmarks().forEach(landmark -> {
+
             HandLandmarker.HAND_CONNECTIONS.forEach(item -> {
                 canvas.drawLine(
-                        landmark.get(item.start()).x() * width * scaleFactor,
-                        landmark.get(item.start()).y() * height * scaleFactor,
-                        landmark.get(item.end()).x() * width * scaleFactor,
-                        landmark.get(item.end()).y() * height * scaleFactor,
+                        landmark.get(item.start()).x() * width,
+                        landmark.get(item.start()).y() * height,
+                        landmark.get(item.end()).x() * width,
+                        landmark.get(item.end()).y() * height,
                         linePaint
                 );
             });
 
-            String gestureName = analyzeLandmarks(landmark);
-            Log.d("tatatest", gestureName + "");
-            textChangeCallback.accept(gestureName);
-
             landmark.forEach(normalizedLandmark -> {
-                canvas.drawPoint(
-                        normalizedLandmark.x() * width * scaleFactor,
-                        normalizedLandmark.y() * height * scaleFactor,
-                        pointPaint
-                );
+                float x = normalizedLandmark.x() * width;
+                float y = normalizedLandmark.y() * height;
+                canvas.drawCircle(x, y, pointRadius, pointFillPaint);
+                canvas.drawCircle(x, y, pointRadius, pointStrokePaint);
             });
         });
-        //Log.d("tatatest", result.landmark()[0].get(INDEX_FINGER_TIP_INDEX).getX() + "");
 
-        //Log.d("tatatest", gestureName + "");
         return bitmap;
     }
 
-    private String getDetectedText() {
-        int wordsCount = frameCounter / TEXT_REFRESH_RATE_EACH_N_FRAME;
-        return trimAnyWordsFromStart(FAKE_TEXT, wordsCount);
+    // Распознавание
+
+    private boolean isFingerExtended(float landmarkTipY, float landmarkMcpY, float fingerExtendedThreshold) {
+        return landmarkTipY < landmarkMcpY - fingerExtendedThreshold;
     }
-
-    private static String trimAnyWordsFromStart(String text, int any) {
-        String[] words = text.split(" ");
-
-        if (any > words.length) {
-            return text;
-        }
-
-        StringBuilder trimmedText = new StringBuilder();
-        for (int i = 0; i < any; i++) {
-            trimmedText.append(words[i]);
-            if (i < any - 1) {
-                trimmedText.append(" ");
-            }
-        }
-
-        return trimmedText.toString();
-    }
-
 
     private String analyzeLandmarks(List<NormalizedLandmark> landmarks) {
         Log.d("land", landmarks + "");

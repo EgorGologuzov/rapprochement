@@ -53,7 +53,7 @@ public class FakeGestureAnalyzer implements IGestureAnalyzer {
     }
 
     @Override
-    public void analyze(Bitmap bitmap) {
+    public void analyze(Bitmap bitmap, float rotation) {
         try {
             MPImage mpImage = new BitmapImageBuilder(bitmap).build();
             HandLandmarkerResult result = handLandmarker.detect(mpImage);

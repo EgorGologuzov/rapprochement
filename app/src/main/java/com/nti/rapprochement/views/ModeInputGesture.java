@@ -103,7 +103,7 @@ public class ModeInputGesture extends RecordCallVM.Mode {
                 final boolean isFacingFront = Settings.getLastCameraFacing() == Settings.CameraFacing.Front;
                 final Bitmap bitmap = imageProxy.toBitmap();
 
-                analyzer.analyze(bitmap);
+                analyzer.analyze(bitmap, rotation);
 
                 App.current.runOnUiThread(() -> {
                     analyzePreview.setRotation(rotation);
