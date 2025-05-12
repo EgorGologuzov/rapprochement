@@ -3,7 +3,7 @@ package com.nti.rapprochement.domain;
 import android.content.Context;
 
 import com.nti.rapprochement.domain.contracts.IGestureAnalyzer;
-import com.nti.rapprochement.domain.implementations.FakeGestureAnalyzer;
+import com.nti.rapprochement.domain.implementations.GestureAnalyzer;
 
 /**
  * Класс для предоставления фронтенду анализаторов данных из бэкенда
@@ -20,6 +20,6 @@ public class Domain {
      * Реализация интерфейса, которую мы хотим использовать в приложении на данный момент
      */
     public static IGestureAnalyzer getGestureAnalyzer(Context context) {
-        return new FakeGestureAnalyzer(context);
+        return new GestureAnalyzer(context);
     }
 }
