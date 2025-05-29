@@ -23,14 +23,16 @@ public class HelperInputTimer {
         Runnable onTimeout;
     }
 
-    public static Timer create(CreateArgs args) {
+    private final Timer timer;
+
+    public HelperInputTimer(CreateArgs args) {
         TextView timeView = args.timeView;
         FrameLayout timeLine = args.timeLine;
         ViewGroup timeLineParent = args.timeLineParent;
         float timeout = args.timeoutSec;
         Runnable onTimeout = args.onTimeout;
 
-        Timer timer = new Timer();
+        timer = new Timer();
 
         timer.schedule(new TimerTask() {
             final Date startTime = new Date();
@@ -60,8 +62,13 @@ public class HelperInputTimer {
                 });
             }
         }, DELAY, PERIOD);
+    }
 
-        return timer;
+    public void dispose() {
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
     }
 
     private static String formatTime(int timeRemain, int timeDefault) {

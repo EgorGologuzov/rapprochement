@@ -1,6 +1,5 @@
 package com.nti.rapprochement.views;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,14 +20,14 @@ import com.nti.rapprochement.domain.contracts.IGestureAnalyzer;
 import com.nti.rapprochement.utils.ViewsUtils;
 import com.nti.rapprochement.viewmodels.RecordCallVM;
 
-import java.util.Timer;
 import java.util.function.Consumer;
 
 public class ModeInputGesture extends RecordCallVM.Mode {
 
-    private Timer timer;
     private IGestureAnalyzer analyzer;
+    private HelperInputTimer inputTimer;
     private HelperLiveText liveText;
+    private HelperGesturePreview gesturePreview;
 
     @Override
     public View createInnerView(RecordCallVM.CreateArgs args) {
@@ -37,86 +36,51 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 
         LinearLayout view = (LinearLayout) ViewsUtils.createView(R.layout.mode_input_gesture, parent);
         RoundPreview preview = view.findViewById(R.id.preview);
-        RoundPreview analyzePreview = view.findViewById(R.id.analyzePreview);
+        RoundPreview skeletonPreview = view.findViewById(R.id.skeletonPreview);
         TextView timeView = view.findViewById(R.id.timeView);
         FrameLayout timeLine = view.findViewById(R.id.timeLine);
-        TextView outputTextView = view.findViewById(R.id.outputTextView);
+        TextView outputView = view.findViewById(R.id.outputTextView);
         ProgressBar cameraLoadingSpinner = view.findViewById(R.id.cameraLoadingSpinner);
 
-        preview.setOnImageChangeListener(() -> {
-            cameraLoadingSpinner.setVisibility(View.GONE);
-        });
+        analyzer = Domain.getGestureAnalyzer(parent.getContext());
 
         Runnable startTimer = () -> {
-            HelperInputTimer.CreateArgs createArgs = new HelperInputTimer.CreateArgs();
-            createArgs.timeView = timeView;
-            createArgs.timeLine = timeLine;
-            createArgs.timeLineParent = parent;
-            createArgs.timeoutSec = Settings.getGestureRecognizeTimeout();
-            createArgs.onTimeout = vm::finishInputOrShow;
-            timer = HelperInputTimer.create(createArgs);
+            HelperInputTimer.CreateArgs ca = new HelperInputTimer.CreateArgs();
+            ca.timeView = timeView;
+            ca.timeLine = timeLine;
+            ca.timeLineParent = parent;
+            ca.timeoutSec = Settings.getGestureRecognizeTimeout();
+            ca.onTimeout = vm::finishInputOrShow;
+            inputTimer = new HelperInputTimer(ca);
         };
 
         Runnable createLiveText = () -> {
-            HelperLiveText.CreateArgs createArgs = new HelperLiveText.CreateArgs();
-            createArgs.target = outputTextView;
-            createArgs.vm = vm;
-            createArgs.lightedTextBackground = Res.color(R.color.primary_1);
-            createArgs.lightedTextForeground = Color.BLACK;
-            liveText = HelperLiveText.create(createArgs);
-        };
-
-        Runnable showCameraProblemsMessage = () -> {
-            DialogMessage.show(Res.str(R.string.message_camera_permission_problems), () -> {
-                    vm.removeSelfFromHistory();
-                }
-            );
+            HelperLiveText.CreateArgs ca = new HelperLiveText.CreateArgs();
+            ca.target = outputView;
+            ca.vm = vm;
+            ca.lightedTextBackground = Res.color(R.color.primary_1);
+            ca.lightedTextForeground = Color.BLACK;
+            liveText = new HelperLiveText(ca);
         };
 
         Runnable startPreview = () -> {
-            Camera.openAnalyzeSession(imageProxy -> {
-                final float rotation = imageProxy.getImageInfo().getRotationDegrees();
-                final boolean isFacingFront = Settings.getLastCameraFacing() == Settings.CameraFacing.Front;
-                final Bitmap bitmap = imageProxy.toBitmap();
-
-                App.current.runOnUiThread(() -> {
-                    preview.setRotation(rotation);
-                    preview.setMirrorMode(isFacingFront);
-                    preview.setImageBitmap(bitmap);
-                });
-            });
+            HelperGesturePreview.CreateArgs ca = new HelperGesturePreview.CreateArgs();
+            ca.preview = preview;
+            ca.skeletonPreview = skeletonPreview;
+            ca.analyzer = analyzer;
+            gesturePreview = new HelperGesturePreview(ca);
         };
 
-        Runnable startAnalyze = () -> {
-            analyzer = Domain.getGestureAnalyzer(parent.getContext());
-
-            analyzer.setPreviewChangeCallback(bitmap -> {
-                App.current.runOnUiThread(() -> analyzePreview.setImageBitmap(bitmap));
-            });
-
-            analyzer.setTextChangeCallback(text -> {
-                App.current.runOnUiThread(() -> liveText.setText(text));
-            });
-
-            Camera.openAnalyzeSession(imageProxy -> {
-                final float rotation = imageProxy.getImageInfo().getRotationDegrees();
-                final boolean isFacingFront = Settings.getLastCameraFacing() == Settings.CameraFacing.Front;
-                final Bitmap bitmap = imageProxy.toBitmap();
-
-                analyzer.analyze(bitmap, rotation);
-
-                App.current.runOnUiThread(() -> {
-                    analyzePreview.setRotation(rotation);
-                    analyzePreview.setMirrorMode(isFacingFront);
-                });
-            });
+        Runnable showCameraProblemsMessage = () -> {
+            DialogMessage.show(
+                    Res.str(R.string.message_camera_permission_problems),
+                    vm::removeSelfFromHistory
+            );
         };
 
         Runnable run = () -> {
             createLiveText.run();
             startPreview.run();
-            startAnalyze.run();
-            startTimer.run();
         };
 
         Consumer<Permissions.RequestResult> handlePermissionRequestResult = result -> {
@@ -129,7 +93,19 @@ public class ModeInputGesture extends RecordCallVM.Mode {
             }
         };
 
+        Runnable handlePreviewStreamingStart = () -> {
+            cameraLoadingSpinner.setVisibility(View.GONE);
+            startTimer.run();
+            preview.setOnImageChangeListener(null);
+        };
+
+        Consumer<String> handleRecognizedTextChanged = text -> {
+            App.current.runOnUiThread(() -> liveText.setText(text));
+        };
+
         vm.setPermissionEventListener(handlePermissionRequestResult);
+        preview.setOnImageChangeListener(handlePreviewStreamingStart);
+        analyzer.setTextChangeCallback(handleRecognizedTextChanged);
 
         if (Permissions.hasPermissionCamera()) {
             run.run();
@@ -183,15 +159,16 @@ public class ModeInputGesture extends RecordCallVM.Mode {
     public void dispose() {
         super.dispose();
 
-        Camera.closeAllAnalyzeSessions();
-
-        if (timer != null) {
-            timer.cancel();
-            timer.purge();
-        }
-
         if (analyzer != null) {
             analyzer.dispose();
+        }
+
+        if (inputTimer != null) {
+            inputTimer.dispose();
+        }
+
+        if (gesturePreview != null) {
+            gesturePreview.dispose();
         }
     }
 

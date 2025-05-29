@@ -6,7 +6,7 @@
 <!--    Уведомления-->
     <string name="toast_input_text_is_empty">Текст не введен</string>
     <string name="toast_is_max_text_length">Максимальная длина текста</string>
-    <string name="toast_text_not_recognized">Текст не распознан</string>
+    <string name="toast_text_not_recognized">Не удалось ничего распознать</string>
 
 <!--    Приветственное сообщение-->
     <string name="begin_rapprochement">Начните сближение</string>

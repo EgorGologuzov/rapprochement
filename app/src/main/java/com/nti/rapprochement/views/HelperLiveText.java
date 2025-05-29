@@ -19,13 +19,9 @@ public class HelperLiveText {
         public @ColorInt int lightedTextForeground;
     }
 
-    public static HelperLiveText create(CreateArgs args) {
-        return new HelperLiveText(args);
-    }
-
     private final CreateArgs args;
 
-    private HelperLiveText(CreateArgs args) {
+    public HelperLiveText(CreateArgs args) {
         this.args = args;
     }
 

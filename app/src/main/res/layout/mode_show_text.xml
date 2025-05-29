@@ -41,18 +41,20 @@
                 android:id="@+id/toGestureButton"
                 style="@style/ActionButton_Record_ToGesture"
                 android:layout_width="50dp"
-                android:layout_height="20dp" />
+                android:layout_height="20dp"
+                android:visibility="gone" />
             <com.nti.rapprochement.views.ActionButton
                 android:id="@+id/toSoundButton"
                 style="@style/ActionButton_Record_ToSound"
                 android:layout_width="50dp"
-                android:layout_height="18dp"/>
+                android:layout_height="18dp"
+                android:visibility="gone" />
             <com.nti.rapprochement.views.ActionButton
                 android:id="@+id/optionsButton"
                 style="@style/ActionButton_Record_Options"
                 android:layout_width="30dp"
                 android:layout_height="17dp"
-                android:scaleType="fitEnd"/>
+                android:scaleType="fitEnd" />
         </LinearLayout>
 
     </LinearLayout>

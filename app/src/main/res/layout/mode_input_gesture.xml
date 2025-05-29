@@ -15,7 +15,7 @@
             android:src="@drawable/camera_placeholder"
             android:adjustViewBounds="true"/>
         <com.nti.rapprochement.views.RoundPreview
-            android:id="@+id/analyzePreview"
+            android:id="@+id/skeletonPreview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"

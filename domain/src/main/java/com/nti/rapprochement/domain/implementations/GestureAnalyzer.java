@@ -90,7 +90,7 @@ public class GestureAnalyzer implements IGestureAnalyzer {
         try {
             MPImage mpImage = new BitmapImageBuilder(bitmap).build();
             result = handLandmarker.detect(mpImage);
-        } catch (MediaPipeException e) {
+        } catch (Exception e) {
             return;
         }
 
@@ -99,11 +99,12 @@ public class GestureAnalyzer implements IGestureAnalyzer {
             previewChangeCallback.accept(analyzePreview);
         }
 
-        result.landmarks().forEach(landmark -> {
-            String gestureName = analyzeLandmarks(landmark);
-//            Log.d("tatatest", gestureName + "");
-            textChangeCallback.accept(gestureName);
-        });
+        if (textChangeCallback != null) {
+            result.landmarks().forEach(landmark -> {
+                String gestureName = analyzeLandmarks(landmark);
+                textChangeCallback.accept(gestureName);
+            });
+        }
     }
 
     @Override
