@@ -60,6 +60,7 @@ public class Convert {
             case Gesture: return R.drawable.source_type_gesture;
             case Sound: return R.drawable.source_type_sound;
             case Text: return R.drawable.source_type_text;
+            case Other: return R.drawable.source_type_other;
             default: throw new IllegalArgumentException();
         }
     }

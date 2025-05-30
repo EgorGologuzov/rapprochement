@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class RecordCall extends RecordBase {
 
-    public enum SourceType { Gesture, Sound, Text }
+    public enum SourceType { Gesture, Sound, Text, Other }
 
     public int id;
     public SourceType sourceType;

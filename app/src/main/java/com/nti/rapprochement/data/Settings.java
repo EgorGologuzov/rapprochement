@@ -119,4 +119,24 @@ public class Settings {
         setIdCounter(currentId + 1);
         return currentId;
     }
+
+
+    // Настройки режима добавления жеста
+    private static final String ADD_GESTURE_MODE_SNAPSHOT_TIMING = "add_gesture_mode_snapshot_timing";
+
+    public static int getAddGestureModeSnapshotTiming() {
+        return preferences.getInt(ADD_GESTURE_MODE_SNAPSHOT_TIMING, 3);
+    }
+
+    private static final String ADD_GESTURE_MODE_SNAPSHOTS_MIN_COUNT = "add_gesture_mode_snapshots_min_count";
+
+    public static int getAddGestureModeSnapshotsMinCount() {
+        return preferences.getInt(ADD_GESTURE_MODE_SNAPSHOTS_MIN_COUNT, 1);
+    }
+
+    private static final String ADD_GESTURE_MODE_SNAPSHOTS_MAX_COUNT = "add_gesture_mode_snapshots_max_count";
+
+    public static int getAddGestureModeSnapshotsMaxCount() {
+        return preferences.getInt(ADD_GESTURE_MODE_SNAPSHOTS_MAX_COUNT, 3);
+    }
 }

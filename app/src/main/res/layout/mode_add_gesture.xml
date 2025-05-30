@@ -25,37 +25,46 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
             android:layout_gravity="center"
             android:indeterminate="true"
             android:indeterminateTintMode="src_atop"
             android:indeterminateTint="@color/primary_1"/>
+        <TextView
+            android:id="@+id/countdownView"
+            style="@style/Theme.Rapprochement.TextTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="64sp"
+            android:visibility="invisible"
+            android:text="1" />
+        <FrameLayout
+            android:id="@+id/flashLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/flash"
+            android:visibility="invisible"/>
     </FrameLayout>
     <TextView
-        android:id="@+id/timeView"
+        android:id="@+id/frameCounterView"
         style="@style/Theme.Rapprochement.TextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="textEnd"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="0:00 / 0:00" />
+        android:text="Сделано снимков: 0 / 20" />
     <LinearLayout
         style="@style/Theme.Rapprochement.BgRect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <FrameLayout
-            android:id="@+id/timeLine"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@color/primary_1"/>
         <TextView
-            android:id="@+id/outputView"
             style="@style/Theme.Rapprochement.TextNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="@string/placeholder_text"/>
+            android:text="@string/message_add_gesture_instruction"/>
     </LinearLayout>
 </LinearLayout>

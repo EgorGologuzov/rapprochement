@@ -84,18 +84,18 @@ public class GestureAnalyzer implements IGestureAnalyzer {
     }
 
     @Override
-    public void analyze(Bitmap bitmap, float rotation) {
+    public void analyze(Bitmap frame, float frameRotation) {
         HandLandmarkerResult result;
 
         try {
-            MPImage mpImage = new BitmapImageBuilder(bitmap).build();
+            MPImage mpImage = new BitmapImageBuilder(frame).build();
             result = handLandmarker.detect(mpImage);
         } catch (Exception e) {
             return;
         }
 
         if (previewChangeCallback != null) {
-            Bitmap analyzePreview = drawSkeleton(result, bitmap.getWidth(), bitmap.getHeight());
+            Bitmap analyzePreview = drawSkeleton(result, frame.getWidth(), frame.getHeight());
             previewChangeCallback.accept(analyzePreview);
         }
 

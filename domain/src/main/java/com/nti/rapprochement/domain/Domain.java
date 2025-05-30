@@ -3,6 +3,8 @@ package com.nti.rapprochement.domain;
 import android.content.Context;
 
 import com.nti.rapprochement.domain.contracts.IGestureAnalyzer;
+import com.nti.rapprochement.domain.contracts.IGestureStorage;
+import com.nti.rapprochement.domain.implementations.FakeGestureStorage;
 import com.nti.rapprochement.domain.implementations.GestureAnalyzer;
 
 /**
@@ -21,5 +23,9 @@ public class Domain {
      */
     public static IGestureAnalyzer getGestureAnalyzer(Context context) {
         return new GestureAnalyzer(context);
+    }
+
+    public static IGestureStorage getGestureStorage(Context context) {
+        return new FakeGestureStorage(context);
     }
 }

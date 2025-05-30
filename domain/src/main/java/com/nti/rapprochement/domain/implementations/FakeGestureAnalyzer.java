@@ -53,14 +53,26 @@ public class FakeGestureAnalyzer implements IGestureAnalyzer {
     }
 
     @Override
-    public void analyze(Bitmap bitmap, float rotation) {
+    public void analyze(Bitmap frame, float frameRotation) {
+        HandLandmarkerResult result;
+
         try {
-            MPImage mpImage = new BitmapImageBuilder(bitmap).build();
-            HandLandmarkerResult result = handLandmarker.detect(mpImage);
-            handleHandLandmarkerResult(result, mpImage);
-        } catch (MediaPipeException e) {
+            MPImage mpImage = new BitmapImageBuilder(frame).build();
+            result = handLandmarker.detect(mpImage);
+        } catch (Exception e) {
             return;
         }
+
+        if (previewChangeCallback != null) {
+            Bitmap analyzePreview = drawSkeleton(result, frame.getWidth(), frame.getHeight());
+            previewChangeCallback.accept(analyzePreview);
+        }
+
+        if (textChangeCallback != null) {
+            textChangeCallback.accept(getFakeText());
+        }
+
+        frameCounter++;
     }
 
     @Override
@@ -81,19 +93,6 @@ public class FakeGestureAnalyzer implements IGestureAnalyzer {
                 .setNumHands(2)
                 .setRunningMode(RunningMode.IMAGE)
                 .build();
-    }
-
-    private void handleHandLandmarkerResult(HandLandmarkerResult result, MPImage input) {
-        if (previewChangeCallback != null) {
-            Bitmap analyzePreview = drawSkeleton(result, input.getWidth(), input.getHeight());
-            previewChangeCallback.accept(analyzePreview);
-        }
-
-        if (textChangeCallback != null) {
-            textChangeCallback.accept(getFakeText());
-        }
-
-        frameCounter++;
     }
 
     private Bitmap drawSkeleton(HandLandmarkerResult result, int width, int height) {

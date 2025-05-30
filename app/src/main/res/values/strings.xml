@@ -33,9 +33,17 @@
 <!--    Режим ввода текста-->
     <string name="prompt_input_text">Введите текст</string>
 
-<!--    Режим распознавания-->
-    <string name="placeholder_time">0:00 / 0:00</string>
-    <string name="placeholder_text">-</string>
+<!--    Режим добавления жеста-->
+    <string name="title_gesture_name_dialog">Имя жеста (мин. 1 символ)</string>
+    <string name="message_add_gesture_instruction">Сделайте 10-20 снимков жеста в разных позициях. Нажмите ✓ чтобы сохранить жест.</string>
+    <string name="message_snapshot_maked">Снимок!</string>
+    <string name="message_too_few_snapshots_for_save">Слишком мало снимков для сохранения</string>
+    <string name="pattern_for_snapshots_counter">Сделано снимков: %d / %d</string>
+    <string name="pattern_success_saving_message">Добавлен пользовательский жест «%s»</string>
+    <string name="pattern_failed_saving_message">Что-то пошло не так при сохранении жеста «%s»</string>
+
+<!--    Режимы ввода-->
+    <string name="placeholder_text">[Ничего не распознано]</string>
 
 <!--    Диалоговое окно сообщения-->
     <string name="title_message">Сообщение</string>

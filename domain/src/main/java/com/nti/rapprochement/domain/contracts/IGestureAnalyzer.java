@@ -42,7 +42,7 @@ public interface IGestureAnalyzer {
      * будет ожидать завершения метода, прежде чем передавать в него следующий кадр. Если метод не
      * будет тормозить, то частота кадров будет примерно 25-30 в секунду.
      */
-    void analyze(Bitmap bitmap, float rotation);
+    void analyze(Bitmap frame, float frameRotation);
 
     /**
      * Метод утилизации анализотра. Будет вызываться, когда анализатор больше не нужен. В нем нужно

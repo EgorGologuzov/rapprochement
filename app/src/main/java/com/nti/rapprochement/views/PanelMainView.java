@@ -39,6 +39,14 @@ public class PanelMainView {
                     vm.activateMode(new ModeInputSound());
                 });
 
+        view.findViewById(R.id.addGestureButton)
+                .setOnClickListener(v -> {
+                    RecordCall record = RecordCall.createDefault(RecordCall.SourceType.Other);
+                    addToCurrentHistory(record);
+                    RecordCallVM vm = findViewModel(record);
+                    vm.activateMode(new ModeAddGesture());
+                });
+
         view.findViewById(R.id.gestureButton)
                 .setOnClickListener(v -> {
                     RecordCall record = RecordCall.createDefault(RecordCall.SourceType.Gesture);

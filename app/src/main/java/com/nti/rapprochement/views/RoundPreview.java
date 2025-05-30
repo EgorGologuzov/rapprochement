@@ -11,9 +11,15 @@ import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
 
+import java.util.function.Consumer;
+
 public class RoundPreview extends androidx.appcompat.widget.AppCompatImageView {
 
-    private Runnable onImageChangeListener;
+    public static class ImageChangeEventArgs {
+        public Bitmap newBitmap;
+    }
+
+    private Consumer<ImageChangeEventArgs> onImageChangeListener;
 
     public RoundPreview(Context context) {
         super(context);
@@ -30,12 +36,15 @@ public class RoundPreview extends androidx.appcompat.widget.AppCompatImageView {
     @Override
     public void setImageBitmap(Bitmap bm) {
         super.setImageBitmap(roundBitmap(bm));
+
         if (onImageChangeListener != null) {
-            onImageChangeListener.run();
+            ImageChangeEventArgs e = new ImageChangeEventArgs();
+            e.newBitmap = bm;
+            onImageChangeListener.accept(e);
         }
     }
 
-    public void setOnImageChangeListener(Runnable listener) {
+    public void setOnImageChangeListener(Consumer<ImageChangeEventArgs> listener) {
         onImageChangeListener = listener;
     }
 

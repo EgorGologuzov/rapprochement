@@ -39,7 +39,7 @@ public class ModeInputGesture extends RecordCallVM.Mode {
         RoundPreview skeletonPreview = view.findViewById(R.id.skeletonPreview);
         TextView timeView = view.findViewById(R.id.timeView);
         FrameLayout timeLine = view.findViewById(R.id.timeLine);
-        TextView outputView = view.findViewById(R.id.outputTextView);
+        TextView outputView = view.findViewById(R.id.outputView);
         ProgressBar cameraLoadingSpinner = view.findViewById(R.id.cameraLoadingSpinner);
 
         analyzer = Domain.getGestureAnalyzer(parent.getContext());
@@ -93,7 +93,7 @@ public class ModeInputGesture extends RecordCallVM.Mode {
             }
         };
 
-        Runnable handlePreviewStreamingStart = () -> {
+        Consumer<RoundPreview.ImageChangeEventArgs> handlePreviewStreamingStart = e -> {
             cameraLoadingSpinner.setVisibility(View.GONE);
             startTimer.run();
             preview.setOnImageChangeListener(null);

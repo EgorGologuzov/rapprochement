@@ -100,7 +100,7 @@ public class ModeInputText extends RecordCallVM.Mode {
 
     @SuppressLint("DefaultLocale")
     private static String formatCounterString(int count) {
-        return String.format("%d/%d", count, MAX_LENGTH);
+        return String.format("%d / %d", count, MAX_LENGTH);
     }
 
     private boolean checkTextNotEmpty(RecordCallVM vm) {

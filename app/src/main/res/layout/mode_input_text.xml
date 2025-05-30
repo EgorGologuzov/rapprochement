@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="textEnd"
-        android:text="0/1000"/>
+        android:text="0 / 1000"/>
     <EditText
         android:id="@+id/editText"
         style="@style/Theme.Rapprochement.BgRect"
