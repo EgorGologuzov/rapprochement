@@ -55,11 +55,13 @@ public class Convert {
     }
 
     @DrawableRes
-    public static int sourceTypeToDrawableId(RecordCall.SourceType sourceType) {
-        switch (sourceType) {
+    public static int sourceTypeToDrawableId(RecordCall.Status status) {
+        switch (status) {
             case Gesture: return R.drawable.source_type_gesture;
             case Sound: return R.drawable.source_type_sound;
             case Text: return R.drawable.source_type_text;
+            case Success: return R.drawable.source_type_success;
+            case Error: return R.drawable.source_type_error;
             case Other: return R.drawable.source_type_other;
             default: throw new IllegalArgumentException();
         }

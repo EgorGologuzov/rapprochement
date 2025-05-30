@@ -3,15 +3,12 @@ package com.nti.rapprochement.views;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatDelegate;
-
 import com.nti.rapprochement.App;
 import com.nti.rapprochement.R;
 import com.nti.rapprochement.models.HistorySettings;
 import com.nti.rapprochement.models.PanelSettings;
 import com.nti.rapprochement.models.RecordCall;
 import com.nti.rapprochement.utils.ViewsUtils;
-import com.nti.rapprochement.viewmodels.RecordBaseVM;
 import com.nti.rapprochement.viewmodels.RecordCallVM;
 
 public class PanelMainView {
@@ -25,7 +22,7 @@ public class PanelMainView {
 
         view.findViewById(R.id.textButton)
                 .setOnClickListener(v -> {
-                    RecordCall record = RecordCall.createDefault(RecordCall.SourceType.Text);
+                    RecordCall record = RecordCall.createDefault(RecordCall.Status.Text);
                     addToCurrentHistory(record);
                     RecordCallVM vm = findViewModel(record);
                     vm.activateMode(new ModeInputText());
@@ -33,7 +30,7 @@ public class PanelMainView {
 
         view.findViewById(R.id.soundButton)
                 .setOnClickListener(v -> {
-                    RecordCall record = RecordCall.createDefault(RecordCall.SourceType.Sound);
+                    RecordCall record = RecordCall.createDefault(RecordCall.Status.Sound);
                     addToCurrentHistory(record);
                     RecordCallVM vm = findViewModel(record);
                     vm.activateMode(new ModeInputSound());
@@ -41,7 +38,7 @@ public class PanelMainView {
 
         view.findViewById(R.id.addGestureButton)
                 .setOnClickListener(v -> {
-                    RecordCall record = RecordCall.createDefault(RecordCall.SourceType.Other);
+                    RecordCall record = RecordCall.createDefault(RecordCall.Status.Other);
                     addToCurrentHistory(record);
                     RecordCallVM vm = findViewModel(record);
                     vm.activateMode(new ModeAddGesture());
@@ -49,7 +46,7 @@ public class PanelMainView {
 
         view.findViewById(R.id.gestureButton)
                 .setOnClickListener(v -> {
-                    RecordCall record = RecordCall.createDefault(RecordCall.SourceType.Gesture);
+                    RecordCall record = RecordCall.createDefault(RecordCall.Status.Gesture);
                     addToCurrentHistory(record);
                     RecordCallVM vm = findViewModel(record);
                     vm.activateMode(new ModeInputGesture());

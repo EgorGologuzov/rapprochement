@@ -42,6 +42,9 @@
     <string name="pattern_success_saving_message">Добавлен пользовательский жест «%s»</string>
     <string name="pattern_failed_saving_message">Что-то пошло не так при сохранении жеста «%s»</string>
 
+<!--    Режим загрузки-->
+    <string name="message_app_is_busy">Ожидается завершение операции</string>
+
 <!--    Режимы ввода-->
     <string name="placeholder_text">[Ничего не распознано]</string>
 

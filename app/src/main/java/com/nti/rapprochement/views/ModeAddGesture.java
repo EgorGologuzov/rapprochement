@@ -20,6 +20,7 @@ import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.domain.Domain;
 import com.nti.rapprochement.domain.contracts.IGestureAnalyzer;
 import com.nti.rapprochement.domain.contracts.IGestureStorage;
+import com.nti.rapprochement.models.RecordCall;
 import com.nti.rapprochement.utils.ViewsUtils;
 import com.nti.rapprochement.viewmodels.RecordCallVM;
 
@@ -227,8 +228,10 @@ public class ModeAddGesture extends RecordCallVM.Mode {
             gestureStorage.saveGesture(name, snapshots, snapshotRotation, status -> {
                 App.current.runOnUiThread(() -> {
                     if (status == IGestureStorage.SaveStatus.Success) {
+                        vm.setStatus(RecordCall.Status.Success);
                         vm.setText(String.format(Res.str(R.string.pattern_success_saving_message), name));
                     } else {
+                        vm.setStatus(RecordCall.Status.Error);
                         vm.setText(String.format(Res.str(R.string.pattern_failed_saving_message), name));
                     }
                     vm.activateMode(new ModeShowText());

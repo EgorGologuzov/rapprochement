@@ -131,12 +131,12 @@ public class Settings {
     private static final String ADD_GESTURE_MODE_SNAPSHOTS_MIN_COUNT = "add_gesture_mode_snapshots_min_count";
 
     public static int getAddGestureModeSnapshotsMinCount() {
-        return preferences.getInt(ADD_GESTURE_MODE_SNAPSHOTS_MIN_COUNT, 1);
+        return preferences.getInt(ADD_GESTURE_MODE_SNAPSHOTS_MIN_COUNT, 10);
     }
 
     private static final String ADD_GESTURE_MODE_SNAPSHOTS_MAX_COUNT = "add_gesture_mode_snapshots_max_count";
 
     public static int getAddGestureModeSnapshotsMaxCount() {
-        return preferences.getInt(ADD_GESTURE_MODE_SNAPSHOTS_MAX_COUNT, 3);
+        return preferences.getInt(ADD_GESTURE_MODE_SNAPSHOTS_MAX_COUNT, 20);
     }
 }

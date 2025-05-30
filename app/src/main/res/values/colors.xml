@@ -5,6 +5,9 @@
     <color name="primary_2">#DD97D6</color>
     <color name="primary_3">#F8A073</color>
     <color name="secondary">#E6E6E6</color>
+    <color name="secondaryDark">#808080</color>
+    <color name="success">#A9EBA5</color>
+    <color name="error">#EBA5A5</color>
 
     <!--Светлая тема-->
     <color name="bg_l">#FFFFFFFF</color>

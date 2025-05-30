@@ -19,11 +19,13 @@ public class ModeLoading extends RecordCallVM.Mode {
 
     @Override
     public View createPanelView(RecordCallVM.CreateArgs args) {
-        return null;
+        ViewGroup parent = args.parent;
+        View view = ViewsUtils.createView(R.layout.panel_loading, parent);
+        return view;
     }
 
     @Override
     public boolean hasPanel() {
-        return false;
+        return true;
     }
 }

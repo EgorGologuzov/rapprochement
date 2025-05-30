@@ -8,10 +8,10 @@ import java.util.Date;
 
 public class RecordCall extends RecordBase {
 
-    public enum SourceType { Gesture, Sound, Text, Other }
+    public enum Status { Gesture, Sound, Text, Success, Error, Other }
 
     public int id;
-    public SourceType sourceType;
+    public Status status;
     public Date creationTime;
     public String text;
 
@@ -22,18 +22,18 @@ public class RecordCall extends RecordBase {
         return new RecordCallVM(this);
     }
 
-    public static RecordCall createDefault(SourceType sourceType) {
+    public static RecordCall createDefault(Status status) {
         RecordCall record = new RecordCall();
         record.id = Settings.getNextId();
-        record.sourceType = sourceType;
+        record.status = status;
         record.creationTime = new Date();
         return record;
     }
 
-    public static RecordCall createFromData(int id, SourceType sourceType, Date creationTime, String text) {
+    public static RecordCall createFromData(int id, Status status, Date creationTime, String text) {
         RecordCall record = new RecordCall();
         record.id = id;
-        record.sourceType = sourceType;
+        record.status = status;
         record.creationTime = creationTime;
         record.text = text;
         return record;

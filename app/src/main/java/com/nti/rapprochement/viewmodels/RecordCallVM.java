@@ -123,8 +123,12 @@ public class RecordCallVM extends RecordBaseVM {
         this.model.creationTime = creationTime;
     }
 
-    public RecordCall.SourceType getSourceType() {
-        return model.sourceType;
+    public RecordCall.Status getStatus() {
+        return model.status;
+    }
+
+    public void setStatus(RecordCall.Status status) {
+        this.model.status = status;
     }
 
     public int getId() {
