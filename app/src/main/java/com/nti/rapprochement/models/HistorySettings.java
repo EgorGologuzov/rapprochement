@@ -6,7 +6,7 @@ import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.utils.Convert;
 import com.nti.rapprochement.viewmodels.HistoryBaseVM;
 import com.nti.rapprochement.viewmodels.HistorySettingsVM;
-import com.nti.rapprochement.views.DialogFontSize;
+import com.nti.rapprochement.views.DialogSelectVariant;
 
 import java.util.ArrayList;
 
@@ -27,19 +27,31 @@ public class HistorySettings extends HistoryBase {
         params.add(new SettingsParameter(
                 Res.str(R.string.theme),
                 Convert.darkModeToString(Settings.getDarkMode()),
-                (sp) -> {
+                (vm) -> {
                     boolean isDarkMode = Settings.getDarkMode();
                     Settings.setDarkMode(!isDarkMode);
-                    sp.setValue(Convert.darkModeToString(!isDarkMode));
-                }));
+                    vm.setValue(Convert.darkModeToString(!isDarkMode));
+                }
+        ));
 
         params.add(new SettingsParameter(
                 Res.str(R.string.font),
                 Convert.fontSizeToString(Settings.getFontSize()),
-                (sp) -> DialogFontSize.show(result -> {
-                    Settings.setFontSize(result);
-                    sp.setValue(Convert.fontSizeToString(result));
-                })));
+                (vm) -> {
+                    String[] variants = Convert.getFontSizeStringVariants();
+                    DialogSelectVariant.show(
+                            Res.str(R.string.font),
+                            variants,
+                            (selectedIndex) -> {
+                                String resultStr = variants[selectedIndex];
+                                Settings.FontSize result = Convert.stringToFontSize(resultStr);
+                                Settings.setFontSize(result);
+                                vm.setValue(resultStr);
+                            },
+                            null
+                    );
+                }
+        ));
 
         return new RecordSettingsGroup(Res.str(R.string.title_general), params);
     }

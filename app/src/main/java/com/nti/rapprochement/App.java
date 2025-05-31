@@ -101,10 +101,6 @@ public class App {
         mainActivity.runOnUiThread(action);
     }
 
-    public void notifyAboutGlobalEvent(Object args) {
-        currentHistoryVM.handleGlobalEvent(args);
-    }
-
     public void navigate(HistoryBase history, PanelBase panel) {
         if (history != null) {
             pushHistory(history);

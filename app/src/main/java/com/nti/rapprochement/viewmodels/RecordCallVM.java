@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.nti.rapprochement.App;
-import com.nti.rapprochement.data.Permissions;
 import com.nti.rapprochement.models.PanelCall;
 import com.nti.rapprochement.models.RecordCall;
 import com.nti.rapprochement.views.ModeShowText;
@@ -37,7 +36,6 @@ public class RecordCallVM extends RecordBaseVM {
     private Mode mode;
     private PanelCall panel;
     private boolean isFocused;
-    private Consumer<Permissions.RequestResult> permissionEventListener;
 
     public RecordCallVM(RecordCall model) {
         this.model = model;
@@ -71,14 +69,6 @@ public class RecordCallVM extends RecordBaseVM {
         super.dispose();
         if (mode != null) {
             mode.dispose();
-        }
-    }
-
-    @Override
-    public void handleGlobalEvent(Object args) {
-        super.handleGlobalEvent(args);
-        if (args instanceof Permissions.RequestResult && permissionEventListener != null) {
-            permissionEventListener.accept((Permissions.RequestResult) args);
         }
     }
 
@@ -133,10 +123,6 @@ public class RecordCallVM extends RecordBaseVM {
 
     public int getId() {
         return model.id;
-    }
-
-    public void setPermissionEventListener(Consumer<Permissions.RequestResult> permissionEventListener) {
-        this.permissionEventListener = permissionEventListener;
     }
 
     private void update() {

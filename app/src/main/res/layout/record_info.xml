@@ -20,13 +20,24 @@
             style="@style/RecordInfo_ItemLayout">
             <ImageView
                 style="@style/RecordInfo_ImageView"
+                android:src="@drawable/btn_add_gesture"/>
+            <TextView
+                style="@style/RecordInfo_TextView"
+                android:text="@string/add_gesture"/>
+        </LinearLayout>
+        <LinearLayout
+            style="@style/RecordInfo_ItemLayout"
+            android:visibility="gone">
+            <ImageView
+                style="@style/RecordInfo_ImageView"
                 android:src="@drawable/btn_sound"/>
             <TextView
                 style="@style/RecordInfo_TextView"
                 android:text="@string/recognize_voice"/>
         </LinearLayout>
         <LinearLayout
-            style="@style/RecordInfo_ItemLayout">
+            style="@style/RecordInfo_ItemLayout"
+            android:visibility="gone">
             <ImageView
                 style="@style/RecordInfo_ImageView"
                 android:src="@drawable/btn_text"/>

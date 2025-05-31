@@ -11,6 +11,7 @@
 <!--    Приветственное сообщение-->
     <string name="begin_rapprochement">Начните сближение</string>
     <string name="recognize_gestures">распознать жесты</string>
+    <string name="add_gesture">добавить свой жест</string>
     <string name="recognize_voice">распознать голос</string>
     <string name="text_to_voice_or_gestures">текст в голос или жесты</string>
 
@@ -38,12 +39,14 @@
     <string name="message_add_gesture_instruction">Сделайте 10-20 снимков жеста в разных позициях. Нажмите ✓ чтобы сохранить жест.</string>
     <string name="message_snapshot_maked">Снимок!</string>
     <string name="message_too_few_snapshots_for_save">Слишком мало снимков для сохранения</string>
+    <string name="message_error_in_name_input">Ошибка в имени. Повторите попытку.</string>
+    <string name="message_add_gesture_canceled">Добавление жеста отменено</string>
     <string name="pattern_for_snapshots_counter">Сделано снимков: %d / %d</string>
     <string name="pattern_success_saving_message">Добавлен пользовательский жест «%s»</string>
     <string name="pattern_failed_saving_message">Что-то пошло не так при сохранении жеста «%s»</string>
 
 <!--    Режим загрузки-->
-    <string name="message_app_is_busy">Ожидается завершение операции</string>
+    <string name="message_app_is_busy">Ожидается завершение операции …</string>
 
 <!--    Режимы ввода-->
     <string name="placeholder_text">[Ничего не распознано]</string>

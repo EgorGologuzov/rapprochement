@@ -29,7 +29,7 @@ public class ModeShowText extends RecordCallVM.Mode {
         ActionButton toSoundButton = view.findViewById(R.id.toSoundButton);
         ActionButton optionsButton = view.findViewById(R.id.optionsButton);
 
-        sourceTypeView.setImageResource(Convert.sourceTypeToDrawableId(vm.getStatus()));
+        sourceTypeView.setImageResource(Convert.recordCallStatusToDrawableId(vm.getStatus()));
 
         datetimeView.setText(formatTime(vm.getCreationTime()));
 

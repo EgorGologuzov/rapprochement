@@ -10,6 +10,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
 
+/**
+ * Пример реализации интерфейса IGestureStorage
+ * После вызова метода сохранения ожидает 3 секунды и возвращает ошибку, если имя жеста это пустая
+ * сторка, или Success, если имя это любая другая строка
+ */
 public class FakeGestureStorage implements IGestureStorage {
 
     private Timer timer;

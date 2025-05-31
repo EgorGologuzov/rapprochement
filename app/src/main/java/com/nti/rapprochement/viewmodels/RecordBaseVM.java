@@ -18,8 +18,6 @@ public abstract class RecordBaseVM {
 
     public void dispose() {}
 
-    public void handleGlobalEvent(Object args) {}
-
     public static class RecordHolder extends RecyclerView.ViewHolder {
         public RecordHolder(@NonNull View itemView) { super(itemView); }
         public void bind(RecordBaseVM model) { model.bind(itemView); }

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.nti.rapprochement.App;
 import com.nti.rapprochement.R;
 import com.nti.rapprochement.data.Camera;
-import com.nti.rapprochement.data.Permissions;
+import com.nti.rapprochement.data.PermissionAgent;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.domain.Domain;
@@ -24,10 +24,12 @@ import java.util.function.Consumer;
 
 public class ModeInputGesture extends RecordCallVM.Mode {
 
+    private HelperLiveText liveText;
     private IGestureAnalyzer analyzer;
     private HelperInputTimer inputTimer;
-    private HelperLiveText liveText;
     private HelperGesturePreview gesturePreview;
+    private PermissionAgent permissionAgent;
+
 
     @Override
     public View createInnerView(RecordCallVM.CreateArgs args) {
@@ -43,6 +45,7 @@ public class ModeInputGesture extends RecordCallVM.Mode {
         ProgressBar cameraLoadingSpinner = view.findViewById(R.id.cameraLoadingSpinner);
 
         analyzer = Domain.getGestureAnalyzer(parent.getContext());
+        permissionAgent = new PermissionAgent();
 
         Runnable startTimer = () -> {
             HelperInputTimer.CreateArgs ca = new HelperInputTimer.CreateArgs();
@@ -54,21 +57,19 @@ public class ModeInputGesture extends RecordCallVM.Mode {
             inputTimer = new HelperInputTimer(ca);
         };
 
-        Runnable createLiveText = () -> {
-            HelperLiveText.CreateArgs ca = new HelperLiveText.CreateArgs();
-            ca.target = outputView;
-            ca.vm = vm;
-            ca.lightedTextBackground = Res.color(R.color.primary_1);
-            ca.lightedTextForeground = Color.BLACK;
-            liveText = new HelperLiveText(ca);
-        };
+        Runnable startRecognizing = () -> {
+            HelperGesturePreview.CreateArgs ca1 = new HelperGesturePreview.CreateArgs();
+            ca1.preview = preview;
+            ca1.skeletonPreview = skeletonPreview;
+            ca1.analyzer = analyzer;
+            gesturePreview = new HelperGesturePreview(ca1);
 
-        Runnable startPreview = () -> {
-            HelperGesturePreview.CreateArgs ca = new HelperGesturePreview.CreateArgs();
-            ca.preview = preview;
-            ca.skeletonPreview = skeletonPreview;
-            ca.analyzer = analyzer;
-            gesturePreview = new HelperGesturePreview(ca);
+            HelperLiveText.CreateArgs ca2 = new HelperLiveText.CreateArgs();
+            ca2.target = outputView;
+            ca2.vm = vm;
+            ca2.lightedTextBackground = Res.color(R.color.primary_1);
+            ca2.lightedTextForeground = Color.BLACK;
+            liveText = new HelperLiveText(ca2);
         };
 
         Runnable showCameraProblemsMessage = () -> {
@@ -78,19 +79,12 @@ public class ModeInputGesture extends RecordCallVM.Mode {
             );
         };
 
-        Runnable run = () -> {
-            createLiveText.run();
-            startPreview.run();
+        Runnable onCameraPermissionGranted = () -> {
+            startRecognizing.run();
         };
 
-        Consumer<Permissions.RequestResult> handlePermissionRequestResult = result -> {
-            if (result.type == Permissions.Type.Camera) {
-                if (result.result == Permissions.Result.Granted) {
-                    run.run();
-                } else {
-                    showCameraProblemsMessage.run();
-                }
-            }
+        Runnable onCameraPermissionDenied = () -> {
+            showCameraProblemsMessage.run();
         };
 
         Consumer<RoundPreview.ImageChangeEventArgs> handlePreviewStreamingStart = e -> {
@@ -103,15 +97,10 @@ public class ModeInputGesture extends RecordCallVM.Mode {
             App.current.runOnUiThread(() -> liveText.setText(text));
         };
 
-        vm.setPermissionEventListener(handlePermissionRequestResult);
         preview.setOnImageChangeListener(handlePreviewStreamingStart);
         analyzer.setTextChangeCallback(handleRecognizedTextChanged);
+        permissionAgent.requestPermissionCamera(onCameraPermissionGranted, onCameraPermissionDenied);
 
-        if (Permissions.hasPermissionCamera()) {
-            run.run();
-        } else {
-            Permissions.requestPermissionCamera();
-        }
 
         return view;
     }
@@ -140,13 +129,6 @@ public class ModeInputGesture extends RecordCallVM.Mode {
                     }
                 });
 
-        view.findViewById(R.id.toSoundButton)
-                .setOnClickListener(v -> {
-                    if (checkTextNotEmpty(vm)) {
-                        vm.activateMode(new ModeShowSound());
-                    }
-                });
-
         return view;
     }
 
@@ -169,6 +151,10 @@ public class ModeInputGesture extends RecordCallVM.Mode {
 
         if (gesturePreview != null) {
             gesturePreview.dispose();
+        }
+
+        if (permissionAgent != null) {
+            permissionAgent.dispose();
         }
     }
 

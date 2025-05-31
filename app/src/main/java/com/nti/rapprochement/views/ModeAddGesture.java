@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.nti.rapprochement.App;
 import com.nti.rapprochement.R;
 import com.nti.rapprochement.data.Camera;
-import com.nti.rapprochement.data.Permissions;
+import com.nti.rapprochement.data.PermissionAgent;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.domain.Domain;
@@ -45,6 +45,7 @@ public class ModeAddGesture extends RecordCallVM.Mode {
     private IGestureStorage gestureStorage;
     private HelperGesturePreview gesturePreview;
     private Timer timer;
+    private PermissionAgent permissionAgent;
 
     private ArrayList<Bitmap> snapshots;
     private Bitmap lastSnapshot;
@@ -65,6 +66,7 @@ public class ModeAddGesture extends RecordCallVM.Mode {
 
         analyzer = Domain.getGestureAnalyzer(parent.getContext());
         gestureStorage = Domain.getGestureStorage(parent.getContext());
+        permissionAgent = new PermissionAgent();
 
         snapshotTiming = Settings.getAddGestureModeSnapshotTiming();
         minSnapshotsCount = Settings.getAddGestureModeSnapshotsMinCount();
@@ -129,18 +131,12 @@ public class ModeAddGesture extends RecordCallVM.Mode {
             );
         };
 
-        Runnable run = () -> {
+        Runnable onCameraPermissionGranted = () -> {
             startPreview.run();
         };
 
-        Consumer<Permissions.RequestResult> handlePermissionRequestResult = result -> {
-            if (result.type == Permissions.Type.Camera) {
-                if (result.result == Permissions.Result.Granted) {
-                    run.run();
-                } else {
-                    showCameraProblemsMessage.run();
-                }
-            }
+        Runnable onCameraPermissionDenied = () -> {
+            showCameraProblemsMessage.run();
         };
 
         Consumer<RoundPreview.ImageChangeEventArgs> handlePreviewImageChange = new Consumer<RoundPreview.ImageChangeEventArgs>() {
@@ -157,14 +153,8 @@ public class ModeAddGesture extends RecordCallVM.Mode {
             }
         };
 
-        vm.setPermissionEventListener(handlePermissionRequestResult);
         preview.setOnImageChangeListener(handlePreviewImageChange);
-
-        if (Permissions.hasPermissionCamera()) {
-            run.run();
-        } else {
-            Permissions.requestPermissionCamera();
-        }
+        permissionAgent.requestPermissionCamera(onCameraPermissionGranted, onCameraPermissionDenied);
 
         return view;
     }
@@ -211,6 +201,10 @@ public class ModeAddGesture extends RecordCallVM.Mode {
             analyzer.dispose();
         }
 
+        if (gestureStorage != null) {
+            gestureStorage.dispose();
+        }
+
         if (gesturePreview != null) {
             gesturePreview.dispose();
         }
@@ -218,6 +212,10 @@ public class ModeAddGesture extends RecordCallVM.Mode {
         if (timer != null) {
             timer.cancel();
             timer.purge();
+        }
+
+        if (permissionAgent != null) {
+            permissionAgent.dispose();
         }
     }
 
@@ -241,6 +239,7 @@ public class ModeAddGesture extends RecordCallVM.Mode {
 
         Runnable handleCancelNameInput = () -> {
             vm.removeSelfFromHistory();
+            App.current.showToast(R.string.message_add_gesture_canceled);
         };
 
         requestGestureName(handleSuccessNameInput, handleCancelNameInput);
@@ -250,6 +249,7 @@ public class ModeAddGesture extends RecordCallVM.Mode {
         Consumer<String> onOkInner = text -> {
             if (TextUtils.isEmpty(text)) {
                 requestGestureName(onOk, onCancel);
+                App.current.showToast(R.string.message_error_in_name_input);
                 return;
             }
             if (onOk != null) {

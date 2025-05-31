@@ -83,11 +83,6 @@ public abstract class HistoryBaseVM {
         return null;
     }
 
-    public void handleGlobalEvent(Object args) {
-        ArrayList<RecordBaseVM> tmp = new ArrayList<>(viewModels);
-        tmp.forEach(vm -> vm.handleGlobalEvent(args));
-    }
-
     public static class Adapter extends RecyclerView.Adapter<RecordBaseVM.RecordHolder> {
 
         private final ArrayList<RecordBaseVM> viewModels;

@@ -1,11 +1,8 @@
 package com.nti.rapprochement.utils;
 
-import android.content.pm.PackageManager;
-
 import androidx.annotation.DrawableRes;
 
 import com.nti.rapprochement.R;
-import com.nti.rapprochement.data.Permissions;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.models.RecordCall;
@@ -55,7 +52,7 @@ public class Convert {
     }
 
     @DrawableRes
-    public static int sourceTypeToDrawableId(RecordCall.Status status) {
+    public static int recordCallStatusToDrawableId(RecordCall.Status status) {
         switch (status) {
             case Gesture: return R.drawable.source_type_gesture;
             case Sound: return R.drawable.source_type_sound;
@@ -63,22 +60,6 @@ public class Convert {
             case Success: return R.drawable.source_type_success;
             case Error: return R.drawable.source_type_error;
             case Other: return R.drawable.source_type_other;
-            default: throw new IllegalArgumentException();
-        }
-    }
-
-    public static Permissions.Type requestCodeToType(int requestCode) {
-        switch (requestCode) {
-            case Permissions.CAMERA_PERMISSION_REQUEST_CODE: return Permissions.Type.Camera;
-            case Permissions.RECORD_AUDIO_PERMISSION_REQUEST_CODE: return Permissions.Type.RecordAudio;
-            default: throw new IllegalArgumentException();
-        }
-    }
-
-    public static Permissions.Result grantResultsToPermissionResult(int result) {
-        switch (result) {
-            case PackageManager.PERMISSION_GRANTED: return Permissions.Result.Granted;
-            case PackageManager.PERMISSION_DENIED: return Permissions.Result.Denied;
             default: throw new IllegalArgumentException();
         }
     }

@@ -15,7 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.nti.rapprochement.data.Camera;
-import com.nti.rapprochement.data.Permissions;
+import com.nti.rapprochement.data.PermissionAgent;
 import com.nti.rapprochement.data.Res;
 import com.nti.rapprochement.data.Settings;
 import com.nti.rapprochement.utils.Convert;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         App.init(this);
         Res.init(this);
         Camera.init(this);
-        Permissions.init(this);
+        PermissionAgent.init(this);
         setBackButtonCallback();
         setKeyboardAdaptiveListener();
     }
@@ -87,12 +87,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0) {
-            App.current.notifyAboutGlobalEvent(
-                new Permissions.RequestResult(
-                    Convert.requestCodeToType(requestCode),
-                    Convert.grantResultsToPermissionResult(grantResults[0])
-                )
-            );
+            PermissionAgent.notifyPermissionRequestResult(requestCode, grantResults[0]);
         }
     }
 }

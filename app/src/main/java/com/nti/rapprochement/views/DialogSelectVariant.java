@@ -9,17 +9,20 @@ import com.nti.rapprochement.utils.Convert;
 
 import java.util.function.Consumer;
 
-public class DialogFontSize {
-    public static void show(Consumer<Settings.FontSize> onVariantSelected) {
-        String[] variants = Convert.getFontSizeStringVariants();
-
+public class DialogSelectVariant {
+    public static void show(String title, String[] variants, Consumer<Integer> onSelect, Runnable onCancel) {
         AlertDialog.Builder builder = new AlertDialog.Builder(App.current.getDialogContext());
         builder
-                .setTitle(R.string.font)
-                .setNegativeButton(R.string.btn_cancel, null)
+                .setTitle(title)
                 .setItems(variants, (dialog, which) -> {
-                    Settings.FontSize fs = Convert.stringToFontSize(variants[which]);
-                    if (onVariantSelected != null) onVariantSelected.accept(fs);
+                    if (onSelect != null) {
+                        onSelect.accept(which);
+                    }
+                })
+                .setNegativeButton(R.string.btn_cancel, (di, i) -> {
+                    if (onCancel != null) {
+                        onCancel.run();
+                    }
                 });
 
         AlertDialog dialog = builder.create();
